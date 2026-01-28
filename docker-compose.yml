@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:alpine
+    container_name: postgres-auditlog
+    ports:
+      - '5400:5432'
+    environment:
+      - POSTGRES_USER=auditlog
+      - POSTGRES_PASSWORD=auditlog
+      - POSTGRES_DB=auditlogdb
+    volumes:
+      - postgres-data:/var/bin/postgresql/data
+
+volumes:
+  postgres-data:
