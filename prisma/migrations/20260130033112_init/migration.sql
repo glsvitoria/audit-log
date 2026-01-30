@@ -15,10 +15,11 @@ CREATE TABLE "logs" (
     "id" TEXT NOT NULL,
     "action" TEXT NOT NULL,
     "entity" TEXT,
-    "actorRole" TEXT NOT NULL,
-    "actorId" TEXT NOT NULL,
-    "oldData" JSONB,
-    "newData" JSONB,
+    "entity_id" TEXT,
+    "actor_role" TEXT NOT NULL,
+    "actor_id" TEXT NOT NULL,
+    "old_data" JSONB,
+    "new_data" JSONB,
     "message" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -29,10 +30,10 @@ CREATE TABLE "logs" (
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
-CREATE INDEX "logs_actorRole_idx" ON "logs"("actorRole");
+CREATE INDEX "logs_actor_role_idx" ON "logs"("actor_role");
 
 -- CreateIndex
-CREATE INDEX "logs_actorId_idx" ON "logs"("actorId");
+CREATE INDEX "logs_actor_id_idx" ON "logs"("actor_id");
 
 -- CreateIndex
 CREATE INDEX "logs_action_idx" ON "logs"("action");

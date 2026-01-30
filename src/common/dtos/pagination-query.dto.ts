@@ -11,15 +11,25 @@ export abstract class PaginationQueryDto<T extends string = 'createdAt'> {
 	abstract sort: T
 
 	@IsNumber()
-	@IsNotEmpty()
-	@Min(0)
+	@IsNotEmpty({
+		message: 'O init não pode ser vazio',
+	})
+	@Min(0, {
+		message: 'O init deve ser maior ou igual a 0',
+	})
 	@Type(() => Number)
 	init: number
 
 	@IsNumber()
-	@IsNotEmpty()
-	@Min(1)
-	@Max(100)
+	@IsNotEmpty({
+		message: 'O limit não pode ser vazio',
+	})
+	@Min(1, {
+		message: 'O limit deve ser maior ou igual a 1',
+	})
+	@Max(100, {
+		message: 'O limit deve ser menor ou igual a 100',
+	})
 	@Type(() => Number)
 	limit: number
 

@@ -28,6 +28,7 @@ export type LogMinAggregateOutputType = {
   id: string | null
   action: string | null
   entity: string | null
+  entityId: string | null
   actorRole: string | null
   actorId: string | null
   message: string | null
@@ -38,6 +39,7 @@ export type LogMaxAggregateOutputType = {
   id: string | null
   action: string | null
   entity: string | null
+  entityId: string | null
   actorRole: string | null
   actorId: string | null
   message: string | null
@@ -48,6 +50,7 @@ export type LogCountAggregateOutputType = {
   id: number
   action: number
   entity: number
+  entityId: number
   actorRole: number
   actorId: number
   oldData: number
@@ -62,6 +65,7 @@ export type LogMinAggregateInputType = {
   id?: true
   action?: true
   entity?: true
+  entityId?: true
   actorRole?: true
   actorId?: true
   message?: true
@@ -72,6 +76,7 @@ export type LogMaxAggregateInputType = {
   id?: true
   action?: true
   entity?: true
+  entityId?: true
   actorRole?: true
   actorId?: true
   message?: true
@@ -82,6 +87,7 @@ export type LogCountAggregateInputType = {
   id?: true
   action?: true
   entity?: true
+  entityId?: true
   actorRole?: true
   actorId?: true
   oldData?: true
@@ -167,6 +173,7 @@ export type LogGroupByOutputType = {
   id: string
   action: string
   entity: string | null
+  entityId: string | null
   actorRole: string
   actorId: string
   oldData: runtime.JsonValue | null
@@ -200,6 +207,7 @@ export type LogWhereInput = {
   id?: Prisma.StringFilter<"Log"> | string
   action?: Prisma.StringFilter<"Log"> | string
   entity?: Prisma.StringNullableFilter<"Log"> | string | null
+  entityId?: Prisma.StringNullableFilter<"Log"> | string | null
   actorRole?: Prisma.StringFilter<"Log"> | string
   actorId?: Prisma.StringFilter<"Log"> | string
   oldData?: Prisma.JsonNullableFilter<"Log">
@@ -212,6 +220,7 @@ export type LogOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   action?: Prisma.SortOrder
   entity?: Prisma.SortOrderInput | Prisma.SortOrder
+  entityId?: Prisma.SortOrderInput | Prisma.SortOrder
   actorRole?: Prisma.SortOrder
   actorId?: Prisma.SortOrder
   oldData?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -227,6 +236,7 @@ export type LogWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.LogWhereInput | Prisma.LogWhereInput[]
   action?: Prisma.StringFilter<"Log"> | string
   entity?: Prisma.StringNullableFilter<"Log"> | string | null
+  entityId?: Prisma.StringNullableFilter<"Log"> | string | null
   actorRole?: Prisma.StringFilter<"Log"> | string
   actorId?: Prisma.StringFilter<"Log"> | string
   oldData?: Prisma.JsonNullableFilter<"Log">
@@ -239,6 +249,7 @@ export type LogOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   action?: Prisma.SortOrder
   entity?: Prisma.SortOrderInput | Prisma.SortOrder
+  entityId?: Prisma.SortOrderInput | Prisma.SortOrder
   actorRole?: Prisma.SortOrder
   actorId?: Prisma.SortOrder
   oldData?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -257,6 +268,7 @@ export type LogScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Log"> | string
   action?: Prisma.StringWithAggregatesFilter<"Log"> | string
   entity?: Prisma.StringNullableWithAggregatesFilter<"Log"> | string | null
+  entityId?: Prisma.StringNullableWithAggregatesFilter<"Log"> | string | null
   actorRole?: Prisma.StringWithAggregatesFilter<"Log"> | string
   actorId?: Prisma.StringWithAggregatesFilter<"Log"> | string
   oldData?: Prisma.JsonNullableWithAggregatesFilter<"Log">
@@ -269,6 +281,7 @@ export type LogCreateInput = {
   id?: string
   action: string
   entity?: string | null
+  entityId?: string | null
   actorRole: string
   actorId: string
   oldData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -281,6 +294,7 @@ export type LogUncheckedCreateInput = {
   id?: string
   action: string
   entity?: string | null
+  entityId?: string | null
   actorRole: string
   actorId: string
   oldData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -293,6 +307,7 @@ export type LogUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.StringFieldUpdateOperationsInput | string
   entity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actorRole?: Prisma.StringFieldUpdateOperationsInput | string
   actorId?: Prisma.StringFieldUpdateOperationsInput | string
   oldData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -305,6 +320,7 @@ export type LogUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.StringFieldUpdateOperationsInput | string
   entity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actorRole?: Prisma.StringFieldUpdateOperationsInput | string
   actorId?: Prisma.StringFieldUpdateOperationsInput | string
   oldData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -317,6 +333,7 @@ export type LogCreateManyInput = {
   id?: string
   action: string
   entity?: string | null
+  entityId?: string | null
   actorRole: string
   actorId: string
   oldData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -329,6 +346,7 @@ export type LogUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.StringFieldUpdateOperationsInput | string
   entity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actorRole?: Prisma.StringFieldUpdateOperationsInput | string
   actorId?: Prisma.StringFieldUpdateOperationsInput | string
   oldData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -341,6 +359,7 @@ export type LogUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.StringFieldUpdateOperationsInput | string
   entity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actorRole?: Prisma.StringFieldUpdateOperationsInput | string
   actorId?: Prisma.StringFieldUpdateOperationsInput | string
   oldData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -353,6 +372,7 @@ export type LogCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   action?: Prisma.SortOrder
   entity?: Prisma.SortOrder
+  entityId?: Prisma.SortOrder
   actorRole?: Prisma.SortOrder
   actorId?: Prisma.SortOrder
   oldData?: Prisma.SortOrder
@@ -365,6 +385,7 @@ export type LogMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   action?: Prisma.SortOrder
   entity?: Prisma.SortOrder
+  entityId?: Prisma.SortOrder
   actorRole?: Prisma.SortOrder
   actorId?: Prisma.SortOrder
   message?: Prisma.SortOrder
@@ -375,6 +396,7 @@ export type LogMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   action?: Prisma.SortOrder
   entity?: Prisma.SortOrder
+  entityId?: Prisma.SortOrder
   actorRole?: Prisma.SortOrder
   actorId?: Prisma.SortOrder
   message?: Prisma.SortOrder
@@ -391,6 +413,7 @@ export type LogSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   id?: boolean
   action?: boolean
   entity?: boolean
+  entityId?: boolean
   actorRole?: boolean
   actorId?: boolean
   oldData?: boolean
@@ -403,6 +426,7 @@ export type LogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extension
   id?: boolean
   action?: boolean
   entity?: boolean
+  entityId?: boolean
   actorRole?: boolean
   actorId?: boolean
   oldData?: boolean
@@ -415,6 +439,7 @@ export type LogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extension
   id?: boolean
   action?: boolean
   entity?: boolean
+  entityId?: boolean
   actorRole?: boolean
   actorId?: boolean
   oldData?: boolean
@@ -427,6 +452,7 @@ export type LogSelectScalar = {
   id?: boolean
   action?: boolean
   entity?: boolean
+  entityId?: boolean
   actorRole?: boolean
   actorId?: boolean
   oldData?: boolean
@@ -435,7 +461,7 @@ export type LogSelectScalar = {
   createdAt?: boolean
 }
 
-export type LogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "action" | "entity" | "actorRole" | "actorId" | "oldData" | "newData" | "message" | "createdAt", ExtArgs["result"]["log"]>
+export type LogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "action" | "entity" | "entityId" | "actorRole" | "actorId" | "oldData" | "newData" | "message" | "createdAt", ExtArgs["result"]["log"]>
 
 export type $LogPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Log"
@@ -444,6 +470,7 @@ export type $LogPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     id: string
     action: string
     entity: string | null
+    entityId: string | null
     actorRole: string
     actorId: string
     oldData: runtime.JsonValue | null
@@ -876,6 +903,7 @@ export interface LogFieldRefs {
   readonly id: Prisma.FieldRef<"Log", 'String'>
   readonly action: Prisma.FieldRef<"Log", 'String'>
   readonly entity: Prisma.FieldRef<"Log", 'String'>
+  readonly entityId: Prisma.FieldRef<"Log", 'String'>
   readonly actorRole: Prisma.FieldRef<"Log", 'String'>
   readonly actorId: Prisma.FieldRef<"Log", 'String'>
   readonly oldData: Prisma.FieldRef<"Log", 'Json'>

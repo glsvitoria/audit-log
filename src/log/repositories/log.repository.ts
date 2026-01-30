@@ -20,12 +20,17 @@ export class LogRepository implements ILogRepository {
 		const [logs, total] = await Promise.all([
 			await this.prismaService.log.findMany({
 				...findAllPaginationDto?.pagination(),
+				where: {
+					...findAllPaginationDto.where(),
+				},
 				orderBy: {
 					[findAllPaginationDto.sort]: 'desc',
 				},
 			}),
 			await this.prismaService.log.count({
-				...findAllPaginationDto?.pagination(),
+				where: {
+					...findAllPaginationDto.where(),
+				},
 				orderBy: {
 					[findAllPaginationDto.sort]: 'desc',
 				},

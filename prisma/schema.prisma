@@ -28,13 +28,14 @@ model User {
 
 model Log {
   id        String @id @default(uuid())
-  action    String
-  entity    String?
-  actorRole String
-  actorId   String
-  oldData   Json?
-  newData   Json?
-  message   String?
+  action    String @map("action")
+  entity    String? @map("entity")
+  entityId  String? @map("entity_id")
+  actorRole String @map("actor_role")
+  actorId   String @map("actor_id")
+  oldData   Json? @map("old_data")
+  newData   Json? @map("new_data")
+  message   String? @map("message")
 
   createdAt       DateTime  @default(now()) @map("created_at")
 

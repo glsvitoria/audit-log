@@ -10,7 +10,9 @@ import {
 import { CreateLogDto } from './dto/create.dto'
 import { LogService } from './log.service'
 import { FindAllPaginationDto } from './dto/find-all-pagination.dto'
+import { ApiKeyAuth } from '@/common/decorators/api-key.decorator'
 
+@ApiKeyAuth()
 @Controller('/log')
 export class LogController {
 	constructor(private logService: LogService) {}

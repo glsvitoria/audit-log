@@ -608,6 +608,7 @@ export const LogScalarFieldEnum = {
   id: 'id',
   action: 'action',
   entity: 'entity',
+  entityId: 'entityId',
   actorRole: 'actorRole',
   actorId: 'actorId',
   oldData: 'oldData',

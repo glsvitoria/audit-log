@@ -6,6 +6,9 @@ import {
   IsString,
   validateSync,
 } from 'class-validator';
+import * as dotenv from 'dotenv'
+
+dotenv.config()
 
 enum Environment {
   Development = 'development',
