@@ -14,6 +14,23 @@ datasource db {
   provider = "postgresql"
 }
 
+model ApiKey {
+  id            String   @id @default(uuid())
+  keyHash       String   @unique @map("key_hash")
+  description   String?
+
+  enterprise    Enterprise @relation(fields: [enterpriseId], references: [id])
+  enterpriseId  String     @map("enterprise_id")
+
+  createdAt     DateTime  @default(now()) @map("created_at")
+  disabledAt    DateTime? @map("disabled_at")
+  lastUsedAt    DateTime? @map("last_used_at")
+  deletedAt     DateTime? @map("deleted_at")
+
+  @@index([enterpriseId])
+  @@map("api_keys")
+}
+
 model User {
   id        String @id @default(uuid())
   name      String
@@ -24,6 +41,19 @@ model User {
   updatedAt       DateTime? @updatedAt @map("updated_at")
 
   @@map("users")
+}
+
+model Enterprise {
+  id    String @id @default(uuid())
+  name  String
+
+  apiKeys ApiKey[]
+  logs Log[]
+
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime? @updatedAt @map("updated_at")
+  disabledAt       DateTime? @map("disabled_at")
+  deletedAt       DateTime? @map("deleted_at")
 }
 
 model Log {
@@ -37,12 +67,16 @@ model Log {
   newData   Json? @map("new_data")
   message   String? @map("message")
 
+  enterprise Enterprise @relation(fields: [enterpriseId], references: [id])
+  enterpriseId String @map("enterprise_id")
+
   createdAt       DateTime  @default(now()) @map("created_at")
 
   @@index([actorRole])
   @@index([actorId])
   @@index([action])
   @@index([createdAt])
+  @@index([enterpriseId])
 
   @@map("logs")
 }

@@ -51,7 +51,9 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  ApiKey: 'ApiKey',
   User: 'User',
+  Enterprise: 'Enterprise',
   Log: 'Log'
 } as const
 
@@ -71,6 +73,20 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const ApiKeyScalarFieldEnum = {
+  id: 'id',
+  keyHash: 'keyHash',
+  description: 'description',
+  enterpriseId: 'enterpriseId',
+  createdAt: 'createdAt',
+  disabledAt: 'disabledAt',
+  lastUsedAt: 'lastUsedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type ApiKeyScalarFieldEnum = (typeof ApiKeyScalarFieldEnum)[keyof typeof ApiKeyScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -83,6 +99,18 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const EnterpriseScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  disabledAt: 'disabledAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type EnterpriseScalarFieldEnum = (typeof EnterpriseScalarFieldEnum)[keyof typeof EnterpriseScalarFieldEnum]
+
+
 export const LogScalarFieldEnum = {
   id: 'id',
   action: 'action',
@@ -93,6 +121,7 @@ export const LogScalarFieldEnum = {
   oldData: 'oldData',
   newData: 'newData',
   message: 'message',
+  enterpriseId: 'enterpriseId',
   createdAt: 'createdAt'
 } as const
 
