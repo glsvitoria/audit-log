@@ -2,6 +2,7 @@ import {
 	Body,
 	Controller,
 	Get,
+	HttpCode,
 	Param,
 	ParseUUIDPipe,
 	Post,
@@ -18,6 +19,7 @@ export class LogController {
 	constructor(private logService: LogService) {}
 
 	@Post()
+	@HttpCode(204)
 	createLog(@Body() body: CreateLogDto) {
 		return this.logService.create(body)
 	}

@@ -27,6 +27,7 @@ export type AggregateEnterprise = {
 export type EnterpriseMinAggregateOutputType = {
   id: string | null
   name: string | null
+  email: string | null
   createdAt: Date | null
   updatedAt: Date | null
   disabledAt: Date | null
@@ -36,6 +37,7 @@ export type EnterpriseMinAggregateOutputType = {
 export type EnterpriseMaxAggregateOutputType = {
   id: string | null
   name: string | null
+  email: string | null
   createdAt: Date | null
   updatedAt: Date | null
   disabledAt: Date | null
@@ -45,6 +47,7 @@ export type EnterpriseMaxAggregateOutputType = {
 export type EnterpriseCountAggregateOutputType = {
   id: number
   name: number
+  email: number
   createdAt: number
   updatedAt: number
   disabledAt: number
@@ -56,6 +59,7 @@ export type EnterpriseCountAggregateOutputType = {
 export type EnterpriseMinAggregateInputType = {
   id?: true
   name?: true
+  email?: true
   createdAt?: true
   updatedAt?: true
   disabledAt?: true
@@ -65,6 +69,7 @@ export type EnterpriseMinAggregateInputType = {
 export type EnterpriseMaxAggregateInputType = {
   id?: true
   name?: true
+  email?: true
   createdAt?: true
   updatedAt?: true
   disabledAt?: true
@@ -74,6 +79,7 @@ export type EnterpriseMaxAggregateInputType = {
 export type EnterpriseCountAggregateInputType = {
   id?: true
   name?: true
+  email?: true
   createdAt?: true
   updatedAt?: true
   disabledAt?: true
@@ -156,6 +162,7 @@ export type EnterpriseGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 export type EnterpriseGroupByOutputType = {
   id: string
   name: string
+  email: string
   createdAt: Date
   updatedAt: Date | null
   disabledAt: Date | null
@@ -186,6 +193,7 @@ export type EnterpriseWhereInput = {
   NOT?: Prisma.EnterpriseWhereInput | Prisma.EnterpriseWhereInput[]
   id?: Prisma.StringFilter<"Enterprise"> | string
   name?: Prisma.StringFilter<"Enterprise"> | string
+  email?: Prisma.StringFilter<"Enterprise"> | string
   createdAt?: Prisma.DateTimeFilter<"Enterprise"> | Date | string
   updatedAt?: Prisma.DateTimeNullableFilter<"Enterprise"> | Date | string | null
   disabledAt?: Prisma.DateTimeNullableFilter<"Enterprise"> | Date | string | null
@@ -197,6 +205,7 @@ export type EnterpriseWhereInput = {
 export type EnterpriseOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   disabledAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -207,6 +216,7 @@ export type EnterpriseOrderByWithRelationInput = {
 
 export type EnterpriseWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  email?: string
   AND?: Prisma.EnterpriseWhereInput | Prisma.EnterpriseWhereInput[]
   OR?: Prisma.EnterpriseWhereInput[]
   NOT?: Prisma.EnterpriseWhereInput | Prisma.EnterpriseWhereInput[]
@@ -217,11 +227,12 @@ export type EnterpriseWhereUniqueInput = Prisma.AtLeast<{
   deletedAt?: Prisma.DateTimeNullableFilter<"Enterprise"> | Date | string | null
   apiKeys?: Prisma.ApiKeyListRelationFilter
   logs?: Prisma.LogListRelationFilter
-}, "id">
+}, "id" | "email">
 
 export type EnterpriseOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   disabledAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -237,6 +248,7 @@ export type EnterpriseScalarWhereWithAggregatesInput = {
   NOT?: Prisma.EnterpriseScalarWhereWithAggregatesInput | Prisma.EnterpriseScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Enterprise"> | string
   name?: Prisma.StringWithAggregatesFilter<"Enterprise"> | string
+  email?: Prisma.StringWithAggregatesFilter<"Enterprise"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Enterprise"> | Date | string
   updatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Enterprise"> | Date | string | null
   disabledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Enterprise"> | Date | string | null
@@ -246,6 +258,7 @@ export type EnterpriseScalarWhereWithAggregatesInput = {
 export type EnterpriseCreateInput = {
   id?: string
   name: string
+  email: string
   createdAt?: Date | string
   updatedAt?: Date | string | null
   disabledAt?: Date | string | null
@@ -257,6 +270,7 @@ export type EnterpriseCreateInput = {
 export type EnterpriseUncheckedCreateInput = {
   id?: string
   name: string
+  email: string
   createdAt?: Date | string
   updatedAt?: Date | string | null
   disabledAt?: Date | string | null
@@ -268,6 +282,7 @@ export type EnterpriseUncheckedCreateInput = {
 export type EnterpriseUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   disabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -279,6 +294,7 @@ export type EnterpriseUpdateInput = {
 export type EnterpriseUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   disabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -290,6 +306,7 @@ export type EnterpriseUncheckedUpdateInput = {
 export type EnterpriseCreateManyInput = {
   id?: string
   name: string
+  email: string
   createdAt?: Date | string
   updatedAt?: Date | string | null
   disabledAt?: Date | string | null
@@ -299,6 +316,7 @@ export type EnterpriseCreateManyInput = {
 export type EnterpriseUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   disabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -308,6 +326,7 @@ export type EnterpriseUpdateManyMutationInput = {
 export type EnterpriseUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   disabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -322,6 +341,7 @@ export type EnterpriseScalarRelationFilter = {
 export type EnterpriseCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   disabledAt?: Prisma.SortOrder
@@ -331,6 +351,7 @@ export type EnterpriseCountOrderByAggregateInput = {
 export type EnterpriseMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   disabledAt?: Prisma.SortOrder
@@ -340,6 +361,7 @@ export type EnterpriseMaxOrderByAggregateInput = {
 export type EnterpriseMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   disabledAt?: Prisma.SortOrder
@@ -377,6 +399,7 @@ export type EnterpriseUpdateOneRequiredWithoutLogsNestedInput = {
 export type EnterpriseCreateWithoutApiKeysInput = {
   id?: string
   name: string
+  email: string
   createdAt?: Date | string
   updatedAt?: Date | string | null
   disabledAt?: Date | string | null
@@ -387,6 +410,7 @@ export type EnterpriseCreateWithoutApiKeysInput = {
 export type EnterpriseUncheckedCreateWithoutApiKeysInput = {
   id?: string
   name: string
+  email: string
   createdAt?: Date | string
   updatedAt?: Date | string | null
   disabledAt?: Date | string | null
@@ -413,6 +437,7 @@ export type EnterpriseUpdateToOneWithWhereWithoutApiKeysInput = {
 export type EnterpriseUpdateWithoutApiKeysInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   disabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -423,6 +448,7 @@ export type EnterpriseUpdateWithoutApiKeysInput = {
 export type EnterpriseUncheckedUpdateWithoutApiKeysInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   disabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -433,6 +459,7 @@ export type EnterpriseUncheckedUpdateWithoutApiKeysInput = {
 export type EnterpriseCreateWithoutLogsInput = {
   id?: string
   name: string
+  email: string
   createdAt?: Date | string
   updatedAt?: Date | string | null
   disabledAt?: Date | string | null
@@ -443,6 +470,7 @@ export type EnterpriseCreateWithoutLogsInput = {
 export type EnterpriseUncheckedCreateWithoutLogsInput = {
   id?: string
   name: string
+  email: string
   createdAt?: Date | string
   updatedAt?: Date | string | null
   disabledAt?: Date | string | null
@@ -469,6 +497,7 @@ export type EnterpriseUpdateToOneWithWhereWithoutLogsInput = {
 export type EnterpriseUpdateWithoutLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   disabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -479,6 +508,7 @@ export type EnterpriseUpdateWithoutLogsInput = {
 export type EnterpriseUncheckedUpdateWithoutLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   disabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -529,6 +559,7 @@ export type EnterpriseCountOutputTypeCountLogsArgs<ExtArgs extends runtime.Types
 export type EnterpriseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  email?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   disabledAt?: boolean
@@ -541,6 +572,7 @@ export type EnterpriseSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type EnterpriseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  email?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   disabledAt?: boolean
@@ -550,6 +582,7 @@ export type EnterpriseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
 export type EnterpriseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  email?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   disabledAt?: boolean
@@ -559,13 +592,14 @@ export type EnterpriseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
 export type EnterpriseSelectScalar = {
   id?: boolean
   name?: boolean
+  email?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   disabledAt?: boolean
   deletedAt?: boolean
 }
 
-export type EnterpriseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt" | "disabledAt" | "deletedAt", ExtArgs["result"]["enterprise"]>
+export type EnterpriseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "createdAt" | "updatedAt" | "disabledAt" | "deletedAt", ExtArgs["result"]["enterprise"]>
 export type EnterpriseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   apiKeys?: boolean | Prisma.Enterprise$apiKeysArgs<ExtArgs>
   logs?: boolean | Prisma.Enterprise$logsArgs<ExtArgs>
@@ -583,6 +617,7 @@ export type $EnterprisePayload<ExtArgs extends runtime.Types.Extensions.Internal
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
+    email: string
     createdAt: Date
     updatedAt: Date | null
     disabledAt: Date | null
@@ -1014,6 +1049,7 @@ export interface Prisma__EnterpriseClient<T, Null = never, ExtArgs extends runti
 export interface EnterpriseFieldRefs {
   readonly id: Prisma.FieldRef<"Enterprise", 'String'>
   readonly name: Prisma.FieldRef<"Enterprise", 'String'>
+  readonly email: Prisma.FieldRef<"Enterprise", 'String'>
   readonly createdAt: Prisma.FieldRef<"Enterprise", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Enterprise", 'DateTime'>
   readonly disabledAt: Prisma.FieldRef<"Enterprise", 'DateTime'>

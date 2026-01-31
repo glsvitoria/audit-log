@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common'
+import { EnterpriseController } from './enterprise.controller'
+import { EnterpriseService } from './enterprise.service'
 
 @Module({
-	controllers: [],
-	providers: [],
-	exports: [],
+	controllers: [EnterpriseController],
+	providers: [EnterpriseService],
+	exports: [EnterpriseService],
 })
 export class UserModule {}

@@ -40,12 +40,15 @@ model User {
   createdAt       DateTime  @default(now()) @map("created_at")
   updatedAt       DateTime? @updatedAt @map("updated_at")
 
+ @@index([email])
+
   @@map("users")
 }
 
 model Enterprise {
   id    String @id @default(uuid())
   name  String
+  email String @unique
 
   apiKeys ApiKey[]
   logs Log[]
@@ -54,6 +57,10 @@ model Enterprise {
   updatedAt       DateTime? @updatedAt @map("updated_at")
   disabledAt       DateTime? @map("disabled_at")
   deletedAt       DateTime? @map("deleted_at")
+
+  @@index([email])
+
+  @@map("enterprises")
 }
 
 model Log {
