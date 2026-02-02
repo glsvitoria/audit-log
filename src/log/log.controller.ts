@@ -12,6 +12,8 @@ import { CreateLogDto } from './dto/create.dto'
 import { LogService } from './log.service'
 import { FindAllPaginationDto } from './dto/find-all-pagination.dto'
 import { ApiKeyAuth } from '@/common/decorators/api-key.decorator'
+import { CurrentEnterprise } from '@/common/decorators/current-enterprise.decorator'
+import type { AuthenticatedEnterprise } from '@/common/types/authenticated-enterprise'
 
 @ApiKeyAuth()
 @Controller('/log')
@@ -19,9 +21,12 @@ export class LogController {
 	constructor(private logService: LogService) {}
 
 	@Post()
-	@HttpCode(204)
-	createLog(@Body() body: CreateLogDto) {
-		return this.logService.create(body)
+	@HttpCode(201)
+	createLog(
+		@Body() body: CreateLogDto,
+		@CurrentEnterprise() enterprise: AuthenticatedEnterprise
+	) {
+		return this.logService.create(body, enterprise.apiKey)
 	}
 
 	@Get(':log_id')

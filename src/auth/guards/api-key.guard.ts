@@ -1,3 +1,4 @@
+import { ApiKeyRepository } from '@/apiKey/repositories/api-key.repository'
 import {
 	CanActivate,
 	ExecutionContext,
@@ -7,9 +8,9 @@ import {
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
-	constructor() {}
+	constructor(private apiKeyRepository: ApiKeyRepository) {}
 
-	canActivate(context: ExecutionContext): boolean {
+	async canActivate(context: ExecutionContext): Promise<boolean> {
 		const request = context.switchToHttp().getRequest()
 		const apiKey = request.headers['x-api-key']
 
@@ -17,9 +18,9 @@ export class ApiKeyGuard implements CanActivate {
 			throw new UnauthorizedException('API key não fornecida')
 		}
 
-		const validApiKey = 'api-key'
+		const isValid = await this.apiKeyRepository.find(apiKey)
 
-		if (apiKey !== validApiKey) {
+		if (!isValid) {
 			throw new UnauthorizedException('API key inválida')
 		}
 

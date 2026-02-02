@@ -4,14 +4,18 @@ import { validate } from './config/env-validation'
 import { LogModule } from './log/log.module'
 import { DatabaseModule } from './database/database.module'
 import { JwtModule } from '@nestjs/jwt'
+import { EnterpriseModule } from './enterprise/enterprise.module'
+import { ApiKeyModule } from './apiKey/api-key.module'
 
 @Module({
 	imports: [
+		ApiKeyModule,
 		ConfigModule.forRoot({
 			validate,
 			envFilePath: '.env',
 		}),
 		DatabaseModule,
+		EnterpriseModule,
 		JwtModule.register({ global: true }),
 		LogModule,
 	],

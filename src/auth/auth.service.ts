@@ -8,6 +8,7 @@ import { AuthRepository } from './repositories/auth.repository'
 import { compare } from 'bcryptjs'
 import { JwtService } from '@nestjs/jwt'
 import { env } from '@/config/env-validation'
+import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
 
 @Injectable()
 export class AuthService {
@@ -30,7 +31,7 @@ export class AuthService {
 		const isPasswordValid = await compare(password, user.password)
 
 		if (!isPasswordValid) {
-			throw new UnauthorizedException('As credenciais informadas são inválidas')
+			throw new UnauthorizedException(ErrorMessagesHelper.INVALID_CREDENTIALS)
 		}
 
 		const accessToken = await this.jwtService.signAsync(
@@ -55,9 +56,7 @@ export class AuthService {
 		const user = await this.authRepository.findById(sub)
 
 		if (user) {
-			throw new UnauthorizedException(
-				'As credenciais informadas são inválidas.'
-			)
+			throw new UnauthorizedException(ErrorMessagesHelper.INVALID_CREDENTIALS)
 		}
 	}
 }

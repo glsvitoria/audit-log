@@ -26,8 +26,6 @@ export class EnterpriseService {
 			enterpriseId: enterpriseCreated.id,
 		})
 
-		return {
-			apiKey,
-		}
+		return apiKey
 	}
 }

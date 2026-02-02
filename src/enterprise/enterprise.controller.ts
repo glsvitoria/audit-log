@@ -4,12 +4,12 @@ import { EnterpriseService } from './enterprise.service'
 import { AccessTokenAuth } from '@/common/decorators/access-token.decorator'
 
 @Controller('/enterprise')
-@AccessTokenAuth()
+// @AccessTokenAuth()
 export class EnterpriseController {
 	constructor(private enterpriseService: EnterpriseService) {}
 
 	@Post()
-	@HttpCode(204)
+	@HttpCode(201)
 	createEnterprise(@Body() createEnterpriseDto: CreateEnterpriseDto) {
 		return this.enterpriseService.create(createEnterpriseDto)
 	}
