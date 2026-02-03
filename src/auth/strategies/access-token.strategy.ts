@@ -1,9 +1,11 @@
 import { StrategiesHelper } from '@/common/helpers/strategies.helper'
 import { JWTPayload } from '@/common/types/jwt-payload'
 import { env } from '@/config/env-validation'
+import { Injectable } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 
+@Injectable()
 export class AccessTokenStrategy extends PassportStrategy(
 	Strategy,
 	StrategiesHelper.ACCESS_TOKEN_STRATEGY

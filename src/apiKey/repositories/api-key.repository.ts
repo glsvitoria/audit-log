@@ -1,14 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import {
 	CreateApiKeyProps,
-	CreateApiKeyReturn,
 	IApiKeyRepository,
 } from './api-key.repository.types'
 import { PrismaService } from '@/database/prisma/prisma.service'
-import { hash, compare } from 'bcryptjs'
 import { addPrefixApiKey } from '@/utils/add-prefix-api-key'
 import { randomBytes } from 'crypto'
-import { ApiKey } from '@/generated/prisma/client'
 import { subHours } from 'date-fns'
 import { hashApiKey } from '@/utils/hash-api-key'
 
@@ -16,7 +13,7 @@ import { hashApiKey } from '@/utils/hash-api-key'
 export class ApiKeyRepository implements IApiKeyRepository {
 	constructor(private prismaService: PrismaService) {}
 
-	async create(props: CreateApiKeyProps): Promise<CreateApiKeyReturn> {
+	async create(props: CreateApiKeyProps) {
 		const apiKeyGenerated = randomBytes(32).toString('hex')
 
 		const apiKeyHashed = hashApiKey(apiKeyGenerated)
@@ -38,12 +35,26 @@ export class ApiKeyRepository implements IApiKeyRepository {
 		}
 	}
 
-	async find(apiKey: string): Promise<ApiKey | null> {
+	async deleteByEnterpriseId(enterprise_id: string) {
+		await this.prismaService.apiKey.updateMany({
+			data: {
+				deletedAt: new Date(),
+			},
+			where: {
+				enterpriseId: enterprise_id,
+			},
+		})
+
+		return null
+	}
+
+	async find(apiKey: string) {
 		const apiKeyHashed = hashApiKey(apiKey)
 
 		const apiKeyFinde = await this.prismaService.apiKey.findUnique({
 			where: {
 				keyHash: apiKeyHashed,
+        deletedAt: null
 			},
 		})
 
@@ -54,12 +65,12 @@ export class ApiKeyRepository implements IApiKeyRepository {
 		return apiKeyFinde
 	}
 
-	async updateLastUsed(apiKeyId: string): Promise<void> {
-		const now = subHours(new Date(), 3)
+	async updateLastUsed(apiKeyId: string) {
+		const now = subHours(new Date(Date.now()), 6)
 
 		await this.prismaService.apiKey.update({
 			data: {
-				lastUsedAt: now,
+				lastUsedAt: new Date(Date.now()),
 			},
 			where: {
 				id: apiKeyId,

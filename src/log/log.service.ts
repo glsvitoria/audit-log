@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { CreateLogDto } from './dto/create.dto'
 import { LogRepository } from './repositories/log.repository'
 import { FindAllPaginationDto } from './dto/find-all-pagination.dto'
@@ -31,7 +31,13 @@ export class LogService {
 	}
 
 	async find(id: string) {
-		return this.logRepository.find(id)
+		const log = await this.logRepository.find(id)
+
+		if (!log) {
+			throw new NotFoundException('Log não encontrado')
+		}
+
+		return log
 	}
 
 	async findAll(findAllPaginationDto: FindAllPaginationDto) {

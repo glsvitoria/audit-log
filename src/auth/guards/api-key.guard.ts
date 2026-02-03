@@ -18,11 +18,13 @@ export class ApiKeyGuard implements CanActivate {
 			throw new UnauthorizedException('API key não fornecida')
 		}
 
-		const isValid = await this.apiKeyRepository.find(apiKey)
+		const apiKeyFinde = await this.apiKeyRepository.find(apiKey)
 
-		if (!isValid) {
+		if (!apiKeyFinde) {
 			throw new UnauthorizedException('API key inválida')
 		}
+
+		await this.apiKeyRepository.updateLastUsed(apiKeyFinde.id)
 
 		return true
 	}

@@ -6,10 +6,12 @@ import { DatabaseModule } from './database/database.module'
 import { JwtModule } from '@nestjs/jwt'
 import { EnterpriseModule } from './enterprise/enterprise.module'
 import { ApiKeyModule } from './apiKey/api-key.module'
+import { AuthModule } from './auth/auth.module'
 
 @Module({
 	imports: [
 		ApiKeyModule,
+		AuthModule,
 		ConfigModule.forRoot({
 			validate,
 			envFilePath: '.env',

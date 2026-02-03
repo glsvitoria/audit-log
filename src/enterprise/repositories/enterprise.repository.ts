@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { IEnterpriseRepository } from './enterprise.repository.types'
 import { Enterprise } from '@/generated/prisma/client'
-import { EnterpriseCreateInput } from '@/generated/prisma/models'
+import {
+	EnterpriseCreateInput,
+	EnterpriseUpdateInput,
+} from '@/generated/prisma/models'
 import { PrismaService } from '@/database/prisma/prisma.service'
 import { hashApiKey } from '@/utils/hash-api-key'
 
@@ -13,8 +16,19 @@ export class EnterpriseRepository implements IEnterpriseRepository {
 		return this.prismaService.enterprise.create({ data: enterprise })
 	}
 
+	async delete(enterprise_id: string): Promise<Enterprise> {
+		return this.prismaService.enterprise.update({
+			data: {
+				deletedAt: new Date(),
+			},
+			where: {
+				id: enterprise_id,
+			},
+		})
+	}
+
 	async findByApiKey(apiKey: string): Promise<Enterprise | null> {
-    const apiKeyHashed = hashApiKey(apiKey)
+		const apiKeyHashed = hashApiKey(apiKey)
 
 		const apiKeyFinde = await this.prismaService.apiKey.findUnique({
 			where: {
@@ -33,5 +47,21 @@ export class EnterpriseRepository implements IEnterpriseRepository {
 
 	async findByEmail(email: string): Promise<Enterprise | null> {
 		return this.prismaService.enterprise.findUnique({ where: { email } })
+	}
+
+	async findById(id: string): Promise<Enterprise | null> {
+		return this.prismaService.enterprise.findUnique({ where: { id } })
+	}
+
+	async update(
+		enterprise_id: string,
+		enterprise: EnterpriseUpdateInput
+	): Promise<Enterprise> {
+		return this.prismaService.enterprise.update({
+			data: enterprise,
+			where: {
+				id: enterprise_id,
+			},
+		})
 	}
 }
