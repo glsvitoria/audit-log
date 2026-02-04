@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator'
 
 export class CreateEnterpriseDto {
 	@IsString({
@@ -9,9 +9,12 @@ export class CreateEnterpriseDto {
 	})
 	name: string
 
-	@IsString({
-		message: 'O email deve ser uma string',
-	})
+	@IsEmail(
+		{},
+		{
+			message: 'O e-mail informado é inválido',
+		}
+	)
 	@IsNotEmpty({
 		message: 'O email não pode ser vazio',
 	})

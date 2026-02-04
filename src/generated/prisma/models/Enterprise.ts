@@ -200,6 +200,7 @@ export type EnterpriseWhereInput = {
   deletedAt?: Prisma.DateTimeNullableFilter<"Enterprise"> | Date | string | null
   apiKeys?: Prisma.ApiKeyListRelationFilter
   logs?: Prisma.LogListRelationFilter
+  users?: Prisma.UserListRelationFilter
 }
 
 export type EnterpriseOrderByWithRelationInput = {
@@ -212,6 +213,7 @@ export type EnterpriseOrderByWithRelationInput = {
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   apiKeys?: Prisma.ApiKeyOrderByRelationAggregateInput
   logs?: Prisma.LogOrderByRelationAggregateInput
+  users?: Prisma.UserOrderByRelationAggregateInput
 }
 
 export type EnterpriseWhereUniqueInput = Prisma.AtLeast<{
@@ -227,6 +229,7 @@ export type EnterpriseWhereUniqueInput = Prisma.AtLeast<{
   deletedAt?: Prisma.DateTimeNullableFilter<"Enterprise"> | Date | string | null
   apiKeys?: Prisma.ApiKeyListRelationFilter
   logs?: Prisma.LogListRelationFilter
+  users?: Prisma.UserListRelationFilter
 }, "id" | "email">
 
 export type EnterpriseOrderByWithAggregationInput = {
@@ -265,6 +268,7 @@ export type EnterpriseCreateInput = {
   deletedAt?: Date | string | null
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutEnterpriseInput
   logs?: Prisma.LogCreateNestedManyWithoutEnterpriseInput
+  users?: Prisma.UserCreateNestedManyWithoutEnterpriseInput
 }
 
 export type EnterpriseUncheckedCreateInput = {
@@ -277,6 +281,7 @@ export type EnterpriseUncheckedCreateInput = {
   deletedAt?: Date | string | null
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutEnterpriseInput
   logs?: Prisma.LogUncheckedCreateNestedManyWithoutEnterpriseInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutEnterpriseInput
 }
 
 export type EnterpriseUpdateInput = {
@@ -289,6 +294,7 @@ export type EnterpriseUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutEnterpriseNestedInput
   logs?: Prisma.LogUpdateManyWithoutEnterpriseNestedInput
+  users?: Prisma.UserUpdateManyWithoutEnterpriseNestedInput
 }
 
 export type EnterpriseUncheckedUpdateInput = {
@@ -301,6 +307,7 @@ export type EnterpriseUncheckedUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutEnterpriseNestedInput
   logs?: Prisma.LogUncheckedUpdateManyWithoutEnterpriseNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutEnterpriseNestedInput
 }
 
 export type EnterpriseCreateManyInput = {
@@ -336,6 +343,11 @@ export type EnterpriseUncheckedUpdateManyInput = {
 export type EnterpriseScalarRelationFilter = {
   is?: Prisma.EnterpriseWhereInput
   isNot?: Prisma.EnterpriseWhereInput
+}
+
+export type EnterpriseNullableScalarRelationFilter = {
+  is?: Prisma.EnterpriseWhereInput | null
+  isNot?: Prisma.EnterpriseWhereInput | null
 }
 
 export type EnterpriseCountOrderByAggregateInput = {
@@ -382,6 +394,22 @@ export type EnterpriseUpdateOneRequiredWithoutApiKeysNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EnterpriseUpdateToOneWithWhereWithoutApiKeysInput, Prisma.EnterpriseUpdateWithoutApiKeysInput>, Prisma.EnterpriseUncheckedUpdateWithoutApiKeysInput>
 }
 
+export type EnterpriseCreateNestedOneWithoutUsersInput = {
+  create?: Prisma.XOR<Prisma.EnterpriseCreateWithoutUsersInput, Prisma.EnterpriseUncheckedCreateWithoutUsersInput>
+  connectOrCreate?: Prisma.EnterpriseCreateOrConnectWithoutUsersInput
+  connect?: Prisma.EnterpriseWhereUniqueInput
+}
+
+export type EnterpriseUpdateOneWithoutUsersNestedInput = {
+  create?: Prisma.XOR<Prisma.EnterpriseCreateWithoutUsersInput, Prisma.EnterpriseUncheckedCreateWithoutUsersInput>
+  connectOrCreate?: Prisma.EnterpriseCreateOrConnectWithoutUsersInput
+  upsert?: Prisma.EnterpriseUpsertWithoutUsersInput
+  disconnect?: Prisma.EnterpriseWhereInput | boolean
+  delete?: Prisma.EnterpriseWhereInput | boolean
+  connect?: Prisma.EnterpriseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EnterpriseUpdateToOneWithWhereWithoutUsersInput, Prisma.EnterpriseUpdateWithoutUsersInput>, Prisma.EnterpriseUncheckedUpdateWithoutUsersInput>
+}
+
 export type EnterpriseCreateNestedOneWithoutLogsInput = {
   create?: Prisma.XOR<Prisma.EnterpriseCreateWithoutLogsInput, Prisma.EnterpriseUncheckedCreateWithoutLogsInput>
   connectOrCreate?: Prisma.EnterpriseCreateOrConnectWithoutLogsInput
@@ -405,6 +433,7 @@ export type EnterpriseCreateWithoutApiKeysInput = {
   disabledAt?: Date | string | null
   deletedAt?: Date | string | null
   logs?: Prisma.LogCreateNestedManyWithoutEnterpriseInput
+  users?: Prisma.UserCreateNestedManyWithoutEnterpriseInput
 }
 
 export type EnterpriseUncheckedCreateWithoutApiKeysInput = {
@@ -416,6 +445,7 @@ export type EnterpriseUncheckedCreateWithoutApiKeysInput = {
   disabledAt?: Date | string | null
   deletedAt?: Date | string | null
   logs?: Prisma.LogUncheckedCreateNestedManyWithoutEnterpriseInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutEnterpriseInput
 }
 
 export type EnterpriseCreateOrConnectWithoutApiKeysInput = {
@@ -443,6 +473,7 @@ export type EnterpriseUpdateWithoutApiKeysInput = {
   disabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   logs?: Prisma.LogUpdateManyWithoutEnterpriseNestedInput
+  users?: Prisma.UserUpdateManyWithoutEnterpriseNestedInput
 }
 
 export type EnterpriseUncheckedUpdateWithoutApiKeysInput = {
@@ -453,6 +484,71 @@ export type EnterpriseUncheckedUpdateWithoutApiKeysInput = {
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   disabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logs?: Prisma.LogUncheckedUpdateManyWithoutEnterpriseNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutEnterpriseNestedInput
+}
+
+export type EnterpriseCreateWithoutUsersInput = {
+  id?: string
+  name: string
+  email: string
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  disabledAt?: Date | string | null
+  deletedAt?: Date | string | null
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutEnterpriseInput
+  logs?: Prisma.LogCreateNestedManyWithoutEnterpriseInput
+}
+
+export type EnterpriseUncheckedCreateWithoutUsersInput = {
+  id?: string
+  name: string
+  email: string
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  disabledAt?: Date | string | null
+  deletedAt?: Date | string | null
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutEnterpriseInput
+  logs?: Prisma.LogUncheckedCreateNestedManyWithoutEnterpriseInput
+}
+
+export type EnterpriseCreateOrConnectWithoutUsersInput = {
+  where: Prisma.EnterpriseWhereUniqueInput
+  create: Prisma.XOR<Prisma.EnterpriseCreateWithoutUsersInput, Prisma.EnterpriseUncheckedCreateWithoutUsersInput>
+}
+
+export type EnterpriseUpsertWithoutUsersInput = {
+  update: Prisma.XOR<Prisma.EnterpriseUpdateWithoutUsersInput, Prisma.EnterpriseUncheckedUpdateWithoutUsersInput>
+  create: Prisma.XOR<Prisma.EnterpriseCreateWithoutUsersInput, Prisma.EnterpriseUncheckedCreateWithoutUsersInput>
+  where?: Prisma.EnterpriseWhereInput
+}
+
+export type EnterpriseUpdateToOneWithWhereWithoutUsersInput = {
+  where?: Prisma.EnterpriseWhereInput
+  data: Prisma.XOR<Prisma.EnterpriseUpdateWithoutUsersInput, Prisma.EnterpriseUncheckedUpdateWithoutUsersInput>
+}
+
+export type EnterpriseUpdateWithoutUsersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  disabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutEnterpriseNestedInput
+  logs?: Prisma.LogUpdateManyWithoutEnterpriseNestedInput
+}
+
+export type EnterpriseUncheckedUpdateWithoutUsersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  disabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutEnterpriseNestedInput
   logs?: Prisma.LogUncheckedUpdateManyWithoutEnterpriseNestedInput
 }
 
@@ -465,6 +561,7 @@ export type EnterpriseCreateWithoutLogsInput = {
   disabledAt?: Date | string | null
   deletedAt?: Date | string | null
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutEnterpriseInput
+  users?: Prisma.UserCreateNestedManyWithoutEnterpriseInput
 }
 
 export type EnterpriseUncheckedCreateWithoutLogsInput = {
@@ -476,6 +573,7 @@ export type EnterpriseUncheckedCreateWithoutLogsInput = {
   disabledAt?: Date | string | null
   deletedAt?: Date | string | null
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutEnterpriseInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutEnterpriseInput
 }
 
 export type EnterpriseCreateOrConnectWithoutLogsInput = {
@@ -503,6 +601,7 @@ export type EnterpriseUpdateWithoutLogsInput = {
   disabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutEnterpriseNestedInput
+  users?: Prisma.UserUpdateManyWithoutEnterpriseNestedInput
 }
 
 export type EnterpriseUncheckedUpdateWithoutLogsInput = {
@@ -514,6 +613,7 @@ export type EnterpriseUncheckedUpdateWithoutLogsInput = {
   disabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutEnterpriseNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutEnterpriseNestedInput
 }
 
 
@@ -524,11 +624,13 @@ export type EnterpriseUncheckedUpdateWithoutLogsInput = {
 export type EnterpriseCountOutputType = {
   apiKeys: number
   logs: number
+  users: number
 }
 
 export type EnterpriseCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   apiKeys?: boolean | EnterpriseCountOutputTypeCountApiKeysArgs
   logs?: boolean | EnterpriseCountOutputTypeCountLogsArgs
+  users?: boolean | EnterpriseCountOutputTypeCountUsersArgs
 }
 
 /**
@@ -555,6 +657,13 @@ export type EnterpriseCountOutputTypeCountLogsArgs<ExtArgs extends runtime.Types
   where?: Prisma.LogWhereInput
 }
 
+/**
+ * EnterpriseCountOutputType without action
+ */
+export type EnterpriseCountOutputTypeCountUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserWhereInput
+}
+
 
 export type EnterpriseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -566,6 +675,7 @@ export type EnterpriseSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   deletedAt?: boolean
   apiKeys?: boolean | Prisma.Enterprise$apiKeysArgs<ExtArgs>
   logs?: boolean | Prisma.Enterprise$logsArgs<ExtArgs>
+  users?: boolean | Prisma.Enterprise$usersArgs<ExtArgs>
   _count?: boolean | Prisma.EnterpriseCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["enterprise"]>
 
@@ -603,6 +713,7 @@ export type EnterpriseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type EnterpriseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   apiKeys?: boolean | Prisma.Enterprise$apiKeysArgs<ExtArgs>
   logs?: boolean | Prisma.Enterprise$logsArgs<ExtArgs>
+  users?: boolean | Prisma.Enterprise$usersArgs<ExtArgs>
   _count?: boolean | Prisma.EnterpriseCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type EnterpriseIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -613,6 +724,7 @@ export type $EnterprisePayload<ExtArgs extends runtime.Types.Extensions.Internal
   objects: {
     apiKeys: Prisma.$ApiKeyPayload<ExtArgs>[]
     logs: Prisma.$LogPayload<ExtArgs>[]
+    users: Prisma.$UserPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1018,6 +1130,7 @@ export interface Prisma__EnterpriseClient<T, Null = never, ExtArgs extends runti
   readonly [Symbol.toStringTag]: "PrismaPromise"
   apiKeys<T extends Prisma.Enterprise$apiKeysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Enterprise$apiKeysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   logs<T extends Prisma.Enterprise$logsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Enterprise$logsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  users<T extends Prisma.Enterprise$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Enterprise$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1487,6 +1600,30 @@ export type Enterprise$logsArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.LogScalarFieldEnum | Prisma.LogScalarFieldEnum[]
+}
+
+/**
+ * Enterprise.users
+ */
+export type Enterprise$usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+  orderBy?: Prisma.UserOrderByWithRelationInput | Prisma.UserOrderByWithRelationInput[]
+  cursor?: Prisma.UserWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserScalarFieldEnum | Prisma.UserScalarFieldEnum[]
 }
 
 /**

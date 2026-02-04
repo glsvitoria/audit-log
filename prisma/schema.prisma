@@ -31,11 +31,20 @@ model ApiKey {
   @@map("api_keys")
 }
 
+enum UserRole {
+  ADMIN
+  ENTERPRISE
+}
+
 model User {
   id        String @id @default(uuid())
   name      String
   email     String @unique
   password  String
+  role      UserRole @default(ENTERPRISE)
+
+  enterprise   Enterprise? @relation(fields: [enterpriseId], references: [id])
+  enterpriseId String?     @map("enterprise_id")
 
   createdAt       DateTime  @default(now()) @map("created_at")
   updatedAt       DateTime? @updatedAt @map("updated_at")
@@ -52,6 +61,7 @@ model Enterprise {
 
   apiKeys ApiKey[]
   logs Log[]
+  users User[]
 
   createdAt       DateTime  @default(now()) @map("created_at")
   updatedAt       DateTime? @updatedAt @map("updated_at")

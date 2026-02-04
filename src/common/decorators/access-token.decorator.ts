@@ -1,4 +1,12 @@
+import { applyDecorators, UseGuards } from '@nestjs/common'
 import { AccessTokenGuard } from '@/auth/guards/access-token.guard'
-import { UseGuards } from '@nestjs/common'
+import { RolesGuard } from '@/auth/guards/roles.guard'
+import { Roles } from './roles.decorator'
+import { UserRole } from '@/generated/prisma/enums'
 
-export const AccessTokenAuth = () => UseGuards(AccessTokenGuard)
+export function AccessTokenAuth(...roles: UserRole[]) {
+	return applyDecorators(
+		Roles(...roles),
+		UseGuards(AccessTokenGuard, RolesGuard),
+	)
+}

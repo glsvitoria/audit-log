@@ -13,9 +13,10 @@ import { UpdateEnterpriseDto } from './dto/update.dto'
 import { EnterpriseService } from './enterprise.service'
 import { CreateEnterpriseDto } from './dto/create.dto'
 import { AccessTokenAuth } from '@/common/decorators/access-token.decorator'
+import { UserRole } from '@/generated/prisma/enums'
 
 @Controller('/enterprise')
-@AccessTokenAuth()
+@AccessTokenAuth(UserRole.ADMIN)
 export class EnterpriseController {
 	constructor(private enterpriseService: EnterpriseService) {}
 

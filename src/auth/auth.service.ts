@@ -37,6 +37,7 @@ export class AuthService {
 		const accessToken = await this.jwtService.signAsync(
 			{
 				sub: user.id,
+				role: user.role,
 			},
 			{
 				secret: env.ACCESS_TOKEN_SECRET,
