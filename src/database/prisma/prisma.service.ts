@@ -11,3 +11,8 @@ export class PrismaService extends PrismaClient {
 		super({ adapter })
 	}
 }
+
+export type PrismaTransactionClient = Omit<
+	PrismaService,
+	'$extends' | '$transaction' | '$disconnect' | '$connect' | '$on' | '$use'
+>

@@ -3,22 +3,28 @@ import {
 	CreateApiKeyProps,
 	IApiKeyRepository,
 } from './api-key.repository.types'
-import { PrismaService } from '@/database/prisma/prisma.service'
+import {
+	PrismaService,
+	PrismaTransactionClient,
+} from '@/database/prisma/prisma.service'
 import { addPrefixApiKey } from '@/utils/add-prefix-api-key'
 import { randomBytes } from 'crypto'
 import { subHours } from 'date-fns'
 import { hashApiKey } from '@/utils/hash-api-key'
+import { FindAllPaginationApiKeyDto } from '../dto/find-all-pagination.dto'
+import { Prisma } from '@/generated/prisma/client'
 
 @Injectable()
 export class ApiKeyRepository implements IApiKeyRepository {
 	constructor(private prismaService: PrismaService) {}
 
-	async create(props: CreateApiKeyProps) {
+	async create(props: CreateApiKeyProps, tx?: PrismaTransactionClient) {
+		const prisma = tx ?? this.prismaService
 		const apiKeyGenerated = randomBytes(32).toString('hex')
 
 		const apiKeyHashed = hashApiKey(apiKeyGenerated)
 
-		await this.prismaService.apiKey.create({
+		await prisma.apiKey.create({
 			data: {
 				keyHash: apiKeyHashed,
 				enterprise: {
@@ -33,6 +39,14 @@ export class ApiKeyRepository implements IApiKeyRepository {
 		return {
 			apiKey: addPrefixApiKey(apiKeyGenerated),
 		}
+	}
+
+	async delete(api_key_id: string) {
+		return await this.prismaService.apiKey.delete({
+			where: {
+				id: api_key_id,
+			},
+		})
 	}
 
 	async deleteByEnterpriseId(enterprise_id: string) {
@@ -54,7 +68,7 @@ export class ApiKeyRepository implements IApiKeyRepository {
 		const apiKeyFinde = await this.prismaService.apiKey.findUnique({
 			where: {
 				keyHash: apiKeyHashed,
-        deletedAt: null
+				deletedAt: null,
 			},
 		})
 
@@ -65,13 +79,44 @@ export class ApiKeyRepository implements IApiKeyRepository {
 		return apiKeyFinde
 	}
 
-	async updateLastUsed(apiKeyId: string) {
-		const now = subHours(new Date(Date.now()), 6)
+	async findAll(findAllPaginationApiKeyDto: FindAllPaginationApiKeyDto) {
+		const [apiKeys, total] = await Promise.all([
+			await this.prismaService.apiKey.findMany({
+				...findAllPaginationApiKeyDto.pagination(),
+				where: {
+					...findAllPaginationApiKeyDto.where(),
+				},
+				orderBy: {
+					[findAllPaginationApiKeyDto.sort]: 'desc',
+				},
+			}),
+			await this.prismaService.apiKey.count({
+				where: {
+					...findAllPaginationApiKeyDto.where(),
+				},
+			}),
+		])
 
+		return {
+			apiKeys,
+			total,
+		}
+	}
+
+	async updateLastUsed(apiKeyId: string) {
 		await this.prismaService.apiKey.update({
 			data: {
 				lastUsedAt: new Date(Date.now()),
 			},
+			where: {
+				id: apiKeyId,
+			},
+		})
+	}
+
+	async update(apiKey: Prisma.ApiKeyUpdateInput, apiKeyId: string) {
+		return await this.prismaService.apiKey.update({
+			data: apiKey,
 			where: {
 				id: apiKeyId,
 			},

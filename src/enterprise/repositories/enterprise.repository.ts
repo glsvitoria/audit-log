@@ -1,19 +1,27 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { IEnterpriseRepository } from './enterprise.repository.types'
 import { Enterprise } from '@/generated/prisma/client'
 import {
 	EnterpriseCreateInput,
 	EnterpriseUpdateInput,
 } from '@/generated/prisma/models'
-import { PrismaService } from '@/database/prisma/prisma.service'
+import {
+	PrismaService,
+	PrismaTransactionClient,
+} from '@/database/prisma/prisma.service'
 import { hashApiKey } from '@/utils/hash-api-key'
 
 @Injectable()
 export class EnterpriseRepository implements IEnterpriseRepository {
 	constructor(private prismaService: PrismaService) {}
 
-	async create(enterprise: EnterpriseCreateInput): Promise<Enterprise> {
-		return this.prismaService.enterprise.create({ data: enterprise })
+	async create(
+		enterprise: EnterpriseCreateInput,
+		tx?: PrismaTransactionClient
+	): Promise<Enterprise> {
+		const prisma = tx ?? this.prismaService
+
+		return prisma.enterprise.create({ data: enterprise })
 	}
 
 	async delete(enterprise_id: string): Promise<Enterprise> {
@@ -51,6 +59,23 @@ export class EnterpriseRepository implements IEnterpriseRepository {
 
 	async findById(id: string): Promise<Enterprise | null> {
 		return this.prismaService.enterprise.findUnique({ where: { id } })
+	}
+
+	async findByUserId(user_id: string): Promise<Enterprise | null> {
+		const user = await this.prismaService.user.findUnique({
+			where: {
+				id: user_id,
+			},
+			include: {
+				enterprise: true,
+			},
+		})
+
+		if (!user?.enterprise) {
+			return null
+		}
+
+		return user.enterprise
 	}
 
 	async update(

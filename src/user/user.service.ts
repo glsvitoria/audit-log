@@ -1,7 +1,12 @@
-import { ConflictException, Injectable } from '@nestjs/common'
+import {
+	ConflictException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common'
 import { CreateUserDto } from './dto/create.dto'
 import { UserRepository } from './repositories/user.repository'
 import { hash } from 'bcryptjs'
+import { UpdateUserDto } from './dto/update.dto'
 
 @Injectable()
 export class UserService {
@@ -25,5 +30,35 @@ export class UserService {
 		})
 
 		return user
+	}
+
+	async delete(user_id: string) {
+		const userExists = await this.userRepository.findById(user_id)
+
+		if (!userExists) {
+			throw new NotFoundException('Usuário não encontrado')
+		}
+
+		return await this.userRepository.delete(user_id)
+	}
+
+	async update(updateUserDto: UpdateUserDto, user_id: string) {
+		const userExists = await this.userRepository.findById(user_id)
+
+		if (!userExists) {
+			throw new NotFoundException('Usuário não encontrado')
+		}
+
+		return this.userRepository.update(updateUserDto, user_id)
+	}
+
+	async profile(user_id: string) {
+		const user = await this.userRepository.findById(user_id)
+
+		if (!user) {
+			throw new NotFoundException('Usuário não encontrado')
+		}
+
+		return {}
 	}
 }
