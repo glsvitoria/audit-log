@@ -6,6 +6,7 @@ import {
 	HttpCode,
 	Param,
 	ParseUUIDPipe,
+	Patch,
 	Post,
 	Put,
 } from '@nestjs/common'
@@ -14,6 +15,7 @@ import { EnterpriseService } from './enterprise.service'
 import { CreateEnterpriseDto } from './dto/create.dto'
 import { AccessTokenAuth } from '@/common/decorators/access-token.decorator'
 import { UserRole } from '@/generated/prisma/enums'
+import { FindAllPaginationEnterpriseDto } from './dto/find-all-pagination.dto'
 
 @Controller('/enterprise')
 @AccessTokenAuth(UserRole.ADMIN)
@@ -22,20 +24,32 @@ export class EnterpriseController {
 
 	@Post()
 	@HttpCode(201)
-	createEnterprise(@Body() createEnterpriseDto: CreateEnterpriseDto) {
+	create(@Body() createEnterpriseDto: CreateEnterpriseDto) {
 		return this.enterpriseService.create(createEnterpriseDto)
 	}
 
-	@Delete(':enterprise_id')
-	delete(@Param('enterprise_id', new ParseUUIDPipe()) enterprise_id: string) {
-		return this.enterpriseService.delete(enterprise_id)
+	@Delete(':enterpriseId')
+	delete(@Param('enterpriseId', new ParseUUIDPipe()) enterpriseId: string) {
+		return this.enterpriseService.delete(enterpriseId)
 	}
 
-	@Put(':enterprise_id')
-	updateEnterprise(
-		@Body() updateEnterpriseDto: UpdateEnterpriseDto,
-		@Param('enterprise_id', new ParseUUIDPipe()) enterprise_id: string
+	@Patch(':enterpriseId')
+	disable(@Param('enterpriseId', new ParseUUIDPipe()) enterpriseId: string) {
+		return this.enterpriseService.disable(enterpriseId)
+	}
+
+	@Get()
+	findAll(
+		@Body() findAllPaginationEnterpriseDto: FindAllPaginationEnterpriseDto
 	) {
-		return this.enterpriseService.update(enterprise_id, updateEnterpriseDto)
+		return this.enterpriseService.findAll(findAllPaginationEnterpriseDto)
+	}
+
+	@Put(':enterpriseId')
+	update(
+		@Body() updateEnterpriseDto: UpdateEnterpriseDto,
+		@Param('enterpriseId', new ParseUUIDPipe()) enterpriseId: string
+	) {
+		return this.enterpriseService.update(enterpriseId, updateEnterpriseDto)
 	}
 }

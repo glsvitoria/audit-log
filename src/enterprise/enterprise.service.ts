@@ -10,6 +10,7 @@ import { CreateEnterpriseDto } from './dto/create.dto'
 import { UserRepository } from '@/user/repositories/user.repository'
 import { hash } from 'bcryptjs'
 import { PrismaService } from '@/database/prisma/prisma.service'
+import { FindAllPaginationEnterpriseDto } from './dto/find-all-pagination.dto'
 
 @Injectable()
 export class EnterpriseService {
@@ -65,17 +66,17 @@ export class EnterpriseService {
 		return apiKey
 	}
 
-	async delete(enterprise_id: string) {
-		const enterprise = await this.enterpriseRepository.findById(enterprise_id)
+	async delete(enterpriseId: string) {
+		const enterprise = await this.enterpriseRepository.findById(enterpriseId)
 
 		if (!enterprise) {
 			throw new NotFoundException('Empresa não encontrada')
 		}
 
 		await Promise.all([
-			await this.apiKeyRepository.deleteByEnterpriseId(enterprise_id),
-			await this.enterpriseRepository.delete(enterprise_id),
-			await this.userRepository.deleteByEnterpriseId(enterprise_id),
+			await this.apiKeyRepository.deleteByEnterpriseId(enterpriseId),
+			await this.enterpriseRepository.delete(enterpriseId),
+			await this.userRepository.deleteByEnterpriseId(enterpriseId),
 		])
 
 		return {
@@ -83,18 +84,37 @@ export class EnterpriseService {
 		}
 	}
 
-	async update(
-		enterprise_id: string,
-		updateEnterpriseDto: UpdateEnterpriseDto
+	async disable(enterpriseId: string) {
+		const enterprise = await this.enterpriseRepository.findById(enterpriseId)
+
+		if (!enterprise) {
+			throw new NotFoundException('Empresa não encontrada')
+		}
+
+		await this.enterpriseRepository.disable(enterpriseId)
+
+		return {
+			message: 'Empresa desabilitada com sucesso!',
+		}
+	}
+
+	async findAll(
+		findAllPaginationEnterpriseDto: FindAllPaginationEnterpriseDto
 	) {
-		const enterprise = await this.enterpriseRepository.findById(enterprise_id)
+		return await this.enterpriseRepository.findAll(
+			findAllPaginationEnterpriseDto
+		)
+	}
+
+	async update(enterpriseId: string, updateEnterpriseDto: UpdateEnterpriseDto) {
+		const enterprise = await this.enterpriseRepository.findById(enterpriseId)
 
 		if (!enterprise) {
 			throw new NotFoundException('Empresa não encontrada')
 		}
 
 		const enterpriseUpdated = await this.enterpriseRepository.update(
-			enterprise_id,
+			enterpriseId,
 			updateEnterpriseDto
 		)
 

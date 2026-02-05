@@ -10,6 +10,7 @@ import {
 	PrismaTransactionClient,
 } from '@/database/prisma/prisma.service'
 import { hashApiKey } from '@/utils/hash-api-key'
+import { FindAllPaginationEnterpriseDto } from '../dto/find-all-pagination.dto'
 
 @Injectable()
 export class EnterpriseRepository implements IEnterpriseRepository {
@@ -24,15 +25,52 @@ export class EnterpriseRepository implements IEnterpriseRepository {
 		return prisma.enterprise.create({ data: enterprise })
 	}
 
-	async delete(enterprise_id: string): Promise<Enterprise> {
+	async delete(enterpriseId: string): Promise<Enterprise> {
 		return this.prismaService.enterprise.update({
 			data: {
 				deletedAt: new Date(),
 			},
 			where: {
-				id: enterprise_id,
+				id: enterpriseId,
 			},
 		})
+	}
+
+	async disable(enterpriseId: string): Promise<Enterprise> {
+		return this.prismaService.enterprise.update({
+			data: {
+				disabledAt: new Date(),
+			},
+			where: {
+				id: enterpriseId,
+			},
+		})
+	}
+
+	async findAll(
+		findAllPaginationEnterpriseDto: FindAllPaginationEnterpriseDto
+	) {
+		const [enterprises, total] = await Promise.all([
+			await this.prismaService.enterprise.findMany({
+				...findAllPaginationEnterpriseDto.pagination(),
+				where: {
+					...findAllPaginationEnterpriseDto.where(),
+				},
+				orderBy: {
+					[findAllPaginationEnterpriseDto.sort]: 'desc',
+				},
+			}),
+			await this.prismaService.enterprise.count({
+				where: {
+					...findAllPaginationEnterpriseDto.where(),
+				},
+			}),
+		])
+
+		return {
+			enterprises,
+			total,
+		}
 	}
 
 	async findByApiKey(apiKey: string): Promise<Enterprise | null> {
@@ -61,31 +99,14 @@ export class EnterpriseRepository implements IEnterpriseRepository {
 		return this.prismaService.enterprise.findUnique({ where: { id } })
 	}
 
-	async findByUserId(user_id: string): Promise<Enterprise | null> {
-		const user = await this.prismaService.user.findUnique({
-			where: {
-				id: user_id,
-			},
-			include: {
-				enterprise: true,
-			},
-		})
-
-		if (!user?.enterprise) {
-			return null
-		}
-
-		return user.enterprise
-	}
-
 	async update(
-		enterprise_id: string,
+		enterpriseId: string,
 		enterprise: EnterpriseUpdateInput
 	): Promise<Enterprise> {
 		return this.prismaService.enterprise.update({
 			data: enterprise,
 			where: {
-				id: enterprise_id,
+				id: enterpriseId,
 			},
 		})
 	}

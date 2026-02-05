@@ -5,19 +5,20 @@ import {
 	Get,
 	Param,
 	ParseUUIDPipe,
+	Patch,
 	Post,
 	Put,
 	Query,
 } from '@nestjs/common'
 import { CreateApiKeyDto } from './dto/create.dto'
-import { ApiKeyService } from './api-key.service'
-import { CreateByEnterpriseApiKeyDto } from './dto/create-by-enterprise'
-import { CurrentUser } from '@/common/decorators/current-user.decorator'
-import type { AuthenticatedUser } from '@/common/types/authenticated-user'
 import { FindAllPaginationApiKeyDto } from './dto/find-all-pagination.dto'
 import { AccessTokenAuth } from '@/common/decorators/access-token.decorator'
 import { UserRole } from '@/generated/prisma/enums'
 import { UpdateApiKeyDto } from './dto/update.dto'
+import { ApiKeyService } from './api-key.service'
+import { CurrentUser } from '@/common/decorators/current-user.decorator'
+import type { AuthenticatedUser } from '@/common/types/authenticated-user'
+import { CreateByEnterpriseApiKeyDto } from './dto/create-by-enterprise'
 
 @Controller('/api-key')
 export class ApiKeyController {
@@ -35,42 +36,53 @@ export class ApiKeyController {
 		@Body() createByEnterpriseApiKeyDto: CreateByEnterpriseApiKeyDto,
 		@CurrentUser() user: AuthenticatedUser
 	) {
-		return this.apiKeyService.createByEnterprise(
-			createByEnterpriseApiKeyDto,
-			user.sub
-		)
+		return this.apiKeyService.create({
+			...createByEnterpriseApiKeyDto,
+			enterpriseId: user.enterpriseSub as string,
+		})
 	}
 
-	@Delete(':api_key_id')
+	@Delete(':apiKeyId')
 	@AccessTokenAuth(UserRole.ADMIN, UserRole.ENTERPRISE)
-	delete(@Param('api_key_id', new ParseUUIDPipe()) api_key_id: string) {
-		return this.apiKeyService.delete(api_key_id)
+	delete(
+		@CurrentUser() user: AuthenticatedUser,
+		@Param('apiKeyId', new ParseUUIDPipe()) apiKeyId: string
+	) {
+		return this.apiKeyService.delete(apiKeyId, user.enterpriseSub)
+	}
+
+	@Patch(':apiKeyId')
+	@AccessTokenAuth(UserRole.ADMIN, UserRole.ENTERPRISE)
+	disable(
+		@CurrentUser() user: AuthenticatedUser,
+		@Param('apiKeyId', new ParseUUIDPipe()) apiKeyId: string
+	) {
+		return this.apiKeyService.disable(apiKeyId, user.enterpriseSub)
 	}
 
 	@Get()
-	@AccessTokenAuth(UserRole.ADMIN)
-	findAll(@Query() findAllPaginationApiKeyDto: FindAllPaginationApiKeyDto) {
-		return this.apiKeyService.findAll(findAllPaginationApiKeyDto)
-	}
-
-	@Get('/enterprise')
-	@AccessTokenAuth(UserRole.ENTERPRISE)
-	findAllByEnterprise(
-		@Query() findAllPaginationApiKeyDto: FindAllPaginationApiKeyDto,
-		@CurrentUser() user: AuthenticatedUser
+	@AccessTokenAuth(UserRole.ADMIN, UserRole.ENTERPRISE)
+	findAll(
+		@CurrentUser() user: AuthenticatedUser,
+		@Query() findAllPaginationApiKeyDto: FindAllPaginationApiKeyDto
 	) {
-		return this.apiKeyService.findAllByEnterprise(
+		return this.apiKeyService.findAll(
 			findAllPaginationApiKeyDto,
-			user.sub
+			user.enterpriseSub
 		)
 	}
 
-	@Put(':api_key_id')
+	@Put(':apiKeyId')
 	@AccessTokenAuth(UserRole.ADMIN, UserRole.ENTERPRISE)
 	update(
 		@Body() updateApiKeyDto: UpdateApiKeyDto,
-		@Param('api_key_id', new ParseUUIDPipe()) api_key_id: string
+		@CurrentUser() user: AuthenticatedUser,
+		@Param('apiKeyId', new ParseUUIDPipe()) apiKeyId: string
 	) {
-		return this.apiKeyService.update(updateApiKeyDto, api_key_id)
+		return this.apiKeyService.update(
+			updateApiKeyDto,
+			apiKeyId,
+			user.enterpriseSub
+		)
 	}
 }

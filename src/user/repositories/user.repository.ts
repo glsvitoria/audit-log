@@ -25,14 +25,14 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async deleteByEnterpriseId(
-		enterprise_id: string,
+		enterpriseId: string,
 		tx?: PrismaTransactionClient
 	) {
 		const prisma = tx ?? this.prismaService
 
 		await prisma.user.deleteMany({
 			where: {
-				enterpriseId: enterprise_id,
+				enterpriseId,
 			},
 		})
 	}

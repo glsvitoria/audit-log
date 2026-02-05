@@ -20,7 +20,6 @@ export class AccessTokenStrategy extends PassportStrategy(
 	}
 
 	validate(payload: JWTPayload) {
-    console.log(payload)
-		return { sub: payload.sub, role: payload.role }
+		return { sub: payload.sub, enterpriseSub: payload.enterpriseSub, role: payload.role }
 	}
 }

@@ -3,7 +3,7 @@ import { Enterprise, Prisma, User, UserRole } from '@/generated/prisma/client'
 export interface IUserRepository {
 	create(user: Prisma.UserCreateInput): Promise<User>
 	delete(user_id: string): Promise<User>
-	deleteByEnterpriseId(enterprise_id: string): Promise<void>
+	deleteByEnterpriseId(enterpriseId: string): Promise<void>
 	findByEmail(email: string): Promise<User | null>
 	findById(user_id: string): Promise<User | null>
 	profile(user_id: string): Promise<ProfileReturn | null>

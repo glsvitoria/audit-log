@@ -1,6 +1,7 @@
 import { UserRole } from '@/generated/prisma/enums'
 
 export interface JWTPayload {
-	sub: string
+	enterpriseSub?: string
 	role: UserRole
+	sub: string
 }

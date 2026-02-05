@@ -9,7 +9,6 @@ import {
 } from '@/database/prisma/prisma.service'
 import { addPrefixApiKey } from '@/utils/add-prefix-api-key'
 import { randomBytes } from 'crypto'
-import { subHours } from 'date-fns'
 import { hashApiKey } from '@/utils/hash-api-key'
 import { FindAllPaginationApiKeyDto } from '../dto/find-all-pagination.dto'
 import { Prisma } from '@/generated/prisma/client'
@@ -41,34 +40,46 @@ export class ApiKeyRepository implements IApiKeyRepository {
 		}
 	}
 
-	async delete(api_key_id: string) {
+	async delete(apiKeyId: string) {
 		return await this.prismaService.apiKey.delete({
 			where: {
-				id: api_key_id,
+				id: apiKeyId,
 			},
 		})
 	}
 
-	async deleteByEnterpriseId(enterprise_id: string) {
+	async deleteByEnterpriseId(enterpriseId: string) {
 		await this.prismaService.apiKey.updateMany({
 			data: {
 				deletedAt: new Date(),
 			},
 			where: {
-				enterpriseId: enterprise_id,
+				enterpriseId,
 			},
 		})
 
 		return null
 	}
 
-	async find(apiKey: string) {
+	async disable(apiKey_id: string) {
+		return await this.prismaService.apiKey.update({
+			data: {
+				disabledAt: new Date(),
+			},
+			where: {
+				id: apiKey_id,
+			},
+		})
+	}
+
+	async find(apiKey: string, enterpriseId?: string) {
 		const apiKeyHashed = hashApiKey(apiKey)
 
 		const apiKeyFinde = await this.prismaService.apiKey.findUnique({
 			where: {
 				keyHash: apiKeyHashed,
 				deletedAt: null,
+				enterpriseId,
 			},
 		})
 
@@ -114,11 +125,16 @@ export class ApiKeyRepository implements IApiKeyRepository {
 		})
 	}
 
-	async update(apiKey: Prisma.ApiKeyUpdateInput, apiKeyId: string) {
+	async update(
+		apiKey: Prisma.ApiKeyUpdateInput,
+		apiKeyId: string,
+		enterpriseId?: string
+	) {
 		return await this.prismaService.apiKey.update({
 			data: apiKey,
 			where: {
 				id: apiKeyId,
+				enterpriseId,
 			},
 		})
 	}
