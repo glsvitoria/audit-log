@@ -38,7 +38,7 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async findByEmail(email: string): Promise<User | null> {
-		return await this.prismaService.user.findUnique({
+		return await this.prismaService.user.findFirst({
 			where: {
 				email,
 			},
@@ -46,7 +46,7 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async findById(user_id: string) {
-		return await this.prismaService.user.findUnique({
+		return await this.prismaService.user.findFirst({
 			where: {
 				id: user_id,
 			},
@@ -54,7 +54,7 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async profile(user_id: string) {
-		return await this.prismaService.user.findUnique({
+		return await this.prismaService.user.findFirst({
 			where: {
 				id: user_id,
 			},

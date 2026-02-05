@@ -70,7 +70,7 @@ export class AuthService {
 
 		const user = await this.authRepository.findById(sub)
 
-		if (user) {
+		if (!user) {
 			throw new UnauthorizedException(ErrorMessagesHelper.INVALID_CREDENTIALS)
 		}
 	}

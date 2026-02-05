@@ -37,7 +37,7 @@ export class EnterpriseService {
 			const enterpriseCreated = await this.enterpriseRepository.create(
 				{
 					email: createEnterpriseDto.email,
-					name: createEnterpriseDto.corporateReason,
+					corporateReason: createEnterpriseDto.corporateReason,
 				},
 				prisma
 			)

@@ -75,7 +75,7 @@ export class ApiKeyRepository implements IApiKeyRepository {
 	async find(apiKey: string, enterpriseId?: string) {
 		const apiKeyHashed = hashApiKey(apiKey)
 
-		const apiKeyFinde = await this.prismaService.apiKey.findUnique({
+		const apiKeyFinde = await this.prismaService.apiKey.findFirst({
 			where: {
 				keyHash: apiKeyHashed,
 				deletedAt: null,
@@ -93,7 +93,7 @@ export class ApiKeyRepository implements IApiKeyRepository {
 	async findWithEnableEnterprise(apiKey: string) {
 		const apiKeyHashed = hashApiKey(apiKey)
 
-		const apiKeyFinde = await this.prismaService.apiKey.findUnique({
+		const apiKeyFinde = await this.prismaService.apiKey.findFirst({
 			where: {
 				keyHash: apiKeyHashed,
 				deletedAt: null,

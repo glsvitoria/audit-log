@@ -764,7 +764,8 @@ export const UserScalarFieldEnum = {
   role: 'role',
   enterpriseId: 'enterpriseId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -772,7 +773,7 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const EnterpriseScalarFieldEnum = {
   id: 'id',
-  name: 'name',
+  corporateReason: 'corporateReason',
   email: 'email',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -794,7 +795,8 @@ export const LogScalarFieldEnum = {
   newData: 'newData',
   message: 'message',
   enterpriseId: 'enterpriseId',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type LogScalarFieldEnum = (typeof LogScalarFieldEnum)[keyof typeof LogScalarFieldEnum]

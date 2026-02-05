@@ -48,10 +48,10 @@ export class EnterpriseRepository implements IEnterpriseRepository {
 	}
 
 	async findActiveById(id: string): Promise<Enterprise | null> {
-		return this.prismaService.enterprise.findUnique({
+		return this.prismaService.enterprise.findFirst({
 			where: {
 				id,
-				deletedAt: null,
+				disabledAt: null,
 			},
 		})
 	}
@@ -85,7 +85,7 @@ export class EnterpriseRepository implements IEnterpriseRepository {
 	async findByApiKey(apiKey: string): Promise<Enterprise | null> {
 		const apiKeyHashed = hashApiKey(apiKey)
 
-		const apiKeyFinde = await this.prismaService.apiKey.findUnique({
+		const apiKeyFinde = await this.prismaService.apiKey.findFirst({
 			where: {
 				keyHash: apiKeyHashed,
 			},
@@ -93,7 +93,7 @@ export class EnterpriseRepository implements IEnterpriseRepository {
 
 		if (!apiKeyFinde) return null
 
-		return this.prismaService.enterprise.findUnique({
+		return this.prismaService.enterprise.findFirst({
 			where: {
 				id: apiKeyFinde.enterpriseId,
 			},
@@ -101,11 +101,11 @@ export class EnterpriseRepository implements IEnterpriseRepository {
 	}
 
 	async findByEmail(email: string): Promise<Enterprise | null> {
-		return this.prismaService.enterprise.findUnique({ where: { email } })
+		return this.prismaService.enterprise.findFirst({ where: { email } })
 	}
 
 	async findById(id: string): Promise<Enterprise | null> {
-		return this.prismaService.enterprise.findUnique({ where: { id } })
+		return this.prismaService.enterprise.findFirst({ where: { id } })
 	}
 
 	async update(

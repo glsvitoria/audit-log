@@ -13,7 +13,7 @@ export class LogRepository implements ILogRepository {
 	}
 
 	async find(log_id: string) {
-		return await this.prismaService.log.findUnique({ where: { id: log_id } })
+		return await this.prismaService.log.findFirst({ where: { id: log_id } })
 	}
 
 	async findAll(findAllPaginationDto: FindAllPaginationDto) {

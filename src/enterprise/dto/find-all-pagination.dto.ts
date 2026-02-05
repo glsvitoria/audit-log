@@ -13,7 +13,7 @@ export class FindAllPaginationEnterpriseDto extends PaginationQueryDto<'createdA
 
 	@IsString()
 	@IsOptional()
-	name?: string
+	corporateReason?: string
 
 	@IsString()
 	@IsOptional()
@@ -22,9 +22,9 @@ export class FindAllPaginationEnterpriseDto extends PaginationQueryDto<'createdA
 	where(): Prisma.EnterpriseWhereInput {
 		const AND: Prisma.Enumerable<Prisma.EnterpriseWhereInput> = []
 
-		if (this.name) {
+		if (this.corporateReason) {
 			AND.push({
-				name: this.name,
+				corporateReason: this.corporateReason,
 			})
 		}
 
