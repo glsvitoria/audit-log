@@ -7,6 +7,7 @@ import { CreateUserDto } from './dto/create.dto'
 import { UserRepository } from './repositories/user.repository'
 import { hash } from 'bcryptjs'
 import { UpdateUserDto } from './dto/update.dto'
+import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
 
 @Injectable()
 export class UserService {
@@ -18,7 +19,9 @@ export class UserService {
 		)
 
 		if (userExists) {
-			throw new ConflictException('Usuário com esse e-mail já cadastrado')
+			throw new ConflictException(
+				ErrorMessagesHelper.USER_WITH_SAME_EMAIL_CREATED
+			)
 		}
 
 		const passwordHash = await hash(createUserDto.password, 8)
@@ -36,7 +39,7 @@ export class UserService {
 		const userExists = await this.userRepository.findById(user_id)
 
 		if (!userExists) {
-			throw new NotFoundException('Usuário não encontrado')
+			throw new NotFoundException(ErrorMessagesHelper.USER_NOT_FOUND)
 		}
 
 		return await this.userRepository.delete(user_id)
@@ -46,7 +49,7 @@ export class UserService {
 		const userExists = await this.userRepository.findById(user_id)
 
 		if (!userExists) {
-			throw new NotFoundException('Usuário não encontrado')
+			throw new NotFoundException(ErrorMessagesHelper.USER_NOT_FOUND)
 		}
 
 		return this.userRepository.update(updateUserDto, user_id)
@@ -56,7 +59,7 @@ export class UserService {
 		const user = await this.userRepository.findById(user_id)
 
 		if (!user) {
-			throw new NotFoundException('Usuário não encontrado')
+			throw new NotFoundException(ErrorMessagesHelper.USER_NOT_FOUND)
 		}
 
 		return {}

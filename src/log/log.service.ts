@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
+import {
+	Injectable,
+	NotFoundException,
+	UnauthorizedException,
+} from '@nestjs/common'
 import { CreateLogDto } from './dto/create.dto'
 import { LogRepository } from './repositories/log.repository'
 import { FindAllPaginationDto } from './dto/find-all-pagination.dto'
@@ -34,7 +38,7 @@ export class LogService {
 		const log = await this.logRepository.find(id)
 
 		if (!log) {
-			throw new NotFoundException('Log não encontrado')
+			throw new NotFoundException(ErrorMessagesHelper.LOG_NOT_FOUND)
 		}
 
 		return log

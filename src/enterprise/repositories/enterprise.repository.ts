@@ -47,6 +47,15 @@ export class EnterpriseRepository implements IEnterpriseRepository {
 		})
 	}
 
+	async findActiveById(id: string): Promise<Enterprise | null> {
+		return this.prismaService.enterprise.findUnique({
+			where: {
+				id,
+				deletedAt: null,
+			},
+		})
+	}
+
 	async findAll(
 		findAllPaginationEnterpriseDto: FindAllPaginationEnterpriseDto
 	) {

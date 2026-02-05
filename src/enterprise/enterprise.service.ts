@@ -11,6 +11,7 @@ import { UserRepository } from '@/user/repositories/user.repository'
 import { hash } from 'bcryptjs'
 import { PrismaService } from '@/database/prisma/prisma.service'
 import { FindAllPaginationEnterpriseDto } from './dto/find-all-pagination.dto'
+import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
 
 @Injectable()
 export class EnterpriseService {
@@ -27,7 +28,9 @@ export class EnterpriseService {
 		)
 
 		if (enterpriseExists) {
-			throw new ConflictException('Empresa com esse e-mail já cadastrada')
+			throw new ConflictException(
+				ErrorMessagesHelper.ENTERPRISE_WITH_SAME_EMAIL_CREATED
+			)
 		}
 
 		const apiKey = await this.prismaService.$transaction(async (prisma) => {
@@ -70,7 +73,7 @@ export class EnterpriseService {
 		const enterprise = await this.enterpriseRepository.findById(enterpriseId)
 
 		if (!enterprise) {
-			throw new NotFoundException('Empresa não encontrada')
+			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
 		}
 
 		await Promise.all([
@@ -88,7 +91,7 @@ export class EnterpriseService {
 		const enterprise = await this.enterpriseRepository.findById(enterpriseId)
 
 		if (!enterprise) {
-			throw new NotFoundException('Empresa não encontrada')
+			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
 		}
 
 		await this.enterpriseRepository.disable(enterpriseId)
@@ -110,7 +113,7 @@ export class EnterpriseService {
 		const enterprise = await this.enterpriseRepository.findById(enterpriseId)
 
 		if (!enterprise) {
-			throw new NotFoundException('Empresa não encontrada')
+			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
 		}
 
 		const enterpriseUpdated = await this.enterpriseRepository.update(

@@ -90,6 +90,26 @@ export class ApiKeyRepository implements IApiKeyRepository {
 		return apiKeyFinde
 	}
 
+	async findWithEnableEnterprise(apiKey: string) {
+		const apiKeyHashed = hashApiKey(apiKey)
+
+		const apiKeyFinde = await this.prismaService.apiKey.findUnique({
+			where: {
+				keyHash: apiKeyHashed,
+				deletedAt: null,
+				enterprise: {
+					disabledAt: null,
+				},
+			},
+		})
+
+		if (!apiKeyFinde) {
+			return null
+		}
+
+		return apiKeyFinde
+	}
+
 	async findAll(findAllPaginationApiKeyDto: FindAllPaginationApiKeyDto) {
 		const [apiKeys, total] = await Promise.all([
 			await this.prismaService.apiKey.findMany({

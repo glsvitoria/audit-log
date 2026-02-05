@@ -6,7 +6,6 @@ import { AuthenticatedUser } from '@/common/types/authenticated-user'
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  // O reflector é utilizado para poder ler os metadados
 	constructor(private reflector: Reflector) {}
 
 	canActivate(context: ExecutionContext): boolean {

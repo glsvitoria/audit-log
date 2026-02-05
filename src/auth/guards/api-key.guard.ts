@@ -1,4 +1,5 @@
 import { ApiKeyRepository } from '@/apiKey/repositories/api-key.repository'
+import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
 import {
 	CanActivate,
 	ExecutionContext,
@@ -15,13 +16,14 @@ export class ApiKeyGuard implements CanActivate {
 		const apiKey = request.headers['x-api-key']
 
 		if (!apiKey) {
-			throw new UnauthorizedException('API key não fornecida')
+			throw new UnauthorizedException(ErrorMessagesHelper.API_KEY_EMPTY)
 		}
 
-		const apiKeyFinde = await this.apiKeyRepository.find(apiKey)
+		const apiKeyFinde =
+			await this.apiKeyRepository.findWithEnableEnterprise(apiKey)
 
 		if (!apiKeyFinde) {
-			throw new UnauthorizedException('API key inválida')
+			throw new UnauthorizedException(ErrorMessagesHelper.API_KEY_INVALID)
 		}
 
 		await this.apiKeyRepository.updateLastUsed(apiKeyFinde.id)

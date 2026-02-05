@@ -3,6 +3,7 @@ import { CreateApiKeyDto } from './dto/create.dto'
 import { ApiKeyRepository } from './repositories/api-key.repository'
 import { FindAllPaginationApiKeyDto } from './dto/find-all-pagination.dto'
 import { UpdateApiKeyDto } from './dto/update.dto'
+import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
 
 @Injectable()
 export class ApiKeyService {
@@ -16,7 +17,7 @@ export class ApiKeyService {
 		const apiKey = await this.apiKeyRepository.find(apiKeyId, enterpriseId)
 
 		if (!apiKey) {
-			throw new NotFoundException('Api key não encontrada')
+			throw new NotFoundException(ErrorMessagesHelper.API_KEY_NOT_FOUND)
 		}
 
 		return await this.apiKeyRepository.delete(apiKeyId)
@@ -26,7 +27,7 @@ export class ApiKeyService {
 		const apiKey = await this.apiKeyRepository.find(apiKeyId, enterpriseId)
 
 		if (!apiKey) {
-			throw new NotFoundException('Api key não encontrada')
+			throw new NotFoundException(ErrorMessagesHelper.API_KEY_NOT_FOUND)
 		}
 
 		return await this.apiKeyRepository.disable(apiKeyId)
@@ -49,13 +50,9 @@ export class ApiKeyService {
 		const apiKey = await this.apiKeyRepository.find(apiKeyId, enterpriseId)
 
 		if (!apiKey) {
-			throw new NotFoundException('Api key não encontrada')
+			throw new NotFoundException(ErrorMessagesHelper.API_KEY_NOT_FOUND)
 		}
 
-		return this.apiKeyRepository.update(
-			updateApiKeyDto,
-			apiKeyId,
-			enterpriseId
-		)
+		return this.apiKeyRepository.update(updateApiKeyDto, apiKeyId, enterpriseId)
 	}
 }
