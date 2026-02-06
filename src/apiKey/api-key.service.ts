@@ -10,6 +10,8 @@ import { UpdateApiKeyDto } from './dto/update.dto'
 import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
 import { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
 import { SuccessMessagesHelper } from '@/common/helpers/success-messages.helper'
+import { Enterprise } from '@/generated/prisma/client'
+import { CreateByEnterpriseApiKeyDto } from './dto/create-by-enterprise'
 
 @Injectable()
 export class ApiKeyService {
@@ -30,8 +32,26 @@ export class ApiKeyService {
 		return await this.apiKeyRepository.create(createApiKeyDto)
 	}
 
-	async delete(apiKeyId: string, enterpriseId?: string) {
-		const apiKey = await this.apiKeyRepository.findById(apiKeyId, enterpriseId)
+	async createByEnterprise(
+		createByEnterpriseApiKeyDto: CreateByEnterpriseApiKeyDto,
+		userId: string
+	) {
+		const enterprise = await this.enterpriseRepository.findByUserId(userId)
+
+		if (!enterprise) {
+			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
+		}
+
+		return await this.apiKeyRepository.create(createByEnterpriseApiKeyDto)
+	}
+
+	async delete(apiKeyId: string, userId: string) {
+		const enterprise = await this.enterpriseRepository.findByUserId(userId)
+
+		const apiKey = await this.apiKeyRepository.findById(
+			apiKeyId,
+			enterprise?.id
+		)
 
 		if (!apiKey) {
 			throw new NotFoundException(ErrorMessagesHelper.API_KEY_NOT_FOUND)
@@ -44,8 +64,13 @@ export class ApiKeyService {
 		}
 	}
 
-	async disable(apiKeyId: string, enterpriseId?: string) {
-		const apiKey = await this.apiKeyRepository.findById(apiKeyId, enterpriseId)
+	async disable(apiKeyId: string, userId: string) {
+		const enterprise = await this.enterpriseRepository.findByUserId(userId)
+
+		const apiKey = await this.apiKeyRepository.findById(
+			apiKeyId,
+			enterprise?.id
+		)
 
 		if (!apiKey) {
 			throw new NotFoundException(ErrorMessagesHelper.API_KEY_NOT_FOUND)
@@ -64,8 +89,13 @@ export class ApiKeyService {
 		}
 	}
 
-	async enable(apiKeyId: string, enterpriseId?: string) {
-		const apiKey = await this.apiKeyRepository.findById(apiKeyId, enterpriseId)
+	async enable(apiKeyId: string, userId: string) {
+		const enterprise = await this.enterpriseRepository.findByUserId(userId)
+
+		const apiKey = await this.apiKeyRepository.findById(
+			apiKeyId,
+			enterprise?.id
+		)
 
 		if (!apiKey) {
 			throw new NotFoundException(ErrorMessagesHelper.API_KEY_NOT_FOUND)
@@ -84,9 +114,11 @@ export class ApiKeyService {
 
 	async findAll(
 		findAllPaginationApiKeyDto: FindAllPaginationApiKeyDto,
-		enterpriseId?: string
+		userId: string
 	) {
-		if (enterpriseId) findAllPaginationApiKeyDto.enterpriseId = enterpriseId
+		const enterprise = await this.enterpriseRepository.findByUserId(userId)
+
+		if (enterprise) findAllPaginationApiKeyDto.enterpriseId = enterprise.id
 
 		return await this.apiKeyRepository.findAll(findAllPaginationApiKeyDto)
 	}
@@ -94,14 +126,19 @@ export class ApiKeyService {
 	async update(
 		updateApiKeyDto: UpdateApiKeyDto,
 		apiKeyId: string,
-		enterpriseId?: string
+		userId: string
 	) {
-		const apiKey = await this.apiKeyRepository.findById(apiKeyId, enterpriseId)
+		const enterprise = await this.enterpriseRepository.findByUserId(userId)
+
+		const apiKey = await this.apiKeyRepository.findById(
+			apiKeyId,
+			enterprise?.id
+		)
 
 		if (!apiKey) {
 			throw new NotFoundException(ErrorMessagesHelper.API_KEY_NOT_FOUND)
 		}
 
-		return this.apiKeyRepository.update(updateApiKeyDto, apiKeyId, enterpriseId)
+		return this.apiKeyRepository.update(updateApiKeyDto, apiKeyId)
 	}
 }

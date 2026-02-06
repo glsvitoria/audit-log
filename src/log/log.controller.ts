@@ -46,7 +46,7 @@ export class LogController {
 		@CurrentUser() user: AuthenticatedUser,
 		@Param('logId', new ValidationUUID()) logId: string
 	) {
-		return this.logService.delete(logId, user.enterpriseSub)
+		return this.logService.delete(logId, user.sub)
 	}
 
 	@Get()
@@ -55,6 +55,6 @@ export class LogController {
 		@CurrentUser() user: AuthenticatedUser,
 		@Query() query: FindAllPaginationDto
 	) {
-		return this.logService.findAll(query, user.enterpriseSub)
+		return this.logService.findAll(query, user.sub)
 	}
 }

@@ -49,7 +49,6 @@ export class AuthService {
 			{
 				sub: user.id,
 				role: user.role,
-				enterpriseSub: user.enterpriseId ?? undefined,
 			},
 			{
 				secret: env.ACCESS_TOKEN_SECRET,

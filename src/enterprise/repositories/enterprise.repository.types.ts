@@ -16,6 +16,7 @@ export interface IEnterpriseRepository {
 	findByApiKey(apiKey: string): Promise<Enterprise | null>
 	findByEmail(email: string): Promise<Enterprise | null>
 	findById(id: string): Promise<Enterprise | null>
+	findByUserId(userId: string): Promise<Enterprise | null>
 	update(
 		enterpriseId: string,
 		enterprise: Prisma.EnterpriseUpdateInput

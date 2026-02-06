@@ -35,19 +35,21 @@ export class LogService {
 		})
 	}
 
-  async delete(logId: string, enterpriseId?: string) {
-    const log = await this.logRepository.findById(logId, enterpriseId)
+	async delete(logId: string, userId: string) {
+		const enterprise = await this.enterpriseRepository.findByUserId(userId)
 
-    if(!log) {
-      throw new NotFoundException(ErrorMessagesHelper.LOG_NOT_FOUND)
-    }
+		const log = await this.logRepository.findById(logId, enterprise?.id)
 
-    await this.logRepository.delete(logId)
+		if (!log) {
+			throw new NotFoundException(ErrorMessagesHelper.LOG_NOT_FOUND)
+		}
 
-    return {
-      message: SuccessMessagesHelper.LOG_DELETED
-    }
-  }
+		await this.logRepository.delete(logId)
+
+		return {
+			message: SuccessMessagesHelper.LOG_DELETED,
+		}
+	}
 
 	async find(id: string) {
 		const log = await this.logRepository.findById(id)
@@ -59,12 +61,11 @@ export class LogService {
 		return log
 	}
 
-	async findAll(
-		findAllPaginationDto: FindAllPaginationDto,
-		enterpriseId?: string
-	) {
-		if (enterpriseId) {
-			findAllPaginationDto.enterpriseId = enterpriseId
+	async findAll(findAllPaginationDto: FindAllPaginationDto, userId: string) {
+		const enterprise = await this.enterpriseRepository.findByUserId(userId)
+
+		if (enterprise) {
+			findAllPaginationDto.enterpriseId = enterprise.id
 		}
 
 		return this.logRepository.findAll(findAllPaginationDto)

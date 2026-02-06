@@ -194,16 +194,11 @@ export class ApiKeyRepository implements IApiKeyRepository {
 		})
 	}
 
-	async update(
-		apiKey: Prisma.ApiKeyUpdateInput,
-		apiKeyId: string,
-		enterpriseId?: string
-	) {
+	async update(apiKey: Prisma.ApiKeyUpdateInput, apiKeyId: string) {
 		return await this.prismaService.apiKey.update({
 			data: apiKey,
 			where: {
 				id: apiKeyId,
-				enterpriseId,
 			},
 		})
 	}

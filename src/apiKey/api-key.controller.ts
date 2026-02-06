@@ -36,10 +36,10 @@ export class ApiKeyController {
 		@Body() createByEnterpriseApiKeyDto: CreateByEnterpriseApiKeyDto,
 		@CurrentUser() user: AuthenticatedUser
 	) {
-		return this.apiKeyService.create({
-			...createByEnterpriseApiKeyDto,
-			enterpriseId: user.enterpriseSub as string,
-		})
+		return this.apiKeyService.createByEnterprise(
+			createByEnterpriseApiKeyDto,
+			user.sub
+		)
 	}
 
 	@Delete(':apiKeyId')
@@ -48,7 +48,7 @@ export class ApiKeyController {
 		@CurrentUser() user: AuthenticatedUser,
 		@Param('apiKeyId', new ValidationUUID()) apiKeyId: string
 	) {
-		return this.apiKeyService.delete(apiKeyId, user.enterpriseSub)
+		return this.apiKeyService.delete(apiKeyId, user.sub)
 	}
 
 	@Patch('/disable/:apiKeyId')
@@ -57,7 +57,7 @@ export class ApiKeyController {
 		@CurrentUser() user: AuthenticatedUser,
 		@Param('apiKeyId', new ValidationUUID()) apiKeyId: string
 	) {
-		return this.apiKeyService.disable(apiKeyId, user.enterpriseSub)
+		return this.apiKeyService.disable(apiKeyId, user.sub)
 	}
 
 	@Patch('/enable/:apiKeyId')
@@ -66,7 +66,7 @@ export class ApiKeyController {
 		@CurrentUser() user: AuthenticatedUser,
 		@Param('apiKeyId', new ValidationUUID()) apiKeyId: string
 	) {
-		return this.apiKeyService.enable(apiKeyId, user.enterpriseSub)
+		return this.apiKeyService.enable(apiKeyId, user.sub)
 	}
 
 	@Get()
@@ -77,7 +77,7 @@ export class ApiKeyController {
 	) {
 		return this.apiKeyService.findAll(
 			findAllPaginationApiKeyDto,
-			user.enterpriseSub
+			user.sub
 		)
 	}
 
@@ -91,7 +91,7 @@ export class ApiKeyController {
 		return this.apiKeyService.update(
 			updateApiKeyDto,
 			apiKeyId,
-			user.enterpriseSub
+			user.sub
 		)
 	}
 }

@@ -126,6 +126,17 @@ export class EnterpriseRepository implements IEnterpriseRepository {
 		return this.prismaService.enterprise.findFirst({ where: { id } })
 	}
 
+	async findByUserId(userId: string): Promise<Enterprise | null> {
+		const user = await this.prismaService.user.findFirst({
+			where: { id: userId },
+			include: {
+				enterprise: true,
+			},
+		})
+
+		return user?.enterprise ?? null
+	}
+
 	async update(
 		enterpriseId: string,
 		enterprise: EnterpriseUpdateInput
