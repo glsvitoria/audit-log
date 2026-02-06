@@ -8,10 +8,11 @@ export interface IApiKeyRepository {
 		tx?: PrismaTransactionClient
 	): Promise<CreateApiKeyReturn>
 	delete(apiKeyId: string): Promise<ApiKey>
-	deleteByEnterpriseId(enterpriseId: string): Promise<null>
+	deleteByEnterpriseId(enterpriseId: string): Promise<void>
 	disable(apiKey_id: string): Promise<ApiKey | null>
+	disableByEnterpriseId(enterpriseId: string): Promise<void>
 	find(apiKey: string, enterpriseId?: string): Promise<ApiKey | null>
-	findWithEnableEnterprise(apiKey: string): Promise<ApiKey | null>
+	findEnabled(apiKey: string): Promise<ApiKey | null>
 	findAll(findAllPaginationApiKeyDto: FindAllPaginationApiKeyDto): Promise<{
 		apiKeys: ApiKey[]
 		total: number

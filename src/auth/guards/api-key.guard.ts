@@ -19,8 +19,7 @@ export class ApiKeyGuard implements CanActivate {
 			throw new UnauthorizedException(ErrorMessagesHelper.API_KEY_EMPTY)
 		}
 
-		const apiKeyFinde =
-			await this.apiKeyRepository.findWithEnableEnterprise(apiKey)
+		const apiKeyFinde = await this.apiKeyRepository.findEnabled(apiKey)
 
 		if (!apiKeyFinde) {
 			throw new UnauthorizedException(ErrorMessagesHelper.API_KEY_INVALID)

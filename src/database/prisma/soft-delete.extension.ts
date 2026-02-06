@@ -1,49 +1,54 @@
 import { Prisma } from '@/generated/prisma/client'
 
-export const softDeleteExtension = Prisma.defineExtension({
-  name: 'soft-delete',
+export const softDeleteExtension = Prisma.defineExtension((client) => {
+	return client.$extends({
+		query: {
+			$allModels: {
+				async count({ args, query }) {
+					args.where = {
+						...(args.where ?? {}),
+						deletedAt: null,
+					}
 
-  query: {
-    $allModels: {
-      async findMany({ args, query }) {
-        args.where = {
-          ...(args.where ?? {}),
-          deletedAt: null,
-        }
+					return query(args)
+				},
 
-        return query(args)
-      },
+				async findMany({ args, query }) {
+					args.where = {
+						...(args.where ?? {}),
+						deletedAt: null,
+					}
 
-      async findFirst({ args, query }) {
-        args.where = {
-          ...(args.where ?? {}),
-          deletedAt: null,
-        }
+					return query(args)
+				},
 
-        return query(args)
-      },
+				async findFirst({ args, query }) {
+					args.where = {
+						...(args.where ?? {}),
+						deletedAt: null,
+					}
 
-      async delete({ model, args }) {
-        const client = Prisma.getExtensionContext(this) as any
+					return query(args)
+				},
 
-        return client[model].update({
-          where: args.where,
-          data: {
-            deletedAt: new Date(),
-          },
-        })
-      },
+				async delete({ model, args }) {
+					return client[model].update({
+						where: args.where,
+						data: {
+							deletedAt: new Date(),
+						},
+					})
+				},
 
-      async deleteMany({ model, args }) {
-        const client = Prisma.getExtensionContext(this) as any
-
-        return client[model].updateMany({
-          where: args.where,
-          data: {
-            deletedAt: new Date(),
-          },
-        })
-      },
-    },
-  },
+				async deleteMany({ model, args }) {
+					return client[model].updateMany({
+						where: args.where,
+						data: {
+							deletedAt: new Date(),
+						},
+					})
+				},
+			},
+		},
+	})
 })

@@ -1,4 +1,5 @@
 import {
+	BadRequestException,
 	ConflictException,
 	Injectable,
 	NotFoundException,
@@ -33,6 +34,16 @@ export class EnterpriseService {
 			)
 		}
 
+		const userExists = await this.userRepository.findByEmail(
+			createEnterpriseDto.email
+		)
+
+		if (userExists) {
+			throw new ConflictException(
+				ErrorMessagesHelper.USER_WITH_SAME_EMAIL_CREATED
+			)
+		}
+
 		const apiKey = await this.prismaService.$transaction(async (prisma) => {
 			const enterpriseCreated = await this.enterpriseRepository.create(
 				{
@@ -45,22 +56,25 @@ export class EnterpriseService {
 			const passwordHash = await hash(createEnterpriseDto.password, 8)
 
 			const [apiKey, _] = await Promise.all([
-				await this.apiKeyRepository.create(
+				this.apiKeyRepository.create(
 					{
 						enterpriseId: enterpriseCreated.id,
 					},
 					prisma
 				),
-				await this.userRepository.create({
-					email: createEnterpriseDto.email,
-					name: createEnterpriseDto.responsibleName,
-					password: passwordHash,
-					enterprise: {
-						connect: {
-							id: enterpriseCreated.id,
+				this.userRepository.create(
+					{
+						email: createEnterpriseDto.email,
+						name: createEnterpriseDto.responsibleName,
+						password: passwordHash,
+						enterprise: {
+							connect: {
+								id: enterpriseCreated.id,
+							},
 						},
 					},
-				}),
+					prisma
+				),
 			])
 
 			return apiKey
@@ -94,11 +108,32 @@ export class EnterpriseService {
 			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
 		}
 
-		await this.enterpriseRepository.disable(enterpriseId)
+		if (enterprise.disabledAt) {
+			throw new BadRequestException(
+				ErrorMessagesHelper.ENTERPRISE_ALREADY_DISABLED
+			)
+		}
+
+		await this.prismaService.$transaction(async (prisma) => {
+			await Promise.all([
+				this.enterpriseRepository.disable(enterpriseId, prisma),
+				this.apiKeyRepository.disableByEnterpriseId(enterpriseId, prisma),
+			])
+		})
 
 		return {
 			message: 'Empresa desabilitada com sucesso!',
 		}
+	}
+
+	async find(enterpriseId: string) {
+		const enterprise = await this.enterpriseRepository.findById(enterpriseId)
+
+		if (!enterprise) {
+			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
+		}
+
+		return enterprise
 	}
 
 	async findAll(
@@ -114,6 +149,20 @@ export class EnterpriseService {
 
 		if (!enterprise) {
 			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
+		}
+
+		if (updateEnterpriseDto.email) {
+			const enterpriseWithSameEmail =
+				await this.enterpriseRepository.findByEmail(updateEnterpriseDto.email)
+
+			if (
+				enterpriseWithSameEmail &&
+				enterpriseWithSameEmail.id !== enterpriseId
+			) {
+				throw new ConflictException(
+					ErrorMessagesHelper.ENTERPRISE_WITH_SAME_EMAIL_CREATED
+				)
+			}
 		}
 
 		const enterpriseUpdated = await this.enterpriseRepository.update(

@@ -1,4 +1,5 @@
 import {
+	BadRequestException,
 	Body,
 	Controller,
 	Delete,
@@ -9,6 +10,7 @@ import {
 	Patch,
 	Post,
 	Put,
+	Query,
 } from '@nestjs/common'
 import { UpdateEnterpriseDto } from './dto/update.dto'
 import { EnterpriseService } from './enterprise.service'
@@ -16,6 +18,7 @@ import { CreateEnterpriseDto } from './dto/create.dto'
 import { AccessTokenAuth } from '@/common/decorators/access-token.decorator'
 import { UserRole } from '@/generated/prisma/enums'
 import { FindAllPaginationEnterpriseDto } from './dto/find-all-pagination.dto'
+import { ValidationUUID } from '@/common/pipes/validation-uuid.pipe'
 
 @Controller('/enterprise')
 @AccessTokenAuth(UserRole.ADMIN)
@@ -29,18 +32,26 @@ export class EnterpriseController {
 	}
 
 	@Delete(':enterpriseId')
-	delete(@Param('enterpriseId', new ParseUUIDPipe()) enterpriseId: string) {
+	delete(@Param('enterpriseId', new ValidationUUID()) enterpriseId: string) {
 		return this.enterpriseService.delete(enterpriseId)
 	}
 
 	@Patch(':enterpriseId')
-	disable(@Param('enterpriseId', new ParseUUIDPipe()) enterpriseId: string) {
+	disable(@Param('enterpriseId', new ValidationUUID()) enterpriseId: string) {
 		return this.enterpriseService.disable(enterpriseId)
+	}
+
+	@Get(':enterpriseId')
+	find(
+		@Param('enterpriseId', new ValidationUUID())
+		enterpriseId: string
+	) {
+		return this.enterpriseService.find(enterpriseId)
 	}
 
 	@Get()
 	findAll(
-		@Body() findAllPaginationEnterpriseDto: FindAllPaginationEnterpriseDto
+		@Query() findAllPaginationEnterpriseDto: FindAllPaginationEnterpriseDto
 	) {
 		return this.enterpriseService.findAll(findAllPaginationEnterpriseDto)
 	}

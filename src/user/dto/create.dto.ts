@@ -35,7 +35,9 @@ export class CreateUserDto {
 	@IsNotEmpty({
 		message: 'A confirmação de senha não pode ser vazia',
 	})
-	@PasswordMatch()
+	@PasswordMatch({
+		message: 'A confirmação de senha deve ser igual a senha',
+	})
 	confirmPassword: string
 
 	@IsString({

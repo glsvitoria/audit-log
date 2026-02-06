@@ -24,13 +24,19 @@ export class FindAllPaginationEnterpriseDto extends PaginationQueryDto<'createdA
 
 		if (this.corporateReason) {
 			AND.push({
-				corporateReason: this.corporateReason,
+				corporateReason: {
+					contains: this.corporateReason,
+					mode: 'insensitive',
+				},
 			})
 		}
 
 		if (this.email) {
 			AND.push({
-				email: this.email,
+				email: {
+					contains: this.email,
+					mode: 'insensitive',
+				},
 			})
 		}
 

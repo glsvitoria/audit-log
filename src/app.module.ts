@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt'
 import { EnterpriseModule } from './enterprise/enterprise.module'
 import { ApiKeyModule } from './apiKey/api-key.module'
 import { AuthModule } from './auth/auth.module'
+import { UserModule } from './user/user.module'
 
 @Module({
 	imports: [
@@ -20,6 +21,7 @@ import { AuthModule } from './auth/auth.module'
 		EnterpriseModule,
 		JwtModule.register({ global: true }),
 		LogModule,
+		UserModule,
 	],
 })
 export class AppModule {}

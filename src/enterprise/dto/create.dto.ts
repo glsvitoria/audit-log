@@ -21,7 +21,7 @@ export class CreateEnterpriseDto {
 	})
 	email: string
 
-  @IsString({
+	@IsString({
 		message: 'O nome do responsável deve ser uma string',
 	})
 	@IsNotEmpty({
@@ -43,6 +43,8 @@ export class CreateEnterpriseDto {
 	@IsNotEmpty({
 		message: 'A confirmação de senha não pode ser vazia',
 	})
-	@PasswordMatch()
+	@PasswordMatch({
+		message: 'A confirmação de senha deve ser igual a senha',
+	})
 	confirmPassword: string
 }

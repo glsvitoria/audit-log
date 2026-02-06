@@ -26,9 +26,7 @@ export class AuthService {
 		const user = await this.authRepository.findByEmail(email)
 
 		if (!user) {
-			throw new BadRequestException(
-				'Não foi encontrado nenhum usuário com esse e-mail'
-			)
+			throw new UnauthorizedException(ErrorMessagesHelper.INVALID_CREDENTIALS)
 		}
 
 		if (user.role === UserRole.ENTERPRISE) {

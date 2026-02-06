@@ -49,16 +49,11 @@ export class ApiKeyRepository implements IApiKeyRepository {
 	}
 
 	async deleteByEnterpriseId(enterpriseId: string) {
-		await this.prismaService.apiKey.updateMany({
-			data: {
-				deletedAt: new Date(),
-			},
+		await this.prismaService.apiKey.deleteMany({
 			where: {
 				enterpriseId,
 			},
 		})
-
-		return null
 	}
 
 	async disable(apiKey_id: string) {
@@ -68,6 +63,22 @@ export class ApiKeyRepository implements IApiKeyRepository {
 			},
 			where: {
 				id: apiKey_id,
+			},
+		})
+	}
+
+	async disableByEnterpriseId(
+		enterpriseId: string,
+		tx?: PrismaTransactionClient
+	) {
+		const prisma = tx ?? this.prismaService
+
+		await prisma.apiKey.updateMany({
+			data: {
+				disabledAt: new Date(),
+			},
+			where: {
+				enterpriseId: enterpriseId,
 			},
 		})
 	}
@@ -90,16 +101,14 @@ export class ApiKeyRepository implements IApiKeyRepository {
 		return apiKeyFinde
 	}
 
-	async findWithEnableEnterprise(apiKey: string) {
+	async findEnabled(apiKey: string) {
 		const apiKeyHashed = hashApiKey(apiKey)
 
 		const apiKeyFinde = await this.prismaService.apiKey.findFirst({
 			where: {
 				keyHash: apiKeyHashed,
 				deletedAt: null,
-				enterprise: {
-					disabledAt: null,
-				},
+				disabledAt: null,
 			},
 		})
 

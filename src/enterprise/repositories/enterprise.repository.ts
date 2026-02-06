@@ -26,18 +26,20 @@ export class EnterpriseRepository implements IEnterpriseRepository {
 	}
 
 	async delete(enterpriseId: string): Promise<Enterprise> {
-		return this.prismaService.enterprise.update({
-			data: {
-				deletedAt: new Date(),
-			},
+		return this.prismaService.enterprise.delete({
 			where: {
 				id: enterpriseId,
 			},
 		})
 	}
 
-	async disable(enterpriseId: string): Promise<Enterprise> {
-		return this.prismaService.enterprise.update({
+	async disable(
+		enterpriseId: string,
+		tx?: PrismaTransactionClient
+	): Promise<Enterprise> {
+		const prisma = tx ?? this.prismaService
+
+		return prisma.enterprise.update({
 			data: {
 				disabledAt: new Date(),
 			},
