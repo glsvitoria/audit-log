@@ -5,4 +5,8 @@ export const SuccessMessagesHelper = {
 	ENTERPRISE_DELETED: 'Empresa deletada com sucesso!',
 	ENTERPRISE_DISABLED: 'Empresa desativada com sucesso!',
 	ENTERPRISE_ENABLED: 'Empresa ativada com sucesso!',
+	LOG_DELETED: 'Log deletado com sucesso',
+	USER_CREATED: 'Usuário criado com sucesso!',
+	USER_DELETED: 'Usuário deletado com sucesso!',
+	USER_UPDATED: 'Usuário atualizado com sucesso!',
 }

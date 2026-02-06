@@ -4,7 +4,6 @@ import {
 	Delete,
 	Get,
 	Param,
-	ParseUUIDPipe,
 	Patch,
 	Post,
 	Put,
@@ -19,6 +18,7 @@ import { ApiKeyService } from './api-key.service'
 import { CurrentUser } from '@/common/decorators/current-user.decorator'
 import type { AuthenticatedUser } from '@/common/types/authenticated-user'
 import { CreateByEnterpriseApiKeyDto } from './dto/create-by-enterprise'
+import { ValidationUUID } from '@/common/pipes/validation-uuid.pipe'
 
 @Controller('/api-key')
 export class ApiKeyController {
@@ -46,7 +46,7 @@ export class ApiKeyController {
 	@AccessTokenAuth(UserRole.ADMIN, UserRole.ENTERPRISE)
 	delete(
 		@CurrentUser() user: AuthenticatedUser,
-		@Param('apiKeyId', new ParseUUIDPipe()) apiKeyId: string
+		@Param('apiKeyId', new ValidationUUID()) apiKeyId: string
 	) {
 		return this.apiKeyService.delete(apiKeyId, user.enterpriseSub)
 	}
@@ -55,16 +55,16 @@ export class ApiKeyController {
 	@AccessTokenAuth(UserRole.ADMIN, UserRole.ENTERPRISE)
 	disable(
 		@CurrentUser() user: AuthenticatedUser,
-		@Param('apiKeyId', new ParseUUIDPipe()) apiKeyId: string
+		@Param('apiKeyId', new ValidationUUID()) apiKeyId: string
 	) {
 		return this.apiKeyService.disable(apiKeyId, user.enterpriseSub)
 	}
-	
-  @Patch('/enable/:apiKeyId')
+
+	@Patch('/enable/:apiKeyId')
 	@AccessTokenAuth(UserRole.ADMIN, UserRole.ENTERPRISE)
 	enable(
 		@CurrentUser() user: AuthenticatedUser,
-		@Param('apiKeyId', new ParseUUIDPipe()) apiKeyId: string
+		@Param('apiKeyId', new ValidationUUID()) apiKeyId: string
 	) {
 		return this.apiKeyService.enable(apiKeyId, user.enterpriseSub)
 	}
@@ -86,7 +86,7 @@ export class ApiKeyController {
 	update(
 		@Body() updateApiKeyDto: UpdateApiKeyDto,
 		@CurrentUser() user: AuthenticatedUser,
-		@Param('apiKeyId', new ParseUUIDPipe()) apiKeyId: string
+		@Param('apiKeyId', new ValidationUUID()) apiKeyId: string
 	) {
 		return this.apiKeyService.update(
 			updateApiKeyDto,

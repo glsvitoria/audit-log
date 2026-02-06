@@ -1,5 +1,5 @@
 import { PasswordMatch } from '@/common/decorators/password-match.decorator'
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsString, IsUUID } from 'class-validator'
 
 export class CreateUserDto {
 	@IsString({
@@ -40,11 +40,11 @@ export class CreateUserDto {
 	})
 	confirmPassword: string
 
-	@IsString({
-		message: 'O ID da empresa deve ser uma string',
+	@IsUUID(4, {
+		message: 'O enterpriseId deve ser um UUID',
 	})
 	@IsNotEmpty({
-		message: 'O ID da empresa não pode ser vazio',
+		message: 'O enterpriseId não pode ser vazio',
 	})
 	enterpriseId: string
 }

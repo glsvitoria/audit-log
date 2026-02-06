@@ -1,4 +1,5 @@
 import {
+	BadRequestException,
 	ConflictException,
 	Injectable,
 	NotFoundException,
@@ -8,17 +9,28 @@ import { UserRepository } from './repositories/user.repository'
 import { hash } from 'bcryptjs'
 import { UpdateUserDto } from './dto/update.dto'
 import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
+import { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
+import { SuccessMessagesHelper } from '@/common/helpers/success-messages.helper'
 
 @Injectable()
 export class UserService {
-	constructor(private userRepository: UserRepository) {}
+	constructor(
+		private enterpriseRepository: EnterpriseRepository,
+		private userRepository: UserRepository
+	) {}
 
 	async create(createUserDto: CreateUserDto) {
-		const userExists = await this.userRepository.findByEmail(
-			createUserDto.email
+		const enterprise = await this.enterpriseRepository.findById(
+			createUserDto.enterpriseId
 		)
 
-		if (userExists) {
+		if (!enterprise) {
+			throw new BadRequestException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
+		}
+
+		const user = await this.userRepository.findByEmail(createUserDto.email)
+
+		if (user) {
 			throw new ConflictException(
 				ErrorMessagesHelper.USER_WITH_SAME_EMAIL_CREATED
 			)
@@ -26,42 +38,69 @@ export class UserService {
 
 		const passwordHash = await hash(createUserDto.password, 8)
 
-		const user = await this.userRepository.create({
+		await this.userRepository.create({
 			email: createUserDto.email,
 			name: createUserDto.name,
 			password: passwordHash,
+			enterprise: {
+				connect: {
+					id: createUserDto.enterpriseId,
+				},
+			},
 		})
 
-		return user
+		return {
+			message: SuccessMessagesHelper.USER_CREATED,
+		}
 	}
 
-	async delete(user_id: string) {
-		const userExists = await this.userRepository.findById(user_id)
+	async delete(userId: string) {
+		const userExists = await this.userRepository.findById(userId)
 
 		if (!userExists) {
 			throw new NotFoundException(ErrorMessagesHelper.USER_NOT_FOUND)
 		}
 
-		return await this.userRepository.delete(user_id)
+		await this.userRepository.delete(userId)
+
+		return {
+			message: SuccessMessagesHelper.USER_DELETED,
+		}
 	}
 
-	async update(updateUserDto: UpdateUserDto, user_id: string) {
-		const userExists = await this.userRepository.findById(user_id)
+	async update(updateUserDto: UpdateUserDto, userId: string) {
+		const userExists = await this.userRepository.findById(userId)
 
 		if (!userExists) {
 			throw new NotFoundException(ErrorMessagesHelper.USER_NOT_FOUND)
 		}
 
-		return this.userRepository.update(updateUserDto, user_id)
+		if (updateUserDto.email) {
+			const userWithSameEmail = await this.userRepository.findByEmail(
+				updateUserDto.email
+			)
+
+			if (userWithSameEmail) {
+				throw new ConflictException(
+					ErrorMessagesHelper.USER_WITH_SAME_EMAIL_CREATED
+				)
+			}
+		}
+
+		await this.userRepository.update(updateUserDto, userId)
+
+		return {
+			message: SuccessMessagesHelper.USER_UPDATED,
+		}
 	}
 
-	async profile(user_id: string) {
-		const user = await this.userRepository.findById(user_id)
+	async profile(userId: string) {
+		const user = await this.userRepository.profile(userId)
 
 		if (!user) {
 			throw new NotFoundException(ErrorMessagesHelper.USER_NOT_FOUND)
 		}
 
-		return {}
+		return user
 	}
 }

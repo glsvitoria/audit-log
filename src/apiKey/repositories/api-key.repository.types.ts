@@ -9,9 +9,9 @@ export interface IApiKeyRepository {
 	): Promise<CreateApiKeyReturn>
 	delete(apiKeyId: string): Promise<ApiKey>
 	deleteByEnterpriseId(enterpriseId: string): Promise<void>
-	disable(apiKey_id: string): Promise<ApiKey | null>
+	disable(apiKeyId: string): Promise<ApiKey | null>
 	disableByEnterpriseId(enterpriseId: string): Promise<void>
-	enable(apiKey_id: string): Promise<ApiKey | null>
+	enable(apiKeyId: string): Promise<ApiKey | null>
 	enableByEnterpriseId(enterpriseId: string): Promise<void>
 	findById(apiKeyId: string, enterpriseId?: string): Promise<ApiKey | null>
 	findEnabled(apiKey: string): Promise<ApiKey | null>

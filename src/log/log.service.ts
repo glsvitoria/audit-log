@@ -8,6 +8,7 @@ import { LogRepository } from './repositories/log.repository'
 import { FindAllPaginationDto } from './dto/find-all-pagination.dto'
 import { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
 import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
+import { SuccessMessagesHelper } from '@/common/helpers/success-messages.helper'
 
 @Injectable()
 export class LogService {
@@ -34,8 +35,22 @@ export class LogService {
 		})
 	}
 
+  async delete(logId: string, enterpriseId?: string) {
+    const log = await this.logRepository.findById(logId, enterpriseId)
+
+    if(!log) {
+      throw new NotFoundException(ErrorMessagesHelper.LOG_NOT_FOUND)
+    }
+
+    await this.logRepository.delete(logId)
+
+    return {
+      message: SuccessMessagesHelper.LOG_DELETED
+    }
+  }
+
 	async find(id: string) {
-		const log = await this.logRepository.find(id)
+		const log = await this.logRepository.findById(id)
 
 		if (!log) {
 			throw new NotFoundException(ErrorMessagesHelper.LOG_NOT_FOUND)
@@ -44,7 +59,14 @@ export class LogService {
 		return log
 	}
 
-	async findAll(findAllPaginationDto: FindAllPaginationDto) {
+	async findAll(
+		findAllPaginationDto: FindAllPaginationDto,
+		enterpriseId?: string
+	) {
+		if (enterpriseId) {
+			findAllPaginationDto.enterpriseId = enterpriseId
+		}
+
 		return this.logRepository.findAll(findAllPaginationDto)
 	}
 }

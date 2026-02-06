@@ -16,10 +16,10 @@ export class UserRepository implements IUserRepository {
 		return await prisma.user.create({ data: user })
 	}
 
-	async delete(user_id: string): Promise<User> {
+	async delete(userId: string): Promise<User> {
 		return await this.prismaService.user.delete({
 			where: {
-				id: user_id,
+				id: userId,
 			},
 		})
 	}
@@ -45,18 +45,18 @@ export class UserRepository implements IUserRepository {
 		})
 	}
 
-	async findById(user_id: string) {
+	async findById(userId: string) {
 		return await this.prismaService.user.findFirst({
 			where: {
-				id: user_id,
+				id: userId,
 			},
 		})
 	}
 
-	async profile(user_id: string) {
+	async profile(userId: string) {
 		return await this.prismaService.user.findFirst({
 			where: {
-				id: user_id,
+				id: userId,
 			},
 			select: {
 				email: true,
@@ -70,14 +70,14 @@ export class UserRepository implements IUserRepository {
 		})
 	}
 
-	async update(user: Prisma.UserUpdateInput, user_id: string): Promise<User> {
+	async update(user: Prisma.UserUpdateInput, userId: string): Promise<User> {
 		return await this.prismaService.user.update({
 			data: {
 				email: user.email,
 				name: user.email,
 			},
 			where: {
-				id: user_id,
+				id: userId,
 			},
 		})
 	}

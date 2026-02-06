@@ -1,4 +1,3 @@
-import { Expose } from 'class-transformer'
 import { IsNotEmpty, IsObject, IsOptional, IsString } from 'class-validator'
 
 export class CreateLogDto {
@@ -16,14 +15,12 @@ export class CreateLogDto {
 	@IsOptional()
 	entity?: string
 
-	@Expose({ name: 'entity_id' })
 	@IsString({
 		message: 'O ID da entidade deve ser uma string',
 	})
 	@IsOptional()
 	entityId: string
 
-	@Expose({ name: 'actor_role' })
 	@IsString({
 		message: 'O cargo do autor deve ser uma string',
 	})
@@ -32,7 +29,6 @@ export class CreateLogDto {
 	})
 	actorRole: string
 
-	@Expose({ name: 'actor_id' })
 	@IsString({
 		message: 'O ID do autor deve ser uma string',
 	})
@@ -41,14 +37,12 @@ export class CreateLogDto {
 	})
 	actorId: string
 
-	@Expose({ name: 'old_data' })
 	@IsObject({
 		message: 'Os dados antigos devem ser um objeto',
 	})
 	@IsOptional()
 	oldData?: any
 
-	@Expose({ name: 'new_data' })
 	@IsObject({
 		message: 'Os dados novos devem ser um objeto',
 	})

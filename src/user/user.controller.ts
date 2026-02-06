@@ -7,7 +7,6 @@ import {
 	Get,
 	HttpCode,
 	Param,
-	ParseUUIDPipe,
 	Post,
 	Put,
 } from '@nestjs/common'
@@ -16,6 +15,7 @@ import { UserService } from './user.service'
 import { UpdateUserDto } from './dto/update.dto'
 import { CurrentUser } from '@/common/decorators/current-user.decorator'
 import type { AuthenticatedUser } from '@/common/types/authenticated-user'
+import { ValidationUUID } from '@/common/pipes/validation-uuid.pipe'
 
 @Controller('/user')
 export class UserController {
@@ -26,21 +26,6 @@ export class UserController {
 	@AccessTokenAuth(UserRole.ADMIN)
 	create(@Body() createUserDto: CreateUserDto) {
 		return this.userService.create(createUserDto)
-	}
-
-	@Delete(':user_id')
-	@AccessTokenAuth(UserRole.ADMIN)
-	delete(@Param('user_id', new ParseUUIDPipe()) user_id: string) {
-		return this.userService.delete(user_id)
-	}
-
-	@Put(':user_id')
-	@AccessTokenAuth(UserRole.ADMIN)
-	update(
-		@Body() updateUserDto: UpdateUserDto,
-		@Param('user_id', new ParseUUIDPipe()) user_id: string
-	) {
-		return this.userService.update(updateUserDto, user_id)
 	}
 
 	@Put('/profile')
@@ -56,5 +41,20 @@ export class UserController {
 	@AccessTokenAuth(UserRole.ENTERPRISE)
 	profile(@CurrentUser() user: AuthenticatedUser) {
 		return this.userService.profile(user.sub)
+	}
+
+	@Delete(':userId')
+	@AccessTokenAuth(UserRole.ADMIN)
+	delete(@Param('userId', new ValidationUUID()) userId: string) {
+		return this.userService.delete(userId)
+	}
+
+	@Put(':userId')
+	@AccessTokenAuth(UserRole.ADMIN)
+	update(
+		@Body() updateUserDto: UpdateUserDto,
+		@Param('userId', new ValidationUUID()) userId: string
+	) {
+		return this.userService.update(updateUserDto, userId)
 	}
 }

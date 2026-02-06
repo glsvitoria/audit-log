@@ -1,12 +1,10 @@
 import {
-	BadRequestException,
 	Body,
 	Controller,
 	Delete,
 	Get,
 	HttpCode,
 	Param,
-	ParseUUIDPipe,
 	Patch,
 	Post,
 	Put,
@@ -64,7 +62,7 @@ export class EnterpriseController {
 	@Put(':enterpriseId')
 	update(
 		@Body() updateEnterpriseDto: UpdateEnterpriseDto,
-		@Param('enterpriseId', new ParseUUIDPipe()) enterpriseId: string
+		@Param('enterpriseId', new ValidationUUID()) enterpriseId: string
 	) {
 		return this.enterpriseService.update(enterpriseId, updateEnterpriseDto)
 	}

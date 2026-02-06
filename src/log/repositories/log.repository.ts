@@ -12,8 +12,18 @@ export class LogRepository implements ILogRepository {
 		return await this.prismaService.log.create({ data: log })
 	}
 
-	async find(log_id: string) {
-		return await this.prismaService.log.findFirst({ where: { id: log_id } })
+	async delete(logId: string) {
+		return await this.prismaService.log.delete({
+			where: {
+				id: logId,
+			},
+		})
+	}
+
+	async findById(logId: string, enterpriseId?: string) {
+		return await this.prismaService.log.findFirst({
+			where: { id: logId, enterpriseId },
+		})
 	}
 
 	async findAll(findAllPaginationDto: FindAllPaginationDto) {
@@ -36,6 +46,7 @@ export class LogRepository implements ILogRepository {
 				},
 			}),
 		])
+
 		return {
 			logs,
 			total,

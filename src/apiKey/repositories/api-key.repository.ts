@@ -56,13 +56,13 @@ export class ApiKeyRepository implements IApiKeyRepository {
 		})
 	}
 
-	async disable(apiKey_id: string) {
+	async disable(apiKeyId: string) {
 		return await this.prismaService.apiKey.update({
 			data: {
 				disabledAt: new Date(),
 			},
 			where: {
-				id: apiKey_id,
+				id: apiKeyId,
 			},
 		})
 	}
@@ -83,13 +83,13 @@ export class ApiKeyRepository implements IApiKeyRepository {
 		})
 	}
 
-	async enable(apiKey_id: string) {
+	async enable(apiKeyId: string) {
 		return await this.prismaService.apiKey.update({
 			data: {
 				disabledAt: null,
 			},
 			where: {
-				id: apiKey_id,
+				id: apiKeyId,
 			},
 		})
 	}

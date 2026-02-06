@@ -200,10 +200,10 @@
 
 ### POST `/user` - Criar Usuário 🔒 ADMIN
 
-- [ ] ⏳ Criar usuário ENTERPRISE vinculado a empresa
-- [ ] ⏳ Criar usuário com email duplicado (deve retornar erro)
-- [ ] ⏳ Criar usuário com senhas não correspondentes (deve retornar erro)
-- [ ] ⏳ Criar usuário sem campos obrigatórios (deve retornar erro)
+- [✅] ⏳ Criar usuário ENTERPRISE vinculado a empresa
+- [✅] ⏳ Criar usuário com email duplicado (deve retornar erro)
+- [✅] ⏳ Criar usuário com senhas não correspondentes (deve retornar erro)
+- [✅] ⏳ Criar usuário sem campos obrigatórios (deve retornar erro)
 
 **Payload de teste:**
 
@@ -213,22 +213,21 @@
 	"email": "maria@teste.com",
 	"password": "senha123",
 	"confirmPassword": "senha123",
-	"role": "ADMIN",
 	"enterpriseId": "uuid-da-empresa"
 }
 ```
 
 ### GET `/user/profile` - Perfil do Usuário 🔒 ENTERPRISE
 
-- [ ] ⏳ Buscar perfil do usuário logado
-- [ ] ⏳ Validar que retorna dados da empresa vinculada
-- [ ] ⏳ Validar que não retorna senha
+- [✅] ⏳ Buscar perfil do usuário logado
+- [✅] ⏳ Validar que retorna dados da empresa vinculada
+- [✅] ⏳ Validar que não retorna senha
 
 ### PUT `/user/profile` - Atualizar Perfil 🔒 ENTERPRISE
 
-- [ ] ⏳ Atualizar nome do usuário
-- [ ] ⏳ Atualizar email do usuário
-- [ ] ⏳ Validar que não pode usar email duplicado
+- [✅] ⏳ Atualizar nome do usuário
+- [✅] ⏳ Atualizar email do usuário
+- [✅] ⏳ Validar que não pode usar email duplicado
 
 **Payload de teste:**
 
@@ -243,12 +242,13 @@
 
 - [ ] ⏳ Atualizar dados de qualquer usuário
 - [ ] ⏳ Atualizar usuário inexistente (deve retornar erro)
+# OBS: usuário deletado com email X, e usuário novo quer cadastrar com esse email X. Porém é @unique no banco.
 
 ### DELETE `/user/:user_id` - Deletar Usuário 🔒 ADMIN
 
-- [ ] ⏳ Deletar usuário existente (soft delete)
-- [ ] ⏳ Deletar usuário inexistente (deve retornar erro)
-- [ ] ⏳ Validar que usuário deletado não pode fazer login
+- [✅] ⏳ Deletar usuário existente (soft delete)
+- [✅] ⏳ Deletar usuário inexistente (deve retornar erro)
+- [✅] ⏳ Validar que usuário deletado não pode fazer login
 
 ---
 
@@ -256,12 +256,12 @@
 
 ### POST `/log` - Criar Log 🔑 API Key
 
-- [ ] ⏳ Criar log com todos os campos
-- [ ] ⏳ Criar log com campos opcionais vazios
-- [ ] ⏳ Criar log sem API Key (deve retornar erro)
-- [ ] ⏳ Criar log com API Key inválida (deve retornar erro)
-- [ ] ⏳ Criar log com API Key desabilitada (deve retornar erro)
-- [ ] ⏳ Validar que lastUsedAt da API Key é atualizado
+- [✅] ⏳ Criar log com todos os campos
+- [✅] ⏳ Criar log com campos opcionais vazios
+- [✅] ⏳ Criar log sem API Key (deve retornar erro)
+- [✅] ⏳ Criar log com API Key inválida (deve retornar erro)
+- [✅] ⏳ Criar log com API Key desabilitada (deve retornar erro)
+- [✅] ⏳ Validar que lastUsedAt da API Key é atualizado
 
 **Headers:**
 
@@ -287,24 +287,29 @@ x-api-key: ak_1234567890abcdef...
 }
 ```
 
-### GET `/log/:log_id` - Buscar Log 🔑 API Key
+### GET `/log/:logId` - Buscar Log 🔑 API Key
 
-- [ ] ⏳ Buscar log existente
-- [ ] ⏳ Buscar log inexistente (deve retornar erro)
+- [✅] ⏳ Buscar log existente
+- [✅] ⏳ Buscar log inexistente (deve retornar erro)
 - [ ] ⏳ Buscar log deletado (deve retornar erro)
-- [ ] ⏳ Validar UUID inválido (deve retornar erro)
+- [✅] ⏳ Validar UUID inválido (deve retornar erro)
 
-### GET `/log` - Listar Logs 🔑 API Key
+### DELETE `/log/:logId` - Deletar Usuário 🔒 ADMIN
 
-- [ ] ⏳ Listar todos os logs da empresa
-- [ ] ⏳ Listar com paginação (page=1, limit=10)
-- [ ] ⏳ Filtrar por action
-- [ ] ⏳ Filtrar por entity
-- [ ] ⏳ Filtrar por actorRole
+- [✅] ⏳ Deletar log existente (soft delete)
+- [✅] ⏳ Deletar log inexistente (deve retornar erro)
+
+### GET `/log` - Listar Logs 🔒 ADMIN/ENTERPRISE
+
+- [✅] ⏳ Listar todos os logs da empresa
+- [✅] ⏳ Listar com paginação (page=1, limit=10)
+- [✅] ⏳ Filtrar por action
+- [✅] ⏳ Filtrar por entity
+- [✅] ⏳ Filtrar por actorRole
 - [ ] ⏳ Filtrar por período (startDate e endDate)
-- [ ] ⏳ Validar que logs deletados não aparecem
-- [ ] ⏳ Validar ordenação por createdAt desc
-- [ ] ⏳ Validar que empresa só vê seus próprios logs
+- [✅] ⏳ Validar que logs deletados não aparecem
+- [✅] ⏳ Validar ordenação por createdAt desc
+- [✅] ⏳ Validar que empresa só vê seus próprios logs
 
 **Query params de teste:**
 
