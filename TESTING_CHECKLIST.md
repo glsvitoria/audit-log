@@ -99,7 +99,12 @@
 - [✅] ⏳ Desabilitar empresa ativa
 - [✅] ⏳ Desabilitar empresa inexistente (deve retornar erro)
 - [✅] ⏳ Validar que empresa desabilitada não pode fazer login
-- [ ] ⏳ Validar que API Keys da empresa param de funcionar
+- [✅] ⏳ Validar que API Keys da empresa param de funcionar
+
+### PATCH `/enterprise/:enterpriseId` - Habilitar Empresa 🔒 ADMIN
+
+- [✅] ⏳ Habilitar empresa desabilitada
+- [✅] ⏳ Habilitar empresa inexistente (deve retornar erro)
 
 ### DELETE `/enterprise/:enterpriseId` - Deletar Empresa 🔒 ADMIN
 
@@ -115,11 +120,11 @@
 
 ### POST `/api-key` - Criar API Key (Admin) 🔒 ADMIN
 
-- [ ] ⏳ Criar API Key para empresa válida
-- [ ] ⏳ Criar API Key com descrição
-- [ ] ⏳ Criar API Key sem descrição (opcional)
-- [ ] ⏳ Criar API Key para empresa inexistente (deve retornar erro)
-- [ ] ⏳ Validar formato da API Key retornada (ak\_...)
+- [✅] ⏳ Criar API Key para empresa válida
+- [✅] ⏳ Criar API Key com descrição
+- [✅] ⏳ Criar API Key sem descrição (opcional)
+- [✅] ⏳ Criar API Key para empresa inexistente (deve retornar erro)
+- [✅] ⏳ Validar formato da API Key retornada (ak\_...)
 
 **Payload de teste:**
 
@@ -132,9 +137,9 @@
 
 ### POST `/api-key/enterprise` - Criar API Key (Enterprise) 🔒 ENTERPRISE
 
-- [ ] ⏳ Empresa criar sua própria API Key
-- [ ] ⏳ Criar com descrição opcional
-- [ ] ⏳ Validar que enterpriseId é pego do token JWT
+- [✅] ⏳ Empresa criar sua própria API Key
+- [✅] ⏳ Criar com descrição opcional
+- [✅] ⏳ Validar que enterpriseId é pego do token JWT
 
 **Payload de teste:**
 
@@ -146,11 +151,11 @@
 
 ### GET `/api-key` - Listar API Keys 🔒 ADMIN/ENTERPRISE
 
-- [ ] ⏳ ADMIN: Listar todas as API Keys
-- [ ] ⏳ ENTERPRISE: Listar apenas suas API Keys
-- [ ] ⏳ Listar com paginação
-- [ ] ⏳ Validar que API Keys deletadas não aparecem
-- [ ] ⏳ Validar campo lastUsedAt
+- [✅] ⏳ ADMIN: Listar todas as API Keys
+- [✅] ⏳ ENTERPRISE: Listar apenas suas API Keys
+- [✅] ⏳ Listar com paginação
+- [✅] ⏳ Validar que API Keys deletadas não aparecem
+- [✅] ⏳ Validar campo lastUsedAt
 
 **Query params de teste:**
 
@@ -160,9 +165,9 @@
 
 ### PUT `/api-key/:apiKeyId` - Atualizar API Key 🔒 ADMIN/ENTERPRISE
 
-- [ ] ⏳ Atualizar descrição da API Key
-- [ ] ⏳ ENTERPRISE: Tentar atualizar API Key de outra empresa (deve retornar erro)
-- [ ] ⏳ Atualizar API Key inexistente (deve retornar erro)
+- [✅] ⏳ Atualizar descrição da API Key
+- [✅] ⏳ ENTERPRISE: Tentar atualizar API Key de outra empresa (deve retornar erro)
+- [✅] ⏳ Atualizar API Key inexistente (deve retornar erro)
 
 **Payload de teste:**
 
@@ -174,15 +179,20 @@
 
 ### PATCH `/api-key/:apiKeyId` - Desabilitar API Key 🔒 ADMIN/ENTERPRISE
 
-- [ ] ⏳ Desabilitar API Key ativa
-- [ ] ⏳ Validar que API Key desabilitada não funciona mais
-- [ ] ⏳ ENTERPRISE: Tentar desabilitar API Key de outra empresa (deve retornar erro)
+- [✅] ⏳ Desabilitar API Key ativa
+- [✅] ⏳ Validar que API Key desabilitada não funciona mais
+- [✅] ⏳ ENTERPRISE: Tentar desabilitar API Key de outra empresa (deve retornar erro)
+
+### PATCH `/api-key/:apiKeyId` - Habilitar API Key 🔒 ADMIN/ENTERPRISE
+
+- [✅] ⏳ Habilita API Key desativada
+- [✅] ⏳ ENTERPRISE: Tentar habilitar API Key de outra empresa (deve retornar erro)
 
 ### DELETE `/api-key/:apiKeyId` - Deletar API Key 🔒 ADMIN/ENTERPRISE
 
-- [ ] ⏳ Deletar API Key existente (soft delete)
-- [ ] ⏳ Validar que API Key deletada não aparece nas listagens
-- [ ] ⏳ ENTERPRISE: Tentar deletar API Key de outra empresa (deve retornar erro)
+- [✅] ⏳ Deletar API Key existente (soft delete)
+- [✅] ⏳ Validar que API Key deletada não aparece nas listagens
+- [✅] ⏳ ENTERPRISE: Tentar deletar API Key de outra empresa (deve retornar erro)
 
 ---
 
@@ -190,7 +200,6 @@
 
 ### POST `/user` - Criar Usuário 🔒 ADMIN
 
-- [ ] ⏳ Criar usuário ADMIN
 - [ ] ⏳ Criar usuário ENTERPRISE vinculado a empresa
 - [ ] ⏳ Criar usuário com email duplicado (deve retornar erro)
 - [ ] ⏳ Criar usuário com senhas não correspondentes (deve retornar erro)

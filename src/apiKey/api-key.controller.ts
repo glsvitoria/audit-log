@@ -51,13 +51,22 @@ export class ApiKeyController {
 		return this.apiKeyService.delete(apiKeyId, user.enterpriseSub)
 	}
 
-	@Patch(':apiKeyId')
+	@Patch('/disable/:apiKeyId')
 	@AccessTokenAuth(UserRole.ADMIN, UserRole.ENTERPRISE)
 	disable(
 		@CurrentUser() user: AuthenticatedUser,
 		@Param('apiKeyId', new ParseUUIDPipe()) apiKeyId: string
 	) {
 		return this.apiKeyService.disable(apiKeyId, user.enterpriseSub)
+	}
+	
+  @Patch('/enable/:apiKeyId')
+	@AccessTokenAuth(UserRole.ADMIN, UserRole.ENTERPRISE)
+	enable(
+		@CurrentUser() user: AuthenticatedUser,
+		@Param('apiKeyId', new ParseUUIDPipe()) apiKeyId: string
+	) {
+		return this.apiKeyService.enable(apiKeyId, user.enterpriseSub)
 	}
 
 	@Get()

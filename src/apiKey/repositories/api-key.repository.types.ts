@@ -11,7 +11,9 @@ export interface IApiKeyRepository {
 	deleteByEnterpriseId(enterpriseId: string): Promise<void>
 	disable(apiKey_id: string): Promise<ApiKey | null>
 	disableByEnterpriseId(enterpriseId: string): Promise<void>
-	find(apiKey: string, enterpriseId?: string): Promise<ApiKey | null>
+	enable(apiKey_id: string): Promise<ApiKey | null>
+	enableByEnterpriseId(enterpriseId: string): Promise<void>
+	findById(apiKeyId: string, enterpriseId?: string): Promise<ApiKey | null>
 	findEnabled(apiKey: string): Promise<ApiKey | null>
 	findAll(findAllPaginationApiKeyDto: FindAllPaginationApiKeyDto): Promise<{
 		apiKeys: ApiKey[]

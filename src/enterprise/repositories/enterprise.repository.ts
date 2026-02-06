@@ -49,6 +49,22 @@ export class EnterpriseRepository implements IEnterpriseRepository {
 		})
 	}
 
+	async enable(
+		enterpriseId: string,
+		tx?: PrismaTransactionClient
+	): Promise<Enterprise> {
+		const prisma = tx ?? this.prismaService
+
+		return prisma.enterprise.update({
+			data: {
+				disabledAt: null,
+			},
+			where: {
+				id: enterpriseId,
+			},
+		})
+	}
+
 	async findActiveById(id: string): Promise<Enterprise | null> {
 		return this.prismaService.enterprise.findFirst({
 			where: {

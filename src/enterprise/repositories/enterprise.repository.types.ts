@@ -5,6 +5,7 @@ export interface IEnterpriseRepository {
 	create(enterprise: Prisma.EnterpriseCreateInput): Promise<Enterprise>
 	delete(enterpriseId: string): Promise<Enterprise | null>
 	disable(enterpriseId: string): Promise<Enterprise | null>
+	enable(enterpriseId: string): Promise<Enterprise | null>
 	findActiveById(id: string): Promise<Enterprise | null>
 	findAll(
 		findAllPaginationEnterpriseDto: FindAllPaginationEnterpriseDto

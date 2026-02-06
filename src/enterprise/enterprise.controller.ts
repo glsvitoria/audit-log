@@ -36,9 +36,14 @@ export class EnterpriseController {
 		return this.enterpriseService.delete(enterpriseId)
 	}
 
-	@Patch(':enterpriseId')
+	@Patch('/disable/:enterpriseId')
 	disable(@Param('enterpriseId', new ValidationUUID()) enterpriseId: string) {
 		return this.enterpriseService.disable(enterpriseId)
+	}
+	
+  @Patch('/enable/:enterpriseId')
+	enable(@Param('enterpriseId', new ValidationUUID()) enterpriseId: string) {
+		return this.enterpriseService.enable(enterpriseId)
 	}
 
 	@Get(':enterpriseId')

@@ -83,14 +83,54 @@ export class ApiKeyRepository implements IApiKeyRepository {
 		})
 	}
 
-	async find(apiKey: string, enterpriseId?: string) {
-		const apiKeyHashed = hashApiKey(apiKey)
+	async enable(apiKey_id: string) {
+		return await this.prismaService.apiKey.update({
+			data: {
+				disabledAt: null,
+			},
+			where: {
+				id: apiKey_id,
+			},
+		})
+	}
 
+	async enableByEnterpriseId(
+		enterpriseId: string,
+		tx?: PrismaTransactionClient
+	) {
+		const prisma = tx ?? this.prismaService
+
+		await prisma.apiKey.updateMany({
+			data: {
+				disabledAt: null,
+			},
+			where: {
+				enterpriseId: enterpriseId,
+			},
+		})
+	}
+
+	async findById(apiKeyId: string, enterpriseId?: string) {
 		const apiKeyFinde = await this.prismaService.apiKey.findFirst({
 			where: {
-				keyHash: apiKeyHashed,
-				deletedAt: null,
+				id: apiKeyId,
 				enterpriseId,
+			},
+		})
+
+		if (!apiKeyFinde) {
+			return null
+		}
+
+		return apiKeyFinde
+	}
+
+	async findEnableById(apiKeyId: string, enterpriseId?: string) {
+		const apiKeyFinde = await this.prismaService.apiKey.findFirst({
+			where: {
+				id: apiKeyId,
+				enterpriseId,
+				disabledAt: null,
 			},
 		})
 

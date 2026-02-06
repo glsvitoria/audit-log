@@ -13,6 +13,7 @@ import { hash } from 'bcryptjs'
 import { PrismaService } from '@/database/prisma/prisma.service'
 import { FindAllPaginationEnterpriseDto } from './dto/find-all-pagination.dto'
 import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
+import { SuccessMessagesHelper } from '@/common/helpers/success-messages.helper'
 
 @Injectable()
 export class EnterpriseService {
@@ -97,7 +98,7 @@ export class EnterpriseService {
 		])
 
 		return {
-			message: 'Empresa deletada com sucesso!',
+			message: SuccessMessagesHelper.ENTERPRISE_DELETED,
 		}
 	}
 
@@ -122,7 +123,32 @@ export class EnterpriseService {
 		})
 
 		return {
-			message: 'Empresa desabilitada com sucesso!',
+			message: SuccessMessagesHelper.ENTERPRISE_DISABLED,
+		}
+	}
+
+	async enable(enterpriseId: string) {
+		const enterprise = await this.enterpriseRepository.findById(enterpriseId)
+
+		if (!enterprise) {
+			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
+		}
+
+		if (!enterprise.disabledAt) {
+			throw new BadRequestException(
+				ErrorMessagesHelper.ENTERPRISE_ALREADY_ENABLED
+			)
+		}
+
+		await this.prismaService.$transaction(async (prisma) => {
+			await Promise.all([
+				this.enterpriseRepository.enable(enterpriseId, prisma),
+				this.apiKeyRepository.enableByEnterpriseId(enterpriseId, prisma),
+			])
+		})
+
+		return {
+			message: SuccessMessagesHelper.ENTERPRISE_ENABLED,
 		}
 	}
 
