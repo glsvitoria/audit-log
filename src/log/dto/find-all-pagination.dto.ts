@@ -1,3 +1,4 @@
+import { IsDateFormat } from '@/common/decorators/is-date-format'
 import { PaginationQueryDto } from '@/common/dtos/pagination-query.dto'
 import { Prisma } from '@/generated/prisma/client'
 import { IsEnum, IsOptional, IsString } from 'class-validator'
@@ -30,6 +31,14 @@ export class FindAllPaginationDto extends PaginationQueryDto<'createdAt'> {
 	@IsString()
 	@IsOptional()
 	actorId?: string
+
+	@IsDateFormat()
+	@IsOptional()
+	startDate?: string
+
+	@IsDateFormat()
+	@IsOptional()
+	endDate?: string
 
 	@IsString()
 	@IsOptional()
@@ -109,6 +118,30 @@ export class FindAllPaginationDto extends PaginationQueryDto<'createdAt'> {
 					{
 						enterpriseId: {
 							equals: this.enterpriseId,
+						},
+					},
+				],
+			})
+		}
+
+		if (this.startDate) {
+			AND.push({
+				OR: [
+					{
+						createdAt: {
+							gte: new Date(`${this.startDate}T00:00:00.000Z`),
+						},
+					},
+				],
+			})
+		}
+
+		if (this.endDate) {
+			AND.push({
+				OR: [
+					{
+						createdAt: {
+							lte: new Date(`${this.endDate}T23:59:59.999Z`),
 						},
 					},
 				],

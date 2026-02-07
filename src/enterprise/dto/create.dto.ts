@@ -13,11 +13,11 @@ export class CreateEnterpriseDto {
 	@IsEmail(
 		{},
 		{
-			message: 'O e-mail informado é inválido',
+			message: 'O email informado é inválido',
 		}
 	)
 	@IsNotEmpty({
-		message: 'O email não pode ser vazio',
+		message: 'O email é obrigatório e não pode ser vazio',
 	})
 	email: string
 
@@ -25,7 +25,7 @@ export class CreateEnterpriseDto {
 		message: 'O nome do responsável deve ser uma string',
 	})
 	@IsNotEmpty({
-		message: 'O nome do responsável não pode ser vazio',
+		message: 'O nome do responsável é obrigatório e não pode ser vazio',
 	})
 	responsibleName: string
 

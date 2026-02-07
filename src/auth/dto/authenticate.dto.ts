@@ -8,7 +8,7 @@ export class AuthenticateDto {
 		}
 	)
 	@IsNotEmpty({
-		message: 'O e-mail não poder ser vazio',
+		message: 'O e-mail é obrigatório e não poder ser vazio',
 	})
 	email: string
 
@@ -16,7 +16,7 @@ export class AuthenticateDto {
 		message: 'A senha deve ser uma string',
 	})
 	@IsNotEmpty({
-		message: 'A senha não poder ser vazia',
+		message: 'A senha é obrigatório e não poder ser vazia',
 	})
 	password: string
 }

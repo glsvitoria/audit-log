@@ -12,7 +12,7 @@ export abstract class PaginationQueryDto<T extends string = 'createdAt'> {
 
 	@IsNumber()
 	@IsNotEmpty({
-		message: 'O init não pode ser vazio',
+		message: 'O init é obrigatório e não pode ser vazio',
 	})
 	@Min(0, {
 		message: 'O init deve ser maior ou igual a 0',
@@ -22,7 +22,7 @@ export abstract class PaginationQueryDto<T extends string = 'createdAt'> {
 
 	@IsNumber()
 	@IsNotEmpty({
-		message: 'O limit não pode ser vazio',
+		message: 'O limit é obrigatório e não pode ser vazio',
 	})
 	@Min(1, {
 		message: 'O limit deve ser maior ou igual a 1',

@@ -11,7 +11,7 @@ export class CreateApiKeyDto {
 		message: 'O ID da empresa deve ser uma string',
 	})
 	@IsNotEmpty({
-		message: 'O ID da empresa não pode ser vazio',
+		message: 'O ID da empresa é obrigatório e não pode ser vazio',
 	})
 	enterpriseId: string
 }

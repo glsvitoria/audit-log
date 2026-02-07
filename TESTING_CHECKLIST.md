@@ -306,7 +306,7 @@ x-api-key: ak_1234567890abcdef...
 - [✅] ⏳ Filtrar por action
 - [✅] ⏳ Filtrar por entity
 - [✅] ⏳ Filtrar por actorRole
-- [ ] ⏳ Filtrar por período (startDate e endDate)
+- [✅] ⏳ Filtrar por período (startDate e endDate)
 - [✅] ⏳ Validar que logs deletados não aparecem
 - [✅] ⏳ Validar ordenação por createdAt desc
 - [✅] ⏳ Validar que empresa só vê seus próprios logs

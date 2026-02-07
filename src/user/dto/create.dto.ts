@@ -41,10 +41,10 @@ export class CreateUserDto {
 	confirmPassword: string
 
 	@IsUUID(4, {
-		message: 'O enterpriseId deve ser um UUID',
+		message: 'O ID da empresa deve ser um UUID',
 	})
 	@IsNotEmpty({
-		message: 'O enterpriseId não pode ser vazio',
+		message: 'O ID da empresa não pode ser vazio',
 	})
 	enterpriseId: string
 }
