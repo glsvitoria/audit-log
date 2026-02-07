@@ -240,8 +240,8 @@
 
 ### PUT `/user/:user_id` - Atualizar Usuário 🔒 ADMIN
 
-- [ ] ⏳ Atualizar dados de qualquer usuário
-- [ ] ⏳ Atualizar usuário inexistente (deve retornar erro)
+- [✅] ⏳ Atualizar dados de qualquer usuário
+- [✅] ⏳ Atualizar usuário inexistente (deve retornar erro)
 # OBS: usuário deletado com email X, e usuário novo quer cadastrar com esse email X. Porém é @unique no banco.
 
 ### DELETE `/user/:user_id` - Deletar Usuário 🔒 ADMIN
@@ -291,7 +291,7 @@ x-api-key: ak_1234567890abcdef...
 
 - [✅] ⏳ Buscar log existente
 - [✅] ⏳ Buscar log inexistente (deve retornar erro)
-- [ ] ⏳ Buscar log deletado (deve retornar erro)
+- [✅] ⏳ Buscar log deletado (deve retornar erro)
 - [✅] ⏳ Validar UUID inválido (deve retornar erro)
 
 ### DELETE `/log/:logId` - Deletar Usuário 🔒 ADMIN

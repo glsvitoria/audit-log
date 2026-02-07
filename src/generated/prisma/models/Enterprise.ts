@@ -218,11 +218,11 @@ export type EnterpriseOrderByWithRelationInput = {
 
 export type EnterpriseWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  email?: string
   AND?: Prisma.EnterpriseWhereInput | Prisma.EnterpriseWhereInput[]
   OR?: Prisma.EnterpriseWhereInput[]
   NOT?: Prisma.EnterpriseWhereInput | Prisma.EnterpriseWhereInput[]
   corporateReason?: Prisma.StringFilter<"Enterprise"> | string
+  email?: Prisma.StringFilter<"Enterprise"> | string
   createdAt?: Prisma.DateTimeFilter<"Enterprise"> | Date | string
   updatedAt?: Prisma.DateTimeNullableFilter<"Enterprise"> | Date | string | null
   disabledAt?: Prisma.DateTimeNullableFilter<"Enterprise"> | Date | string | null
@@ -230,7 +230,7 @@ export type EnterpriseWhereUniqueInput = Prisma.AtLeast<{
   apiKeys?: Prisma.ApiKeyListRelationFilter
   logs?: Prisma.LogListRelationFilter
   users?: Prisma.UserListRelationFilter
-}, "id" | "email">
+}, "id">
 
 export type EnterpriseOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

@@ -39,7 +39,7 @@ enum UserRole {
 model User {
   id        String @id @default(uuid())
   name      String
-  email     String @unique
+  email     String
   password  String
   role      UserRole @default(ENTERPRISE)
 
@@ -58,7 +58,7 @@ model User {
 model Enterprise {
   id    String @id @default(uuid())
   corporateReason  String @map("corporate_reason")
-  email String @unique
+  email String
 
   apiKeys ApiKey[]
   logs Log[]
