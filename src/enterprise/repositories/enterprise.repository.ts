@@ -1,151 +1,31 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
-import { IEnterpriseRepository } from './enterprise.repository.types'
-import { Enterprise } from '@/generated/prisma/client'
-import {
-	EnterpriseCreateInput,
-	EnterpriseUpdateInput,
-} from '@/generated/prisma/models'
-import {
-	PrismaService,
-	PrismaTransactionClient,
-} from '@/database/prisma/prisma.service'
-import { hashApiKey } from '@/utils/hash-api-key'
+import { Enterprise, Prisma } from '@/generated/prisma/client'
 import { FindAllPaginationEnterpriseDto } from '../dto/find-all-pagination.dto'
+import { PrismaTransactionClient } from '@/database/prisma/prisma.service'
 
-@Injectable()
-export class EnterpriseRepository implements IEnterpriseRepository {
-	constructor(private prismaService: PrismaService) {}
-
-	async create(
-		enterprise: EnterpriseCreateInput,
+export interface EnterpriseRepository {
+	create(
+		enterprise: Prisma.EnterpriseCreateInput,
 		tx?: PrismaTransactionClient
-	): Promise<Enterprise> {
-		const prisma = tx ?? this.prismaService
-
-		return prisma.enterprise.create({ data: enterprise })
-	}
-
-	async delete(enterpriseId: string): Promise<Enterprise> {
-		return this.prismaService.enterprise.delete({
-			where: {
-				id: enterpriseId,
-			},
-		})
-	}
-
-	async disable(
+	): Promise<Enterprise>
+	delete(enterpriseId: string): Promise<Enterprise | null>
+	disable(
 		enterpriseId: string,
 		tx?: PrismaTransactionClient
-	): Promise<Enterprise> {
-		const prisma = tx ?? this.prismaService
-
-		return prisma.enterprise.update({
-			data: {
-				disabledAt: new Date(),
-			},
-			where: {
-				id: enterpriseId,
-			},
-		})
-	}
-
-	async enable(
+	): Promise<Enterprise | null>
+	enable(
 		enterpriseId: string,
 		tx?: PrismaTransactionClient
-	): Promise<Enterprise> {
-		const prisma = tx ?? this.prismaService
-
-		return prisma.enterprise.update({
-			data: {
-				disabledAt: null,
-			},
-			where: {
-				id: enterpriseId,
-			},
-		})
-	}
-
-	async findActiveById(id: string): Promise<Enterprise | null> {
-		return this.prismaService.enterprise.findFirst({
-			where: {
-				id,
-				disabledAt: null,
-			},
-		})
-	}
-
-	async findAll(
+	): Promise<Enterprise | null>
+	findAll(
 		findAllPaginationEnterpriseDto: FindAllPaginationEnterpriseDto
-	) {
-		const [enterprises, total] = await Promise.all([
-			await this.prismaService.enterprise.findMany({
-				...findAllPaginationEnterpriseDto.pagination(),
-				where: {
-					...findAllPaginationEnterpriseDto.where(),
-				},
-				orderBy: {
-					[findAllPaginationEnterpriseDto.sort]: 'desc',
-				},
-			}),
-			await this.prismaService.enterprise.count({
-				where: {
-					...findAllPaginationEnterpriseDto.where(),
-				},
-			}),
-		])
-
-		return {
-			enterprises,
-			total,
-		}
-	}
-
-	async findByApiKey(apiKey: string): Promise<Enterprise | null> {
-		const apiKeyHashed = hashApiKey(apiKey)
-
-		const apiKeyFinde = await this.prismaService.apiKey.findFirst({
-			where: {
-				keyHash: apiKeyHashed,
-			},
-		})
-
-		if (!apiKeyFinde) return null
-
-		return this.prismaService.enterprise.findFirst({
-			where: {
-				id: apiKeyFinde.enterpriseId,
-			},
-		})
-	}
-
-	async findByEmail(email: string): Promise<Enterprise | null> {
-		return this.prismaService.enterprise.findFirst({ where: { email } })
-	}
-
-	async findById(id: string): Promise<Enterprise | null> {
-		return this.prismaService.enterprise.findFirst({ where: { id } })
-	}
-
-	async findByUserId(userId: string): Promise<Enterprise | null> {
-		const user = await this.prismaService.user.findFirst({
-			where: { id: userId },
-			include: {
-				enterprise: true,
-			},
-		})
-
-		return user?.enterprise ?? null
-	}
-
-	async update(
+	): Promise<{
+		enterprises: Enterprise[]
+		total: number
+	}>
+	findByEmail(email: string): Promise<Enterprise | null>
+	findById(id: string): Promise<Enterprise | null>
+	update(
 		enterpriseId: string,
-		enterprise: EnterpriseUpdateInput
-	): Promise<Enterprise> {
-		return this.prismaService.enterprise.update({
-			data: enterprise,
-			where: {
-				id: enterpriseId,
-			},
-		})
-	}
+		enterprise: Prisma.EnterpriseUpdateInput
+	): Promise<Enterprise>
 }

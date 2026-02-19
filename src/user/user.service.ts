@@ -5,12 +5,13 @@ import {
 	NotFoundException,
 } from '@nestjs/common'
 import { CreateUserDto } from './dto/create.dto'
-import { UserRepository } from './repositories/user.repository'
 import { hash } from 'bcryptjs'
 import { UpdateUserDto } from './dto/update.dto'
 import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
-import { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
 import { SuccessMessagesHelper } from '@/common/helpers/success-messages.helper'
+import type { UserRepository } from './repositories/user.repository'
+import { Enterprise } from '@/generated/prisma/client'
+import type { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
 
 @Injectable()
 export class UserService {
@@ -95,12 +96,23 @@ export class UserService {
 	}
 
 	async profile(userId: string) {
-		const user = await this.userRepository.profile(userId)
+		const user = await this.userRepository.findById(userId)
 
 		if (!user) {
 			throw new NotFoundException(ErrorMessagesHelper.USER_NOT_FOUND)
 		}
 
-		return user
+		let enterprise: Enterprise | null = null
+
+		if (user.enterpriseId) {
+			enterprise = await this.enterpriseRepository.findById(user.enterpriseId)
+		}
+
+		const { password, enterpriseId, ...userData } = user
+
+		return {
+			...userData,
+			enterprise,
+		}
 	}
 }

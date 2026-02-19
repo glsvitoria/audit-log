@@ -8,16 +8,17 @@ import { ApiKeyRepository } from './repositories/api-key.repository'
 import { FindAllPaginationApiKeyDto } from './dto/find-all-pagination.dto'
 import { UpdateApiKeyDto } from './dto/update.dto'
 import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
-import { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
 import { SuccessMessagesHelper } from '@/common/helpers/success-messages.helper'
-import { Enterprise } from '@/generated/prisma/client'
 import { CreateByEnterpriseApiKeyDto } from './dto/create-by-enterprise'
+import type { UserRepository } from '@/user/repositories/user.repository'
+import type { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
 
 @Injectable()
 export class ApiKeyService {
 	constructor(
 		private apiKeyRepository: ApiKeyRepository,
-		private enterpriseRepository: EnterpriseRepository
+		private enterpriseRepository: EnterpriseRepository,
+		private userRepository: UserRepository
 	) {}
 
 	async create(createApiKeyDto: CreateApiKeyDto) {
@@ -36,7 +37,15 @@ export class ApiKeyService {
 		createByEnterpriseApiKeyDto: CreateByEnterpriseApiKeyDto,
 		userId: string
 	) {
-		const enterprise = await this.enterpriseRepository.findByUserId(userId)
+		const user = await this.userRepository.findById(userId)
+
+		if (!user || !user.enterpriseId) {
+			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
+		}
+
+		const enterprise = await this.enterpriseRepository.findById(
+			user.enterpriseId
+		)
 
 		if (!enterprise) {
 			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
@@ -46,7 +55,15 @@ export class ApiKeyService {
 	}
 
 	async delete(apiKeyId: string, userId: string) {
-		const enterprise = await this.enterpriseRepository.findByUserId(userId)
+		const user = await this.userRepository.findById(userId)
+
+		if (!user || !user.enterpriseId) {
+			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
+		}
+
+		const enterprise = await this.enterpriseRepository.findById(
+			user.enterpriseId
+		)
 
 		const apiKey = await this.apiKeyRepository.findById(
 			apiKeyId,
@@ -65,7 +82,15 @@ export class ApiKeyService {
 	}
 
 	async disable(apiKeyId: string, userId: string) {
-		const enterprise = await this.enterpriseRepository.findByUserId(userId)
+		const user = await this.userRepository.findById(userId)
+
+		if (!user || !user.enterpriseId) {
+			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
+		}
+
+		const enterprise = await this.enterpriseRepository.findById(
+			user.enterpriseId
+		)
 
 		const apiKey = await this.apiKeyRepository.findById(
 			apiKeyId,
@@ -90,7 +115,14 @@ export class ApiKeyService {
 	}
 
 	async enable(apiKeyId: string, userId: string) {
-		const enterprise = await this.enterpriseRepository.findByUserId(userId)
+		const user = await this.userRepository.findById(userId)
+
+    if (!user || !user.enterpriseId) {
+			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
+		}
+
+		const enterprise = await this.enterpriseRepository.findById(user.enterpriseId)
+
 
 		const apiKey = await this.apiKeyRepository.findById(
 			apiKeyId,
@@ -116,7 +148,14 @@ export class ApiKeyService {
 		findAllPaginationApiKeyDto: FindAllPaginationApiKeyDto,
 		userId: string
 	) {
-		const enterprise = await this.enterpriseRepository.findByUserId(userId)
+		const user = await this.userRepository.findById(userId)
+
+    if (!user || !user.enterpriseId) {
+			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
+		}
+
+		const enterprise = await this.enterpriseRepository.findById(user.enterpriseId)
+
 
 		if (enterprise) findAllPaginationApiKeyDto.enterpriseId = enterprise.id
 
@@ -128,7 +167,14 @@ export class ApiKeyService {
 		apiKeyId: string,
 		userId: string
 	) {
-		const enterprise = await this.enterpriseRepository.findByUserId(userId)
+		const user = await this.userRepository.findById(userId)
+
+    if (!user || !user.enterpriseId) {
+			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
+		}
+
+		const enterprise = await this.enterpriseRepository.findById(user.enterpriseId)
+
 
 		const apiKey = await this.apiKeyRepository.findById(
 			apiKeyId,

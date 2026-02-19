@@ -6,20 +6,24 @@ import {
 import { CreateLogDto } from './dto/create.dto'
 import { LogRepository } from './repositories/log.repository'
 import { FindAllPaginationDto } from './dto/find-all-pagination.dto'
-import { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
 import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
 import { SuccessMessagesHelper } from '@/common/helpers/success-messages.helper'
+import type { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
+import type { UserRepository } from '@/user/repositories/user.repository'
+import { ApiKeyRepository } from '@/apiKey/repositories/api-key.repository'
 
 @Injectable()
 export class LogService {
 	constructor(
+    private apiKeyRepository: ApiKeyRepository,
 		private enterpriseRepository: EnterpriseRepository,
-		private logRepository: LogRepository
+		private logRepository: LogRepository,
+		private userRepository: UserRepository
 	) {}
 
 	async create(createLogDto: CreateLogDto, enterpriseApiKey: string) {
 		const enterprise =
-			await this.enterpriseRepository.findByApiKey(enterpriseApiKey)
+			await this.apiKeyRepository.findEnabled(enterpriseApiKey)
 
 		if (!enterprise) {
 			throw new UnauthorizedException(ErrorMessagesHelper.INVALID_CREDENTIALS)
@@ -36,9 +40,12 @@ export class LogService {
 	}
 
 	async delete(logId: string, userId: string) {
-		const enterprise = await this.enterpriseRepository.findByUserId(userId)
+		const user = await this.userRepository.findById(userId)
 
-		const log = await this.logRepository.findById(logId, enterprise?.id)
+		const log = await this.logRepository.findById(
+			logId,
+			user?.enterpriseId ?? undefined
+		)
 
 		if (!log) {
 			throw new NotFoundException(ErrorMessagesHelper.LOG_NOT_FOUND)
@@ -62,10 +69,10 @@ export class LogService {
 	}
 
 	async findAll(findAllPaginationDto: FindAllPaginationDto, userId: string) {
-		const enterprise = await this.enterpriseRepository.findByUserId(userId)
+		const user = await this.userRepository.findById(userId)
 
-		if (enterprise) {
-			findAllPaginationDto.enterpriseId = enterprise.id
+		if (user?.enterpriseId) {
+			findAllPaginationDto.enterpriseId = user.enterpriseId
 		}
 
 		return this.logRepository.findAll(findAllPaginationDto)

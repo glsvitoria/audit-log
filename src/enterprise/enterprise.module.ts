@@ -1,17 +1,17 @@
 import { Module } from '@nestjs/common'
 import { EnterpriseController } from './enterprise.controller'
 import { EnterpriseService } from './enterprise.service'
-import { EnterpriseRepository } from './repositories/enterprise.repository'
 import { ApiKeyRepository } from '@/apiKey/repositories/api-key.repository'
-import { UserRepository } from '@/user/repositories/user.repository'
+import { PrismaEnterpriseRepository } from './repositories/prisma-enterprise.repository'
+import { PrismaUserRepository } from '@/user/repositories/prisma-user.repository'
 
 @Module({
 	controllers: [EnterpriseController],
 	providers: [
 		ApiKeyRepository,
 		EnterpriseService,
-		EnterpriseRepository,
-		UserRepository,
+		PrismaEnterpriseRepository,
+		PrismaUserRepository,
 	],
 	exports: [EnterpriseService],
 })

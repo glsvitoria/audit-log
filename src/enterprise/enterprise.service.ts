@@ -5,15 +5,16 @@ import {
 	NotFoundException,
 } from '@nestjs/common'
 import { UpdateEnterpriseDto } from './dto/update.dto'
-import { EnterpriseRepository } from './repositories/enterprise.repository'
+
 import { ApiKeyRepository } from '@/apiKey/repositories/api-key.repository'
 import { CreateEnterpriseDto } from './dto/create.dto'
-import { UserRepository } from '@/user/repositories/user.repository'
 import { hash } from 'bcryptjs'
 import { PrismaService } from '@/database/prisma/prisma.service'
 import { FindAllPaginationEnterpriseDto } from './dto/find-all-pagination.dto'
 import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
 import { SuccessMessagesHelper } from '@/common/helpers/success-messages.helper'
+import type { UserRepository } from '@/user/repositories/user.repository'
+import type { EnterpriseRepository } from './repositories/enterprise.repository'
 
 @Injectable()
 export class EnterpriseService {

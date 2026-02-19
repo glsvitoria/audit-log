@@ -1,21 +1,17 @@
-import {
-	BadRequestException,
-	Injectable,
-	UnauthorizedException,
-} from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { AuthenticateDto } from './dto/authenticate.dto'
-import { AuthRepository } from './repositories/auth.repository'
 import { compare } from 'bcryptjs'
 import { JwtService } from '@nestjs/jwt'
 import { env } from '@/config/env-validation'
 import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
-import { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
 import { UserRole } from '@/generated/prisma/enums'
+import type { UserRepository } from '@/user/repositories/user.repository'
+import type { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
 
 @Injectable()
 export class AuthService {
 	constructor(
-		private authRepository: AuthRepository,
+		private userRepository: UserRepository,
 		private enterpriseRepository: EnterpriseRepository,
 		private jwtService: JwtService
 	) {}
@@ -23,14 +19,14 @@ export class AuthService {
 	async authenticate(authenticateDto: AuthenticateDto) {
 		const { email, password } = authenticateDto
 
-		const user = await this.authRepository.findByEmail(email)
+		const user = await this.userRepository.findByEmail(email)
 
 		if (!user) {
 			throw new UnauthorizedException(ErrorMessagesHelper.INVALID_CREDENTIALS)
 		}
 
 		if (user.role === UserRole.ENTERPRISE) {
-			const enterprise = await this.enterpriseRepository.findActiveById(
+			const enterprise = await this.enterpriseRepository.findById(
 				user.enterpriseId as string
 			)
 
@@ -65,7 +61,7 @@ export class AuthService {
 
 		const { sub } = this.jwtService.decode(accessToken)
 
-		const user = await this.authRepository.findById(sub)
+		const user = await this.userRepository.findById(sub)
 
 		if (!user) {
 			throw new UnauthorizedException(ErrorMessagesHelper.INVALID_CREDENTIALS)
