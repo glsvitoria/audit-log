@@ -1,17 +1,17 @@
 import { Module } from '@nestjs/common'
 import { LogController } from './log.controller'
 import { LogService } from './log.service'
-import { LogRepository } from './repositories/log.repository'
 import { PrismaEnterpriseRepository } from '@/enterprise/repositories/prisma-enterprise.repository'
-import { ApiKeyRepository } from '@/apiKey/repositories/api-key.repository'
+import { PrismaApiKeyRepository } from '@/apiKey/repositories/prisma-api-key.repository'
+import { PrismaLogRepository } from './repositories/prisma-log.repository'
 
 @Module({
 	controllers: [LogController],
 	providers: [
-		ApiKeyRepository,
 		LogService,
-		LogRepository,
+		PrismaApiKeyRepository,
 		PrismaEnterpriseRepository,
+		PrismaLogRepository,
 	],
 	exports: [LogService],
 })

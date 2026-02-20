@@ -748,6 +748,7 @@ export const ApiKeyScalarFieldEnum = {
   description: 'description',
   enterpriseId: 'enterpriseId',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   disabledAt: 'disabledAt',
   lastUsedAt: 'lastUsedAt',
   deletedAt: 'deletedAt'

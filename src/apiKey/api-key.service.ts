@@ -4,7 +4,6 @@ import {
 	NotFoundException,
 } from '@nestjs/common'
 import { CreateApiKeyDto } from './dto/create.dto'
-import { ApiKeyRepository } from './repositories/api-key.repository'
 import { FindAllPaginationApiKeyDto } from './dto/find-all-pagination.dto'
 import { UpdateApiKeyDto } from './dto/update.dto'
 import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
@@ -12,6 +11,7 @@ import { SuccessMessagesHelper } from '@/common/helpers/success-messages.helper'
 import { CreateByEnterpriseApiKeyDto } from './dto/create-by-enterprise'
 import type { UserRepository } from '@/user/repositories/user.repository'
 import type { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
+import type { ApiKeyRepository } from './repositories/api-key.types'
 
 @Injectable()
 export class ApiKeyService {
@@ -51,7 +51,10 @@ export class ApiKeyService {
 			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
 		}
 
-		return await this.apiKeyRepository.create(createByEnterpriseApiKeyDto)
+		return await this.apiKeyRepository.create({
+			description: createByEnterpriseApiKeyDto.description,
+			enterpriseId: enterprise.id,
+		})
 	}
 
 	async delete(apiKeyId: string, userId: string) {
@@ -117,12 +120,13 @@ export class ApiKeyService {
 	async enable(apiKeyId: string, userId: string) {
 		const user = await this.userRepository.findById(userId)
 
-    if (!user || !user.enterpriseId) {
+		if (!user || !user.enterpriseId) {
 			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
 		}
 
-		const enterprise = await this.enterpriseRepository.findById(user.enterpriseId)
-
+		const enterprise = await this.enterpriseRepository.findById(
+			user.enterpriseId
+		)
 
 		const apiKey = await this.apiKeyRepository.findById(
 			apiKeyId,
@@ -150,12 +154,13 @@ export class ApiKeyService {
 	) {
 		const user = await this.userRepository.findById(userId)
 
-    if (!user || !user.enterpriseId) {
+		if (!user || !user.enterpriseId) {
 			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
 		}
 
-		const enterprise = await this.enterpriseRepository.findById(user.enterpriseId)
-
+		const enterprise = await this.enterpriseRepository.findById(
+			user.enterpriseId
+		)
 
 		if (enterprise) findAllPaginationApiKeyDto.enterpriseId = enterprise.id
 
@@ -169,12 +174,13 @@ export class ApiKeyService {
 	) {
 		const user = await this.userRepository.findById(userId)
 
-    if (!user || !user.enterpriseId) {
+		if (!user || !user.enterpriseId) {
 			throw new NotFoundException(ErrorMessagesHelper.ENTERPRISE_NOT_FOUND)
 		}
 
-		const enterprise = await this.enterpriseRepository.findById(user.enterpriseId)
-
+		const enterprise = await this.enterpriseRepository.findById(
+			user.enterpriseId
+		)
 
 		const apiKey = await this.apiKeyRepository.findById(
 			apiKeyId,

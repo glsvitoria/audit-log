@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import {
-	CreateApiKeyProps,
-	IApiKeyRepository,
-} from './api-key.repository.types'
+import { ApiKeyRepository, CreateApiKeyProps } from './api-key.types'
 import {
 	PrismaService,
 	PrismaTransactionClient,
@@ -14,7 +11,7 @@ import { FindAllPaginationApiKeyDto } from '../dto/find-all-pagination.dto'
 import { Prisma } from '@/generated/prisma/client'
 
 @Injectable()
-export class ApiKeyRepository implements IApiKeyRepository {
+export class PrismaApiKeyRepository implements ApiKeyRepository {
 	constructor(private prismaService: PrismaService) {}
 
 	async create(props: CreateApiKeyProps, tx?: PrismaTransactionClient) {
@@ -25,13 +22,13 @@ export class ApiKeyRepository implements IApiKeyRepository {
 
 		await prisma.apiKey.create({
 			data: {
-				keyHash: apiKeyHashed,
+				description: props.description,
 				enterprise: {
 					connect: {
 						id: props.enterpriseId,
 					},
 				},
-				description: props.description,
+				keyHash: apiKeyHashed,
 			},
 		})
 
@@ -141,7 +138,7 @@ export class ApiKeyRepository implements IApiKeyRepository {
 		return apiKeyFinde
 	}
 
-	async findEnabled(apiKey: string) {
+	async findByApiKey(apiKey: string) {
 		const apiKeyHashed = hashApiKey(apiKey)
 
 		const apiKeyFinde = await this.prismaService.apiKey.findFirst({

@@ -1,55 +1,12 @@
-import { Injectable } from '@nestjs/common'
-import { ILogRepository } from './log.repository.types'
-import { Prisma } from '@/generated/prisma/client'
-import { PrismaService } from 'src/database/prisma/prisma.service'
+import { Log, Prisma } from '@/generated/prisma/client'
 import { FindAllPaginationDto } from '../dto/find-all-pagination.dto'
 
-@Injectable()
-export class LogRepository implements ILogRepository {
-	constructor(private prismaService: PrismaService) {}
-
-	async create(log: Prisma.LogCreateInput) {
-		return await this.prismaService.log.create({ data: log })
-	}
-
-	async delete(logId: string) {
-		return await this.prismaService.log.delete({
-			where: {
-				id: logId,
-			},
-		})
-	}
-
-	async findById(logId: string, enterpriseId?: string) {
-		return await this.prismaService.log.findFirst({
-			where: { id: logId, enterpriseId },
-		})
-	}
-
-	async findAll(findAllPaginationDto: FindAllPaginationDto) {
-		const [logs, total] = await Promise.all([
-			await this.prismaService.log.findMany({
-				...findAllPaginationDto?.pagination(),
-				where: {
-					...findAllPaginationDto.where(),
-				},
-				orderBy: {
-					[findAllPaginationDto.sort]: 'desc',
-				},
-			}),
-			await this.prismaService.log.count({
-				where: {
-					...findAllPaginationDto.where(),
-				},
-				orderBy: {
-					[findAllPaginationDto.sort]: 'desc',
-				},
-			}),
-		])
-
-		return {
-			logs,
-			total,
-		}
-	}
+export interface LogRepository {
+	create(log: Prisma.LogCreateInput): Promise<Log>
+	delete(logId: string): Promise<Log>
+	findById(logId: string, enterpriseId?: string): Promise<Log | null>
+	findAll(findAllPaginationDto: FindAllPaginationDto): Promise<{
+		logs: Log[]
+		total: number
+	}>
 }

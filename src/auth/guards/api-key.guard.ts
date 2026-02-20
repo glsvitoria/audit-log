@@ -1,4 +1,4 @@
-import { ApiKeyRepository } from '@/apiKey/repositories/api-key.repository'
+import type { ApiKeyRepository } from '@/apiKey/repositories/api-key.types'
 import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
 import {
 	CanActivate,
@@ -19,7 +19,7 @@ export class ApiKeyGuard implements CanActivate {
 			throw new UnauthorizedException(ErrorMessagesHelper.API_KEY_EMPTY)
 		}
 
-		const apiKeyFinde = await this.apiKeyRepository.findEnabled(apiKey)
+		const apiKeyFinde = await this.apiKeyRepository.findByApiKey(apiKey)
 
 		if (!apiKeyFinde) {
 			throw new UnauthorizedException(ErrorMessagesHelper.API_KEY_INVALID)

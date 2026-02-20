@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common'
 import { UpdateEnterpriseDto } from './dto/update.dto'
 
-import { ApiKeyRepository } from '@/apiKey/repositories/api-key.repository'
 import { CreateEnterpriseDto } from './dto/create.dto'
 import { hash } from 'bcryptjs'
 import { PrismaService } from '@/database/prisma/prisma.service'
@@ -15,6 +14,7 @@ import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
 import { SuccessMessagesHelper } from '@/common/helpers/success-messages.helper'
 import type { UserRepository } from '@/user/repositories/user.repository'
 import type { EnterpriseRepository } from './repositories/enterprise.repository'
+import type { ApiKeyRepository } from '@/apiKey/repositories/api-key.types'
 
 @Injectable()
 export class EnterpriseService {

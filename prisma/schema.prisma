@@ -23,6 +23,7 @@ model ApiKey {
   enterpriseId  String     @map("enterprise_id")
 
   createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime? @updatedAt @map("updated_at")
   disabledAt    DateTime? @map("disabled_at")
   lastUsedAt    DateTime? @map("last_used_at")
   deletedAt     DateTime? @map("deleted_at")

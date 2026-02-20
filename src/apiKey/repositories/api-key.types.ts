@@ -2,7 +2,7 @@ import { PrismaTransactionClient } from '@/database/prisma/prisma.service'
 import { ApiKey, Prisma } from '@/generated/prisma/client'
 import { FindAllPaginationApiKeyDto } from '../dto/find-all-pagination.dto'
 
-export interface IApiKeyRepository {
+export interface ApiKeyRepository {
 	create(
 		props: CreateApiKeyProps,
 		tx?: PrismaTransactionClient
@@ -10,11 +10,17 @@ export interface IApiKeyRepository {
 	delete(apiKeyId: string): Promise<ApiKey>
 	deleteByEnterpriseId(enterpriseId: string): Promise<void>
 	disable(apiKeyId: string): Promise<ApiKey | null>
-	disableByEnterpriseId(enterpriseId: string): Promise<void>
+	disableByEnterpriseId(
+		enterpriseId: string,
+		tx?: PrismaTransactionClient
+	): Promise<void>
 	enable(apiKeyId: string): Promise<ApiKey | null>
-	enableByEnterpriseId(enterpriseId: string): Promise<void>
+	enableByEnterpriseId(
+		enterpriseId: string,
+		tx?: PrismaTransactionClient
+	): Promise<void>
 	findById(apiKeyId: string, enterpriseId?: string): Promise<ApiKey | null>
-	findEnabled(apiKey: string): Promise<ApiKey | null>
+	findByApiKey(apiKey: string): Promise<ApiKey | null>
 	findAll(findAllPaginationApiKeyDto: FindAllPaginationApiKeyDto): Promise<{
 		apiKeys: ApiKey[]
 		total: number
@@ -24,7 +30,7 @@ export interface IApiKeyRepository {
 }
 
 export interface CreateApiKeyProps {
-	enterpriseId?: string
+	enterpriseId: string
 	description?: string
 }
 

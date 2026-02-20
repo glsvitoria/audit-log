@@ -138,6 +138,7 @@ export class InMemoryEnterpriseRepository implements EnterpriseRepository {
 
 		return this.enterprises[index]
 	}
+
 	async findById(id: string) {
 		const index = this.enterprises.findIndex(
 			(enterprise) => enterprise.id === id
@@ -157,6 +158,10 @@ export class InMemoryEnterpriseRepository implements EnterpriseRepository {
 		const index = this.enterprises.findIndex(
 			(enterprise) => enterprise.id === enterpriseId && !enterprise.deletedAt
 		)
+
+		if (index === -1) {
+			throw new Error()
+		}
 
 		this.enterprises[index] = {
 			...this.enterprises[index],
