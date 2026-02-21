@@ -4,9 +4,10 @@ import { UserRepository } from './user.repository'
 import { randomUUID } from 'crypto'
 
 export class InMemoryUserRepository implements UserRepository {
-	private users: User[]
+	private users: User[] = []
 
 	constructor() {}
+
 	async create(user: UserCreateInput) {
 		const newUser: User = {
 			id: randomUUID(),

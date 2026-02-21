@@ -66,5 +66,7 @@ export class AuthService {
 		if (!user) {
 			throw new UnauthorizedException(ErrorMessagesHelper.INVALID_CREDENTIALS)
 		}
+
+    return true
 	}
 }

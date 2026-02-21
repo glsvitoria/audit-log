@@ -37,7 +37,7 @@ export class UserService {
 			)
 		}
 
-		const passwordHash = await hash(createUserDto.password, 8)
+		const passwordHash = await hash(createUserDto.password, 6)
 
 		await this.userRepository.create({
 			email: createUserDto.email,

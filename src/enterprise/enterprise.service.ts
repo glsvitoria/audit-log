@@ -55,7 +55,7 @@ export class EnterpriseService {
 				prisma
 			)
 
-			const passwordHash = await hash(createEnterpriseDto.password, 8)
+			const passwordHash = await hash(createEnterpriseDto.password, 6)
 
 			const [apiKey, _] = await Promise.all([
 				this.apiKeyRepository.create(
