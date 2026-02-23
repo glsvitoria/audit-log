@@ -5,7 +5,7 @@ export class UpdateUserDto {
 		message: 'O nome deve ser uma string',
 	})
 	@IsOptional()
-	name: string
+	name?: string
 
 	@IsEmail(
 		{},
@@ -14,5 +14,5 @@ export class UpdateUserDto {
 		}
 	)
 	@IsOptional()
-	email: string
+	email?: string
 }

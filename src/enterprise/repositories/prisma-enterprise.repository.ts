@@ -8,7 +8,6 @@ import {
 	PrismaService,
 	PrismaTransactionClient,
 } from '@/database/prisma/prisma.service'
-import { hashApiKey } from '@/utils/hash-api-key'
 import { FindAllPaginationEnterpriseDto } from '../dto/find-all-pagination.dto'
 import { EnterpriseRepository } from './enterprise.repository'
 

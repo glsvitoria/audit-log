@@ -16,7 +16,7 @@ describe('Auth Service', () => {
 		userRepository = new InMemoryUserRepository()
 		enterpriseRepository = new InMemoryEnterpriseRepository()
 		jwtService = new JwtService()
-		sut = new AuthService(userRepository, enterpriseRepository, jwtService)
+		sut = new AuthService(enterpriseRepository, jwtService, userRepository)
 	})
 
 	it('should be able to authenticate', async () => {

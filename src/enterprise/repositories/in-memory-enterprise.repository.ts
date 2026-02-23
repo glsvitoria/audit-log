@@ -76,7 +76,7 @@ export class InMemoryEnterpriseRepository implements EnterpriseRepository {
 		)
 
 		if (index === -1) {
-			throw new Error()
+			return null
 		}
 
 		this.enterprises[index] = {
@@ -102,6 +102,8 @@ export class InMemoryEnterpriseRepository implements EnterpriseRepository {
 		})
 
 		const enterprisesFiltered = enterprisesSorted.filter((enterprise) => {
+			if (enterprise.deletedAt) return false
+
 			if (
 				email &&
 				!enterprise.email.toUpperCase().includes(email.toUpperCase())
@@ -129,11 +131,11 @@ export class InMemoryEnterpriseRepository implements EnterpriseRepository {
 
 	async findByEmail(email: string) {
 		const index = this.enterprises.findIndex(
-			(enterprise) => enterprise.email === email
+			(enterprise) => enterprise.email === email && !enterprise.deletedAt
 		)
 
 		if (index === -1) {
-			throw new Error()
+			return null
 		}
 
 		return this.enterprises[index]
@@ -141,20 +143,17 @@ export class InMemoryEnterpriseRepository implements EnterpriseRepository {
 
 	async findById(id: string) {
 		const index = this.enterprises.findIndex(
-			(enterprise) => enterprise.id === id
+			(enterprise) => enterprise.id === id && !enterprise.deletedAt
 		)
 
 		if (index === -1) {
-			throw new Error()
+			return null
 		}
 
 		return this.enterprises[index]
 	}
 
-	async update(
-		enterpriseId: string,
-		enterprise: EnterpriseUpdateInput
-	): Promise<Enterprise> {
+	async update(enterpriseId: string, enterprise: EnterpriseUpdateInput) {
 		const index = this.enterprises.findIndex(
 			(enterprise) => enterprise.id === enterpriseId && !enterprise.deletedAt
 		)

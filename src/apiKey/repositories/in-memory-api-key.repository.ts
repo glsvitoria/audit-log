@@ -140,7 +140,7 @@ export class InMemoryApiKeyRepository implements ApiKeyRepository {
 		)
 
 		if (index === -1) {
-			throw new Error()
+			return null
 		}
 
 		return this.apiKeys[index]
@@ -154,7 +154,7 @@ export class InMemoryApiKeyRepository implements ApiKeyRepository {
 		)
 
 		if (index === -1) {
-			throw new Error()
+			return null
 		}
 
 		return this.apiKeys[index]
@@ -170,13 +170,10 @@ export class InMemoryApiKeyRepository implements ApiKeyRepository {
 			return 0
 		})
 
-		const apiKeysFiltered = apiKeysSorted.filter((enterprise) => {
-			if (
-				enterpriseId &&
-				!enterprise.enterpriseId
-					.toUpperCase()
-					.includes(enterpriseId.toUpperCase())
-			) {
+		const apiKeysFiltered = apiKeysSorted.filter((apiKey) => {
+			if (apiKey.deletedAt) return false
+
+			if (enterpriseId && apiKey.enterpriseId !== enterpriseId) {
 				return false
 			}
 

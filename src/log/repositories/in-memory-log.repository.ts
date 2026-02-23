@@ -54,7 +54,7 @@ export class InMemoryLogRepository implements LogRepository {
 		)
 
 		if (index === -1) {
-			throw new Error()
+			return null
 		}
 
 		return this.logs[index]
@@ -84,6 +84,8 @@ export class InMemoryLogRepository implements LogRepository {
 		})
 
 		const logsFiltered = logsSorted.filter((log) => {
+			if (log.deletedAt) return false
+
 			if (action && !log.action.toUpperCase().includes(action.toUpperCase())) {
 				return false
 			}

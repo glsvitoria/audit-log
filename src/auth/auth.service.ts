@@ -11,9 +11,9 @@ import type { EnterpriseRepository } from '@/enterprise/repositories/enterprise.
 @Injectable()
 export class AuthService {
 	constructor(
-		private userRepository: UserRepository,
 		private enterpriseRepository: EnterpriseRepository,
-		private jwtService: JwtService
+		private jwtService: JwtService,
+		private userRepository: UserRepository
 	) {}
 
 	async authenticate(authenticateDto: AuthenticateDto) {
@@ -67,6 +67,6 @@ export class AuthService {
 			throw new UnauthorizedException(ErrorMessagesHelper.INVALID_CREDENTIALS)
 		}
 
-    return true
+		return true
 	}
 }
