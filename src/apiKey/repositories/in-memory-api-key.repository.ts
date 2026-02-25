@@ -1,6 +1,6 @@
 import { ApiKey } from '@/generated/prisma/client'
 import { ApiKeyRepository, CreateApiKeyProps } from './api-key.types'
-import { ApiKeyCreateInput, ApiKeyUpdateInput } from '@/generated/prisma/models'
+import { ApiKeyUpdateInput } from '@/generated/prisma/models'
 import { FindAllPaginationApiKeyDto } from '../dto/find-all-pagination.dto'
 import { randomBytes, randomUUID } from 'crypto'
 import { hashApiKey } from '@/utils/hash-api-key'
