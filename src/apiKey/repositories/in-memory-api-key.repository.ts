@@ -147,10 +147,8 @@ export class InMemoryApiKeyRepository implements ApiKeyRepository {
 	}
 
 	async findByApiKey(apiKey: string) {
-		const apiKeyHashed = hashApiKey(apiKey)
-
 		const index = this.apiKeys.findIndex(
-			(apiKey) => apiKey.keyHash === apiKeyHashed && !apiKey.deletedAt
+			(apiKeyItem) => apiKeyItem.keyHash === apiKey && !apiKeyItem.deletedAt
 		)
 
 		if (index === -1) {

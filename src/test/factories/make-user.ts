@@ -1,28 +1,28 @@
 import { InMemoryUserRepository } from '@/user/repositories/in-memory-user.repository'
 import { hash } from 'bcryptjs'
 import { UserRole } from '@/generated/prisma/enums'
+import { randomUUID } from 'crypto'
 
 interface MakeUserOverride {
 	email?: string
 	name?: string
 	password?: string
-	enterpriseId?: string | null
+	enterpriseId?: string
 	role?: UserRole
 }
 
 export async function makeUser(
 	repository: InMemoryUserRepository,
-	params: MakeUserOverride = {}
+	override: MakeUserOverride = {}
 ) {
-	const password = params.password ?? '123456'
+	const password = override.password ?? '123456'
+	const enterpriseId = override.enterpriseId ?? randomUUID()
 
 	return repository.create({
-		email: params.email ?? 'johndoe@example.com',
-		name: params.name ?? 'John Doe',
+		email: override.email ?? 'johndoe@example.com',
+		name: override.name ?? 'John Doe',
 		password: await hash(password, 6),
-		enterprise: params.enterpriseId
-			? { connect: { id: params.enterpriseId } }
-			: undefined,
-		role: params.role ?? UserRole.ENTERPRISE,
+		enterprise: { connect: { id: enterpriseId } },
+		role: override.role ?? UserRole.ENTERPRISE,
 	} as any)
 }

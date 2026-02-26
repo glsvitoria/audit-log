@@ -49,78 +49,82 @@ describe('Auth Service', () => {
 		expect(payload.role).toBe(user.role)
 	})
 
-	it('should not be able to authenticate with wrong email', async () => {
-		await expect(
-			sut.authenticate({
+	describe('Authenticate', () => {
+		it('should not be able to authenticate with wrong email', async () => {
+			await expect(
+				sut.authenticate({
+					email: 'johndoe@example.com',
+					password: '123456',
+				})
+			).rejects.toBeInstanceOf(UnauthorizedException)
+		})
+
+		it('should not be able to authenticate with wrong password', async () => {
+			const enterprise = await enterpriseRepository.create({
+				corporateReason: 'John Doe Entertainment',
+				email: 'johndoeentertainment@example.com',
+			})
+
+			await userRepository.create({
+				name: 'John Doe',
+				email: 'johndoe@example.com',
+				password: await hash('123456', 6),
+				enterprise: {
+					connect: {
+						id: enterprise.id,
+					},
+				},
+			})
+
+			await expect(
+				sut.authenticate({
+					email: 'johndoe@example.com',
+					password: '123123',
+				})
+			).rejects.toBeInstanceOf(UnauthorizedException)
+		})
+	})
+
+	describe('Validate Token', () => {
+		it('should be able to validate access_token', async () => {
+			const enterprise = await enterpriseRepository.create({
+				corporateReason: 'John Doe Entertainment',
+				email: 'johndoeentertainment@example.com',
+			})
+
+			await userRepository.create({
+				email: 'johndoe@example.com',
+				name: 'John Doe',
+				password: await hash('123456', 6),
+				enterprise: {
+					connect: {
+						id: enterprise.id,
+					},
+				},
+			})
+
+			const { access_token } = await sut.authenticate({
 				email: 'johndoe@example.com',
 				password: '123456',
 			})
-		).rejects.toBeInstanceOf(UnauthorizedException)
-	})
 
-	it('should not be able to authenticate with wrong password', async () => {
-		const enterprise = await enterpriseRepository.create({
-			corporateReason: 'John Doe Entertainment',
-			email: 'johndoeentertainment@example.com',
+			await expect(sut.validate(access_token)).resolves.toBeTruthy()
 		})
 
-		await userRepository.create({
-			name: 'John Doe',
-			email: 'johndoe@example.com',
-			password: await hash('123456', 6),
-			enterprise: {
-				connect: {
-					id: enterprise.id,
+		it('should not be able to validate incorrect access_token', async () => {
+			const randomAccessToken = await jwtService.signAsync(
+				{
+					sub: 9999,
+					role: 'random',
 				},
-			},
+				{
+					secret: env.ACCESS_TOKEN_SECRET,
+				}
+			)
+
+			await expect(sut.validate(randomAccessToken)).rejects.toBeInstanceOf(
+				UnauthorizedException
+			)
 		})
-
-		await expect(
-			sut.authenticate({
-				email: 'johndoe@example.com',
-				password: '123123',
-			})
-		).rejects.toBeInstanceOf(UnauthorizedException)
-	})
-
-	it('should be able to validate access_token', async () => {
-		const enterprise = await enterpriseRepository.create({
-			corporateReason: 'John Doe Entertainment',
-			email: 'johndoeentertainment@example.com',
-		})
-
-		await userRepository.create({
-			email: 'johndoe@example.com',
-			name: 'John Doe',
-			password: await hash('123456', 6),
-			enterprise: {
-				connect: {
-					id: enterprise.id,
-				},
-			},
-		})
-
-		const { access_token } = await sut.authenticate({
-			email: 'johndoe@example.com',
-			password: '123456',
-		})
-
-		await expect(sut.validate(access_token)).resolves.toBeTruthy()
-	})
-
-	it('should not be able to validate incorrect access_token', async () => {
-		const randomAccessToken = await jwtService.signAsync(
-			{
-				sub: 9999,
-				role: 'random',
-			},
-			{
-				secret: env.ACCESS_TOKEN_SECRET,
-			}
-		)
-
-		await expect(sut.validate(randomAccessToken)).rejects.toBeInstanceOf(
-			UnauthorizedException
-		)
 	})
 })

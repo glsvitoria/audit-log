@@ -40,6 +40,10 @@ export class LogService {
 	async delete(logId: string, userId: string) {
 		const user = await this.userRepository.findById(userId)
 
+		if (!user) {
+			throw new NotFoundException(ErrorMessagesHelper.USER_NOT_FOUND)
+		}
+
 		const log = await this.logRepository.findById(
 			logId,
 			user?.enterpriseId ?? undefined

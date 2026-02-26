@@ -32,171 +32,187 @@ describe('Enterprise Service', () => {
 		)
 	})
 
-	it('should be able to create a enterprise, a user and a api key', async () => {
-		const apiKey = await sut.create({
-			corporateReason: 'John Doe Entertainment',
-			email: 'johndoeentertainment@example.com',
-			responsibleName: 'John Doe',
-			password: '123456',
-			confirmPassword: '123456',
-		})
-
-		expect(apiKey).toBeDefined()
-
-		const user = await userRepository.findByEmail(
-			'johndoeentertainment@example.com'
-		)
-
-		expect(user?.id).toBeDefined()
-	})
-
-	it('should not be able to create a enterprise with same e-mail', async () => {
-		await makeEnterprise(enterpriseRepository, {
-			email: 'johndoeentertainment@example.com',
-		})
-
-		await expect(
-			sut.create({
+	describe('Create', () => {
+		it('should be able to create a enterprise, a user and a api key', async () => {
+			const apiKey = await sut.create({
 				corporateReason: 'John Doe Entertainment',
 				email: 'johndoeentertainment@example.com',
 				responsibleName: 'John Doe',
 				password: '123456',
 				confirmPassword: '123456',
 			})
-		).rejects.toBeInstanceOf(ConflictException)
-	})
 
-	it('should not be able to create a enterprise with same user e-mail', async () => {
-		await makeEnterprise(enterpriseRepository, {
-			email: 'johndoeentertainment@example.com',
+			expect(apiKey).toBeDefined()
+
+			const user = await userRepository.findByEmail(
+				'johndoeentertainment@example.com'
+			)
+
+			expect(user?.id).toBeDefined()
 		})
 
-		await makeUser(userRepository, {
-			email: 'johndoeentertainment2@example.com',
-		})
-
-		await expect(
-			sut.create({
-				corporateReason: 'John Doe Entertainment',
-				email: 'johndoeentertainment2@example.com',
-				responsibleName: 'John Doe',
-				password: '123456',
-				confirmPassword: '123456',
+		it('should not be able to create a enterprise with same e-mail', async () => {
+			await makeEnterprise(enterpriseRepository, {
+				email: 'johndoeentertainment@example.com',
 			})
-		).rejects.toBeInstanceOf(ConflictException)
-	})
 
-	it('should be able to delete a enterprise and user', async () => {
-		const enterprise = await makeEnterprise(enterpriseRepository, {
-			email: 'johndoeentertainment@example.com',
+			await expect(
+				sut.create({
+					corporateReason: 'John Doe Entertainment',
+					email: 'johndoeentertainment@example.com',
+					responsibleName: 'John Doe',
+					password: '123456',
+					confirmPassword: '123456',
+				})
+			).rejects.toBeInstanceOf(ConflictException)
 		})
 
-		await expect(sut.delete(enterprise.id)).resolves.toBeTruthy()
+		it('should not be able to create a enterprise with same user e-mail', async () => {
+			await makeEnterprise(enterpriseRepository, {
+				email: 'johndoeentertainment@example.com',
+			})
 
-		const enterpriseFinde = await enterpriseRepository.findById(enterprise.id)
-		const userFinde = await userRepository.findByEmail(
-			'johndoeentertainment@example.com'
-		)
+			await makeUser(userRepository, {
+				email: 'johndoeentertainment2@example.com',
+			})
 
-		expect(enterpriseFinde).toBeNull()
-		expect(userFinde).toBeNull()
+			await expect(
+				sut.create({
+					corporateReason: 'John Doe Entertainment',
+					email: 'johndoeentertainment2@example.com',
+					responsibleName: 'John Doe',
+					password: '123456',
+					confirmPassword: '123456',
+				})
+			).rejects.toBeInstanceOf(ConflictException)
+		})
 	})
 
-	it('should not be able to delete a inexistent enterprise', async () => {
-		await expect(sut.delete(randomUUID())).rejects.toBeInstanceOf(
-			NotFoundException
-		)
-	})
+	describe('Delete', () => {
+		it('should be able to delete a enterprise and user', async () => {
+			const enterprise = await makeEnterprise(enterpriseRepository, {
+				email: 'johndoeentertainment@example.com',
+			})
 
-	it('should be able to disable a enterprise', async () => {
-		const enterprise = await makeEnterprise(enterpriseRepository)
+			await expect(sut.delete(enterprise.id)).resolves.toBeTruthy()
 
-		await expect(sut.disable(enterprise.id)).resolves.toBeTruthy()
+			const enterpriseFinde = await enterpriseRepository.findById(enterprise.id)
+			const userFinde = await userRepository.findByEmail(
+				'johndoeentertainment@example.com'
+			)
 
-		const enterpriseFinde = await enterpriseRepository.findById(enterprise.id)
-
-		expect(enterpriseFinde?.disabledAt).toBeDefined()
-	})
-
-	it('should not be able to disable a disabled enterprise', async () => {
-		const enterprise = await makeEnterprise(enterpriseRepository)
-
-		await enterpriseRepository.disable(enterprise.id)
-
-		await expect(sut.disable(enterprise.id)).rejects.toBeInstanceOf(
-			BadRequestException
-		)
-	})
-
-	it('should be able to enable a enterprise', async () => {
-		const enterprise = await makeEnterprise(enterpriseRepository)
-
-		await enterpriseRepository.disable(enterprise.id)
-
-		await expect(sut.enable(enterprise.id)).resolves.toBeTruthy()
-
-		const enterpriseFinde = await enterpriseRepository.findById(enterprise.id)
-
-		expect(enterpriseFinde?.disabledAt).toBeNull()
-	})
-
-	it('should not be able to enable a enabled enterprise', async () => {
-		const enterprise = await makeEnterprise(enterpriseRepository)
-
-		await expect(sut.enable(enterprise.id)).rejects.toBeInstanceOf(
-			BadRequestException
-		)
-	})
-
-	it('should be able to show a enterprise', async () => {
-		const enterprise = await makeEnterprise(enterpriseRepository)
-
-		const enterpriseFinde = await sut.find(enterprise.id)
-
-		expect(enterpriseFinde.id).toBeDefined()
-	})
-
-	it('should not be able to show a inexistent enterprise', async () => {
-		await expect(sut.find(randomUUID())).rejects.toBeInstanceOf(
-			NotFoundException
-		)
-	})
-
-	it('should be able to update a enterprise', async () => {
-		const enterprise = await makeEnterprise(enterpriseRepository)
-
-		await sut.update(enterprise.id, {
-			corporateReason: 'New Enterprise Name',
-			email: 'new-enterprise-email@example.com',
+			expect(enterpriseFinde).toBeNull()
+			expect(userFinde).toBeNull()
 		})
 
-		const enterpriseUpdated = await enterpriseRepository.findById(enterprise.id)
-
-		expect(enterpriseUpdated?.corporateReason).toEqual('New Enterprise Name')
-		expect(enterpriseUpdated?.email).toEqual('new-enterprise-email@example.com')
+		it('should not be able to delete a inexistent enterprise', async () => {
+			await expect(sut.delete(randomUUID())).rejects.toBeInstanceOf(
+				NotFoundException
+			)
+		})
 	})
 
-	it('should not be able to update a inexistent enterprise', async () => {
-		await expect(
-			sut.update(randomUUID(), {
+	describe('Disable', () => {
+		it('should be able to disable a enterprise', async () => {
+			const enterprise = await makeEnterprise(enterpriseRepository)
+
+			await expect(sut.disable(enterprise.id)).resolves.toBeTruthy()
+
+			const enterpriseFinde = await enterpriseRepository.findById(enterprise.id)
+
+			expect(enterpriseFinde?.disabledAt).toBeDefined()
+		})
+
+		it('should not be able to disable a disabled enterprise', async () => {
+			const enterprise = await makeEnterprise(enterpriseRepository)
+
+			await enterpriseRepository.disable(enterprise.id)
+
+			await expect(sut.disable(enterprise.id)).rejects.toBeInstanceOf(
+				BadRequestException
+			)
+		})
+	})
+
+	describe('Enable', () => {
+		it('should be able to enable a enterprise', async () => {
+			const enterprise = await makeEnterprise(enterpriseRepository)
+
+			await enterpriseRepository.disable(enterprise.id)
+
+			await expect(sut.enable(enterprise.id)).resolves.toBeTruthy()
+
+			const enterpriseFinde = await enterpriseRepository.findById(enterprise.id)
+
+			expect(enterpriseFinde?.disabledAt).toBeNull()
+		})
+
+		it('should not be able to enable a enabled enterprise', async () => {
+			const enterprise = await makeEnterprise(enterpriseRepository)
+
+			await expect(sut.enable(enterprise.id)).rejects.toBeInstanceOf(
+				BadRequestException
+			)
+		})
+	})
+
+	describe('Find', () => {
+		it('should be able to show a enterprise', async () => {
+			const enterprise = await makeEnterprise(enterpriseRepository)
+
+			const enterpriseFinde = await sut.find(enterprise.id)
+
+			expect(enterpriseFinde.id).toBeDefined()
+		})
+
+		it('should not be able to show a inexistent enterprise', async () => {
+			await expect(sut.find(randomUUID())).rejects.toBeInstanceOf(
+				NotFoundException
+			)
+		})
+	})
+
+	describe('Update', () => {
+		it('should be able to update a enterprise', async () => {
+			const enterprise = await makeEnterprise(enterpriseRepository)
+
+			await sut.update(enterprise.id, {
 				corporateReason: 'New Enterprise Name',
+				email: 'new-enterprise-email@example.com',
 			})
-		).rejects.toBeInstanceOf(NotFoundException)
-	})
 
-	it('should not be able to update a enterprise e-mail to a e-mail already in use', async () => {
-		const enterprise = await makeEnterprise(enterpriseRepository, {
-			email: 'johndoeentertainment@example.com',
+			const enterpriseUpdated = await enterpriseRepository.findById(
+				enterprise.id
+			)
+
+			expect(enterpriseUpdated?.corporateReason).toEqual('New Enterprise Name')
+			expect(enterpriseUpdated?.email).toEqual(
+				'new-enterprise-email@example.com'
+			)
 		})
 
-		await makeEnterprise(enterpriseRepository, {
-			email: 'johndoeentertainment2@example.com',
+		it('should not be able to update a inexistent enterprise', async () => {
+			await expect(
+				sut.update(randomUUID(), {
+					corporateReason: 'New Enterprise Name',
+				})
+			).rejects.toBeInstanceOf(NotFoundException)
 		})
 
-		await expect(
-			sut.update(enterprise.id, {
+		it('should not be able to update a enterprise e-mail to a e-mail already in use', async () => {
+			const enterprise = await makeEnterprise(enterpriseRepository, {
+				email: 'johndoeentertainment@example.com',
+			})
+
+			await makeEnterprise(enterpriseRepository, {
 				email: 'johndoeentertainment2@example.com',
 			})
-		).rejects.toBeInstanceOf(ConflictException)
+
+			await expect(
+				sut.update(enterprise.id, {
+					email: 'johndoeentertainment2@example.com',
+				})
+			).rejects.toBeInstanceOf(ConflictException)
+		})
 	})
 })
