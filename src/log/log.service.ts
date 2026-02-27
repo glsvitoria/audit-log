@@ -20,8 +20,7 @@ export class LogService {
 	) {}
 
 	async create(createLogDto: CreateLogDto, enterpriseApiKey: string) {
-		const apiKey =
-			await this.apiKeyRepository.findByApiKey(enterpriseApiKey)
+		const apiKey = await this.apiKeyRepository.findByApiKey(enterpriseApiKey)
 
 		if (!apiKey) {
 			throw new UnauthorizedException(ErrorMessagesHelper.INVALID_CREDENTIALS)

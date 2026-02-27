@@ -2,7 +2,7 @@ import { ApiKey } from '@/generated/prisma/client'
 import { ApiKeyRepository, CreateApiKeyProps } from './api-key.types'
 import { ApiKeyUpdateInput } from '@/generated/prisma/models'
 import { FindAllPaginationApiKeyDto } from '../dto/find-all-pagination.dto'
-import { randomBytes, randomUUID } from 'crypto'
+import { randomUUID } from 'crypto'
 import { hashApiKey } from '@/utils/hash-api-key'
 
 export class InMemoryApiKeyRepository implements ApiKeyRepository {
@@ -11,9 +11,7 @@ export class InMemoryApiKeyRepository implements ApiKeyRepository {
 	constructor() {}
 
 	async create(props: CreateApiKeyProps) {
-		const apiKeyGenerated = randomBytes(32).toString('hex')
-
-		const apiKeyHashed = hashApiKey(apiKeyGenerated)
+		const apiKeyHashed = hashApiKey()
 
 		const newApiKey: ApiKey = {
 			description: props.description ?? null,

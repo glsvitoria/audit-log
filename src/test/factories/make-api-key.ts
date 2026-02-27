@@ -1,4 +1,4 @@
-import { InMemoryApiKeyRepository } from '@/apiKey/repositories/in-memory-api-key.repository'
+import { ApiKeyRepository } from '@/apiKey/repositories/api-key.types'
 import { randomUUID } from 'crypto'
 
 interface MakeApiKeyOverride {
@@ -7,7 +7,7 @@ interface MakeApiKeyOverride {
 }
 
 export async function makeApiKey(
-	repository: InMemoryApiKeyRepository,
+	repository: ApiKeyRepository,
 	override: Partial<MakeApiKeyOverride> = {}
 ) {
 	return repository.create({

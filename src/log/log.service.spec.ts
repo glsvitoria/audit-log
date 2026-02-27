@@ -8,6 +8,7 @@ import { NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { randomUUID } from 'crypto'
 import { makeUser } from '@/test/factories/make-user'
 import { makeLog } from '@/test/factories/make-log'
+import { UserRole } from '@/generated/prisma/enums'
 
 let logRepository: InMemoryLogRepository
 let userRepository: InMemoryUserRepository
@@ -68,6 +69,7 @@ describe('Log Service', () => {
 			const enterprise = await makeEnterprise(enterpriseRepository)
 
 			const user = await makeUser(userRepository, {
+				role: UserRole.ENTERPRISE,
 				enterpriseId: enterprise.id,
 			})
 
@@ -81,7 +83,9 @@ describe('Log Service', () => {
 		})
 
 		it('should not be able to delete a log from another enterprise', async () => {
-			const user = await makeUser(userRepository)
+			const user = await makeUser(userRepository, {
+				role: UserRole.ENTERPRISE,
+			})
 			const log = await makeLog(logRepository)
 
 			await expect(sut.delete(log.id, user.id)).rejects.toBeInstanceOf(
@@ -90,7 +94,9 @@ describe('Log Service', () => {
 		})
 
 		it('should not be able to delete a inexistent log', async () => {
-			const user = await makeUser(userRepository)
+			const user = await makeUser(userRepository, {
+				role: UserRole.ENTERPRISE,
+			})
 
 			await expect(sut.delete(randomUUID(), user.id)).rejects.toBeInstanceOf(
 				NotFoundException

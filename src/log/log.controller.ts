@@ -35,8 +35,10 @@ export class LogController {
 	}
 
 	@Get(':logId')
-	@ApiKeyAuth()
-	find(@Param('logId', new ValidationUUID()) logId: string) {
+	@AccessTokenAuth(UserRole.ADMIN, UserRole.ENTERPRISE)
+	find(
+		@Param('logId', new ValidationUUID()) logId: string
+	) {
 		return this.logService.find(logId)
 	}
 

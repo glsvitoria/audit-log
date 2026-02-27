@@ -1,13 +1,10 @@
-import { env, Environment } from '@/config/env-validation'
-import { createHmac } from 'crypto'
+import { env } from '@/config/env-validation'
+import { createHmac, randomBytes } from 'crypto'
 
-export function hashApiKey(apiKey: string): string {
-	const prefix =
-		env.NODE_ENV === Environment.PRODUCTION ? 'sk_live_' : 'sk_test_'
-
-	const apiKeyWithoutPrefix = apiKey.replace(prefix, '')
+export function hashApiKey(): string {
+	const apiKeyGenerated = randomBytes(32).toString('hex')
 
 	return createHmac('sha256', env.API_KEY_SECRET)
-		.update(apiKeyWithoutPrefix)
+		.update(apiKeyGenerated)
 		.digest('hex')
 }

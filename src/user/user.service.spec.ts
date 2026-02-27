@@ -10,6 +10,7 @@ import {
 import { randomUUID } from 'crypto'
 import { makeEnterprise } from '@/test/factories/make-enterprise'
 import { makeUser } from '@/test/factories/make-user'
+import { UserRole } from '@/generated/prisma/enums'
 
 let userRepository: InMemoryUserRepository
 let enterpriseRepository: InMemoryEnterpriseRepository
@@ -134,6 +135,7 @@ describe('User Service', () => {
 			const enterprise = await makeEnterprise(enterpriseRepository)
 
 			const user = await makeUser(userRepository, {
+				role: UserRole.ENTERPRISE,
 				enterpriseId: enterprise.id,
 			})
 
@@ -172,12 +174,14 @@ describe('User Service', () => {
 			const enterprise = await makeEnterprise(enterpriseRepository)
 
 			const user = await makeUser(userRepository, {
+				role: UserRole.ENTERPRISE,
 				enterpriseId: enterprise.id,
 			})
 
 			const email = 'johndoe2@example.com'
 
 			await makeUser(userRepository, {
+        role: UserRole.ENTERPRISE,
 				enterpriseId: enterprise.id,
 				email,
 			})
@@ -198,6 +202,7 @@ describe('User Service', () => {
 			const enterprise = await makeEnterprise(enterpriseRepository)
 
 			const user = await makeUser(userRepository, {
+        role: UserRole.ENTERPRISE,
 				enterpriseId: enterprise.id,
 			})
 
@@ -208,6 +213,7 @@ describe('User Service', () => {
 			const enterprise = await makeEnterprise(enterpriseRepository)
 
 			const user = await makeUser(userRepository, {
+        role: UserRole.ENTERPRISE,
 				enterpriseId: enterprise.id,
 			})
 

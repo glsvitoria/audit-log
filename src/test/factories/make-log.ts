@@ -1,4 +1,4 @@
-import { InMemoryLogRepository } from '@/log/repositories/in-memory-log.repository'
+import { LogRepository } from '@/log/repositories/log.repository'
 import { randomUUID } from 'crypto'
 
 interface MakeLogOverride {
@@ -14,7 +14,7 @@ interface MakeLogOverride {
 }
 
 export async function makeLog(
-	repository: InMemoryLogRepository,
+	repository: LogRepository,
 	override: Partial<MakeLogOverride> = {}
 ) {
 	const enterpriseId = override.enterpriseId ?? randomUUID()

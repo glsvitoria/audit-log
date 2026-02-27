@@ -7,6 +7,7 @@ import { makeUser } from '@/test/factories/make-user'
 import { BadRequestException, NotFoundException } from '@nestjs/common'
 import { randomUUID } from 'crypto'
 import { makeApiKey } from '@/test/factories/make-api-key'
+import { UserRole } from '@/generated/prisma/enums'
 
 let apiKeyRepository: InMemoryApiKeyRepository
 let enterpriseRepository: InMemoryEnterpriseRepository
@@ -50,6 +51,7 @@ describe('ApiKey Service', () => {
 		it('should be able to create a key using user context', async () => {
 			const enterprise = await makeEnterprise(enterpriseRepository)
 			const user = await makeUser(userRepository, {
+				role: UserRole.ENTERPRISE,
 				enterpriseId: enterprise.id,
 			})
 
@@ -69,6 +71,7 @@ describe('ApiKey Service', () => {
 		it('should be able to delete an api key', async () => {
 			const enterprise = await makeEnterprise(enterpriseRepository)
 			const user = await makeUser(userRepository, {
+				role: UserRole.ENTERPRISE,
 				enterpriseId: enterprise.id,
 			})
 			const { apiKey } = await makeApiKey(apiKeyRepository, {
@@ -88,6 +91,7 @@ describe('ApiKey Service', () => {
 			const enterprise1 = await makeEnterprise(enterpriseRepository)
 			const enterprise2 = await makeEnterprise(enterpriseRepository)
 			const user = await makeUser(userRepository, {
+        role: UserRole.ENTERPRISE,
 				enterpriseId: enterprise1.id,
 			})
 
@@ -107,6 +111,7 @@ describe('ApiKey Service', () => {
 		it('should be able to disable an active api key', async () => {
 			const enterprise = await makeEnterprise(enterpriseRepository)
 			const user = await makeUser(userRepository, {
+        role: UserRole.ENTERPRISE,
 				enterpriseId: enterprise.id,
 			})
 			const { apiKey } = await makeApiKey(apiKeyRepository, {
@@ -123,6 +128,7 @@ describe('ApiKey Service', () => {
 		it('should not be able to disable an already disabled key', async () => {
 			const enterprise = await makeEnterprise(enterpriseRepository)
 			const user = await makeUser(userRepository, {
+        role: UserRole.ENTERPRISE,
 				enterpriseId: enterprise.id,
 			})
 			const { apiKey } = await makeApiKey(apiKeyRepository, {
@@ -141,6 +147,7 @@ describe('ApiKey Service', () => {
 		it('should be able to enable a disabled api key', async () => {
 			const enterprise = await makeEnterprise(enterpriseRepository)
 			const user = await makeUser(userRepository, {
+        role: UserRole.ENTERPRISE,
 				enterpriseId: enterprise.id,
 			})
 			const { apiKey } = await makeApiKey(apiKeyRepository, {
@@ -157,6 +164,7 @@ describe('ApiKey Service', () => {
 		it('should not be able to enable an already enabled key', async () => {
 			const enterprise = await makeEnterprise(enterpriseRepository)
 			const user = await makeUser(userRepository, {
+        role: UserRole.ENTERPRISE,
 				enterpriseId: enterprise.id,
 			})
 			const { apiKey } = await makeApiKey(apiKeyRepository, {
@@ -175,6 +183,7 @@ describe('ApiKey Service', () => {
 		it('should be able to update an api key description', async () => {
 			const enterprise = await makeEnterprise(enterpriseRepository)
 			const user = await makeUser(userRepository, {
+        role: UserRole.ENTERPRISE,
 				enterpriseId: enterprise.id,
 			})
 			const { apiKey } = await makeApiKey(apiKeyRepository, {

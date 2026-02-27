@@ -1,4 +1,4 @@
-import { InMemoryEnterpriseRepository } from '@/enterprise/repositories/in-memory-enterprise.repository'
+import { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
 
 interface MakeEnterpriseOverride {
 	corporateReason: string
@@ -6,7 +6,7 @@ interface MakeEnterpriseOverride {
 }
 
 export async function makeEnterprise(
-	repository: InMemoryEnterpriseRepository,
+	repository: EnterpriseRepository,
 	override: Partial<MakeEnterpriseOverride> = {}
 ) {
 	return repository.create({

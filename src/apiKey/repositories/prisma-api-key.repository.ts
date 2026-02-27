@@ -5,7 +5,6 @@ import {
 	PrismaTransactionClient,
 } from '@/database/prisma/prisma.service'
 import { addPrefixApiKey } from '@/utils/add-prefix-api-key'
-import { randomBytes } from 'crypto'
 import { hashApiKey } from '@/utils/hash-api-key'
 import { FindAllPaginationApiKeyDto } from '../dto/find-all-pagination.dto'
 import { Prisma } from '@/generated/prisma/client'
@@ -17,9 +16,8 @@ export class PrismaApiKeyRepository implements ApiKeyRepository {
 
 	async create(props: CreateApiKeyProps, tx?: PrismaTransactionClient) {
 		const prisma = tx ?? this.prismaService
-		const apiKeyGenerated = randomBytes(32).toString('hex')
 
-		const apiKeyHashed = hashApiKey(apiKeyGenerated)
+		const apiKeyHashed = hashApiKey()
 
 		await prisma.apiKey.create({
 			data: {
@@ -34,7 +32,7 @@ export class PrismaApiKeyRepository implements ApiKeyRepository {
 		})
 
 		return {
-			apiKey: addPrefixApiKey(apiKeyGenerated),
+			apiKey: addPrefixApiKey(apiKeyHashed),
 		}
 	}
 
