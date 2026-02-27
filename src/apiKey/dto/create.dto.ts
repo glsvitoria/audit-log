@@ -5,7 +5,7 @@ export class CreateApiKeyDto {
 		message: 'A descrição deve ser uma string',
 	})
 	@IsOptional()
-	description: string
+	description?: string
 
 	@IsString({
 		message: 'O ID da empresa deve ser uma string',
