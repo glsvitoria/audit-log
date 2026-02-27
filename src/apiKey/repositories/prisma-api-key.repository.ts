@@ -9,6 +9,7 @@ import { randomBytes } from 'crypto'
 import { hashApiKey } from '@/utils/hash-api-key'
 import { FindAllPaginationApiKeyDto } from '../dto/find-all-pagination.dto'
 import { Prisma } from '@/generated/prisma/client'
+import { removePrefixApiKey } from '@/utils/remove-prefix-api-key'
 
 @Injectable()
 export class PrismaApiKeyRepository implements ApiKeyRepository {
@@ -139,11 +140,11 @@ export class PrismaApiKeyRepository implements ApiKeyRepository {
 	}
 
 	async findByApiKey(apiKey: string) {
-		const apiKeyHashed = hashApiKey(apiKey)
+		const apiKeyWithoutPrefix = removePrefixApiKey(apiKey)
 
 		const apiKeyFinde = await this.prismaService.apiKey.findFirst({
 			where: {
-				keyHash: apiKeyHashed,
+				keyHash: apiKeyWithoutPrefix,
 				deletedAt: null,
 				disabledAt: null,
 			},

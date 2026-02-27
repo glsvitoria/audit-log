@@ -7,9 +7,9 @@ import { CreateLogDto } from './dto/create.dto'
 import { FindAllPaginationDto } from './dto/find-all-pagination.dto'
 import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
 import { SuccessMessagesHelper } from '@/common/helpers/success-messages.helper'
-import type { UserRepository } from '@/user/repositories/user.repository'
-import type { ApiKeyRepository } from '@/apiKey/repositories/api-key.types'
-import type { LogRepository } from './repositories/log.repository'
+import { UserRepository } from '@/user/repositories/user.repository'
+import { ApiKeyRepository } from '@/apiKey/repositories/api-key.types'
+import { LogRepository } from './repositories/log.repository'
 
 @Injectable()
 export class LogService {
@@ -20,10 +20,10 @@ export class LogService {
 	) {}
 
 	async create(createLogDto: CreateLogDto, enterpriseApiKey: string) {
-		const enterprise =
+		const apiKey =
 			await this.apiKeyRepository.findByApiKey(enterpriseApiKey)
 
-		if (!enterprise) {
+		if (!apiKey) {
 			throw new UnauthorizedException(ErrorMessagesHelper.INVALID_CREDENTIALS)
 		}
 
@@ -31,7 +31,7 @@ export class LogService {
 			...createLogDto,
 			enterprise: {
 				connect: {
-					id: enterprise?.id,
+					id: apiKey.enterpriseId,
 				},
 			},
 		})

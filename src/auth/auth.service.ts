@@ -5,8 +5,8 @@ import { JwtService } from '@nestjs/jwt'
 import { env } from '@/config/env-validation'
 import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
 import { UserRole } from '@/generated/prisma/enums'
-import type { UserRepository } from '@/user/repositories/user.repository'
-import type { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
+import { UserRepository } from '@/user/repositories/user.repository'
+import { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
 
 @Injectable()
 export class AuthService {

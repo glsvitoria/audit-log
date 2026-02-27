@@ -1,16 +1,16 @@
 import { PrismaTransactionClient } from '@/database/prisma/prisma.service'
 import { Enterprise, Prisma, User, UserRole } from '@/generated/prisma/client'
 
-export interface UserRepository {
-	create(
+export abstract class UserRepository {
+	abstract create(
 		user: Prisma.UserCreateInput,
 		tx?: PrismaTransactionClient
 	): Promise<User>
-	delete(userId: string): Promise<User | null>
-	deleteByEnterpriseId(enterpriseId: string): Promise<void>
-	findByEmail(email: string): Promise<User | null>
-	findById(userId: string): Promise<User | null>
-	update(user: Prisma.UserUpdateInput, userId: string): Promise<User>
+	abstract delete(userId: string): Promise<User | null>
+	abstract deleteByEnterpriseId(enterpriseId: string): Promise<void>
+	abstract findByEmail(email: string): Promise<User | null>
+	abstract findById(userId: string): Promise<User | null>
+	abstract update(user: Prisma.UserUpdateInput, userId: string): Promise<User>
 }
 
 export interface ProfileReturn {

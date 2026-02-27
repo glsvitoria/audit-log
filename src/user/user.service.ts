@@ -9,9 +9,9 @@ import { hash } from 'bcryptjs'
 import { UpdateUserDto } from './dto/update.dto'
 import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
 import { SuccessMessagesHelper } from '@/common/helpers/success-messages.helper'
-import type { UserRepository } from './repositories/user.repository'
+import { UserRepository } from './repositories/user.repository'
 import { Enterprise } from '@/generated/prisma/client'
-import type { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
+import { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
 
 @Injectable()
 export class UserService {

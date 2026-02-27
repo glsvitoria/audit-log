@@ -12,9 +12,9 @@ import { PrismaService } from '@/database/prisma/prisma.service'
 import { FindAllPaginationEnterpriseDto } from './dto/find-all-pagination.dto'
 import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
 import { SuccessMessagesHelper } from '@/common/helpers/success-messages.helper'
-import type { UserRepository } from '@/user/repositories/user.repository'
-import type { EnterpriseRepository } from './repositories/enterprise.repository'
-import type { ApiKeyRepository } from '@/apiKey/repositories/api-key.types'
+import { UserRepository } from '@/user/repositories/user.repository'
+import { EnterpriseRepository } from './repositories/enterprise.repository'
+import { ApiKeyRepository } from '@/apiKey/repositories/api-key.types'
 
 @Injectable()
 export class EnterpriseService {

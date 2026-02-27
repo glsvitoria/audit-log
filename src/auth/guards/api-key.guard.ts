@@ -1,4 +1,4 @@
-import type { ApiKeyRepository } from '@/apiKey/repositories/api-key.types'
+import { ApiKeyRepository } from '@/apiKey/repositories/api-key.types'
 import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
 import {
 	CanActivate,

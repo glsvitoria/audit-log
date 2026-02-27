@@ -1,11 +1,11 @@
 import { Log, Prisma } from '@/generated/prisma/client'
 import { FindAllPaginationDto } from '../dto/find-all-pagination.dto'
 
-export interface LogRepository {
-	create(log: Prisma.LogCreateInput): Promise<Log>
-	delete(logId: string): Promise<Log>
-	findById(logId: string, enterpriseId?: string): Promise<Log | null>
-	findAll(findAllPaginationDto: FindAllPaginationDto): Promise<{
+export abstract class LogRepository {
+	abstract create(log: Prisma.LogCreateInput): Promise<Log>
+	abstract delete(logId: string): Promise<Log>
+	abstract findById(logId: string, enterpriseId?: string): Promise<Log | null>
+	abstract findAll(findAllPaginationDto: FindAllPaginationDto): Promise<{
 		logs: Log[]
 		total: number
 	}>

@@ -433,7 +433,6 @@ audit-log/
 │   ├── utils/               # Utilitários
 │   ├── app.module.ts        # Módulo principal
 │   └── main.ts              # Entry point
-├── test/                    # Testes E2E
 ├── .env.example             # Exemplo de variáveis de ambiente
 ├── docker-compose.yml       # Configuração do Docker
 ├── package.json             # Dependências

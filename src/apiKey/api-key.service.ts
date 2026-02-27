@@ -9,9 +9,9 @@ import { UpdateApiKeyDto } from './dto/update.dto'
 import { ErrorMessagesHelper } from '@/common/helpers/error-messages.helper'
 import { SuccessMessagesHelper } from '@/common/helpers/success-messages.helper'
 import { CreateByEnterpriseApiKeyDto } from './dto/create-by-enterprise'
-import type { UserRepository } from '@/user/repositories/user.repository'
-import type { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
-import type { ApiKeyRepository } from './repositories/api-key.types'
+import  { UserRepository } from '@/user/repositories/user.repository'
+import  { EnterpriseRepository } from '@/enterprise/repositories/enterprise.repository'
+import  { ApiKeyRepository } from './repositories/api-key.types'
 
 @Injectable()
 export class ApiKeyService {

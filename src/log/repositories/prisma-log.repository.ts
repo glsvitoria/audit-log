@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { LogRepository } from './log.repository'
 import { Prisma } from '@/generated/prisma/client'
-import { PrismaService } from 'src/database/prisma/prisma.service'
+import { PrismaService } from '@/database/prisma/prisma.service'
 import { FindAllPaginationDto } from '../dto/find-all-pagination.dto'
 
 @Injectable()
